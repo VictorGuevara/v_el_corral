@@ -1,0 +1,40 @@
+{
+  "name": "f_pg",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "vet": "nodemon src/"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "bcryptjs": "^3.0.2",
+    "connect-flash": "^0.1.1",
+    "cors": "^2.8.5",
+    "exceljs": "^4.4.0",
+    "expess": "^0.0.1-security",
+    "express": "^5.1.0",
+    "express-handlebars": "^8.0.2",
+    "express-mysql-session": "^3.0.3",
+    "express-session": "^1.18.2",
+    "express-validator": "^7.2.1",
+    "flash": "^1.1.0",
+    "handlebars": "^4.7.8",
+    "moment": "^2.30.1",
+    "morgan": "^1.10.1",
+    "mysql": "^2.18.1",
+    "officegen": "^0.6.5",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "pdfkit": "^0.17.2",
+    "pdfkit-table": "^0.1.99",
+    "pdfmake": "^0.2.20",
+    "puppeteer": "^24.31.0",
+    "sweetalert2": "^11.26.3"
+  }
+}

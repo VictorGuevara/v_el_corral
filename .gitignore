@@ -1,0 +1,23 @@
+# Ignoramos archivos del sistema Mac 
+.DS_store
+
+# Ignoramos la carpeta node_modules
+node_modules
+
+# Ignoramos la carpeta .vscode
+.vscode
+
+# Ignoramos la carpeta database
+database
+
+# Ignoramos los archivos de tareas del usuario .todo
+tareas.todo
+
+# Ignoramos los archivos .docx
+*.docx
+
+# Ignoramos los archivos .pdf
+*.pdf
+
+# Ignoramos un archivo especifico.
+desechos.js

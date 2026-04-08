@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VET. EL CORRAL</title>
+    <link rel="shortcut icon" href="/img/logo_temporal.ico">
+    {{!-- Fuentes --}}
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    {{!-- Iconos --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    {{!-- Estilos CSS3 --}}
+    <link rel="stylesheet" type="text/css" id="script_css">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.css">
+    <!-- ENLACES JAVASCRIPT -->
+    <script src="/js/fontawesome_all.js"></script>
+    <script src="/js/sweetalert_all_min.js"></script>
+</head>
+<body>
+
+    <!-- Si existe un usario -->
+    {{#if user}}
+        <!-- sidebar -->
+        {{> sidenavbar }}
+    {{/if}}
+
+    {{!-- Contenido principal --}}
+    {{> main }}
+
+    {{#if msmsuccess }}
+        <div>
+             {{msmsuccess}}
+        </div>
+    {{/if}}
+
+     {{#if msm }}
+        <div>
+             {{msm}}
+        </div>
+    {{/if}}
+
+    <!-- Codigo de Handlebars -->
+    {{{ body }}}
+    <!-- <script type="text/javascript" src="/js/encomiendas.js"></script>-->
+    <script id="script_js_tow" type="text/javascript"></script>
+    <script id="script_js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/list_url.js"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<div class='main_content'>
+  <main>
+    <section>
+      <h1>Usuarios</h1>
+      <h3 class='ruta_system'>Administración / Usuarios</h3>
+    </section>
+    <br />
+    <section class='vista_tabla_form'>
+      <div class='tabla_datos'>
+        <div class='content_search_datos'>
+          <div>
+            <button class='btn_reporte' id='btn_reporte_presentaciones'>¿Crear Reporte?</button>
+          </div>
+          <div class='content_search_btn'>
+            <input class='input_filter_table' type='text' id='busqueda_usuarios' />
+            <button class='filtar_table' id='btn_search_usuarios'><i class='ti-search'></i> Buscar</button>
+          </div>
+        </div>
+        <div class='table-container'>
+          <table>
+            <thead>
+              <tr>
+                <th>No.:</th>
+                <th>Código:</th>
+                <th>NOMBRE:</th>
+                <th>DUI:</th>
+                <th>USUARIO:</th>
+                <th>CARGO:</th>
+                <th>ESTADO:</th>
+                <th>SUCURSAL:</th>
+                <th class='center_text'><i class='ti-pencil-alt'></i></th>
+                <th class='center_text'><i class='ti-trash'></i></th>
+              </tr>
+            </thead>
+            <tbody id='tableBody_usuarios'>
+              {{! Aqui se carga desde JavaScript }}
+            </tbody>
+          </table>
+          <div class='paginacion' id='paginacion'>
+            <button class='btn_control_paginacion' id='btn_pag_init'><i class='ti-control-skip-backward'></i></button>
+            <button class='btn_control_paginacion' id='btn_saltoAnt_pag'><i class='ti-control-backward'></i></button>
+            <button class='btn_control_numero active' id='pri_num_pag'>1</button>
+            <button class='btn_control_numero' id='seg_num_pag'>2</button>
+            <button class='btn_control_numero' id='ter_num_pag'>3</button>
+            <span class='separador_paginacion' id='separador_pag'>...</span>
+            <button class='btn_control_numero' id='ultimo_num_pag'>1000</button>
+            <button class='btn_control_paginacion' id='btn_saltoDes_pag'><i class='ti-control-forward'></i></button>
+            <button class='btn_control_paginacion' id='btn_pag_final'><i class='ti-control-skip-forward'></i></button>
+          </div>
+        </div>
+      </div>
+      <div class='formularios'>
+        <form id='form_usuarios' class='form'>
+          <h1>Crear Nuevo Usuario</h1>
+          <br>
+          <div class='input_grup'>
+            <label for='name_user'>* Nombre de usuario:</label>
+            <input type="hidden" id="id_usuario">
+            <input type='text' id='name_user' placeholder='Nombre de usuario:' />
+          </div>
+          <div class='input_grup' id="box_clave_user">
+            <label for='password_user'>* Clave de usuario:</label>
+            <input type='text' id='password_user' placeholder='Clave de usuario:' />
+          </div>
+          <div class='input_grup' id="box_repetir_clave_user">
+            <label for='password_user_repeat'>* Confirmar clave:</label>
+            <input type='text' id='password_user_repeat' placeholder='Repita la clave:' />
+          </div>
+          <div class='input_grup'>
+            <label for='name_personal'>* Nombre completo:</label>
+            <input type='text' id='name_personal' placeholder='Nombre del empleado:' />
+          </div>
+          <div class='input_grup'>
+            <label for='n_dui'>* No. DUI:</label>
+            <input type='number' id='n_dui' placeholder='No. DUI' />
+          </div>
+          <div class='input_grup'>
+            <label for='cargo_user'>* Cargo del usuario:</label>
+            <input type='text' id='cargo_user' placeholder='Cargo del usuario:' list="cargos" />
+          </div>
+          <div class='input_grup' id="box_estado_user">
+            <label for='cargo_user'>Estado:</label>
+            <input type='text' id='estado_user' placeholder='Activo por defecto' list="estados" />
+          </div>
+          <div class='input_grup'>
+            <label for='sucursal_destinada'>* Sucursal:</label>
+            <input type='text' id='sucursal_destinada' placeholder='Sucursal de trabajo' list="sucursales" />
+          </div>
+          <div class='input_grup'>
+            <input type='submit' id='btn_create_user' value='Crear Usuario' />
+            <input type='submit' id='btn_update_user' value='Editar Usuario' />
+            <input type='submit' id='btn_cancel_update_user' value='Cancelar Edicion' />
+          </div>
+        </form>
+        <datalist id="estados">
+          <option value="Activo">
+          <option value="Inactivo">
+        </datalist>
+        <datalist id="cargos">
+          <option value="Administrador">
+          <option value="Contador">
+          <option value="Cajero">
+          <option value="Mostrador">
+        </datalist>
+        <datalist id="sucursales">
+          <option value="Santa Isabel">
+          <option value="La Fe">
+          <option value="La Salud">
+          <option value="Cruz Roja">
+          <option value="La Merced">
+          <option value="Santa Lucia">
+        </datalist>
+      </div>
+    </section>
+    <datalist id='lista_proveedores'></datalist>
+  </main>
+</div>
