@@ -15,160 +15,368 @@ const { isLoggedIn, authCiudad } = require('../lib/auth');
 
 // Ruta de renderizar la vista de compras.
 router.get('/', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	// Renderizamos la vista de compras...
-	await res.render('admin/expedientes');
+  // Renderizamos la vista de compras...
+  await res.render('admin/expedientes');
 });
 
-// Consultamos cuantos regitros existen en la tabla de presentaciones.
-router.post('/count_presentaciones', isLoggedIn, async (req, res) => {
-	await pool.query('SELECT COUNT(*) AS cant_presentacion FROM presentaciones', (error, rows, fields) => {
-		if (!error) {
-			// Si no existe error, devolvemos la cantidad del contador.
-			res.json({ cant_presentacion: rows[0]['cant_presentacion'] });
-		} else {
-			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-			console.log(error);
-		}
-	});
+// Ruta para crear el expediente. (Guardar)
+router.post('/crear', async (req, res) => {
+  const data = req.body;
+
+  try {
+    // 1. Buscar propietario por DUI
+    const propietarioExistente = await pool.query('SELECT id FROM propietarios WHERE dui = ?', [data.dui]);
+
+    let id_propietario;
+    if (propietarioExistente.length > 0) {
+      id_propietario = propietarioExistente[0].id;
+    } else {
+      const propietarioResult = await pool.query(
+        'INSERT INTO propietarios (nombre, direccion, correo, telefono, celular, dui) VALUES (?, ?, ?, ?, ?, ?)',
+        [data.propietario, data.direccion, data.correo, data.telefono, data.celular, data.dui]
+      );
+      id_propietario = propietarioResult.insertId;
+    }
+
+    // 2. Buscar mascota por nombre + propietario
+    const mascotaExistente = await pool.query('SELECT id FROM mascotas WHERE nombre = ? AND id_propietario = ?', [
+      data.paciente,
+      id_propietario,
+    ]);
+
+    let id_mascota;
+    if (mascotaExistente.length > 0) {
+      id_mascota = mascotaExistente[0].id;
+    } else {
+      const pacienteResult = await pool.query(
+        'INSERT INTO mascotas (nombre, especie, raza, edad, sexo, peso, color, senias, id_propietario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [
+          data.paciente,
+          data.especie,
+          data.raza,
+          data.edad,
+          data.sexo,
+          data.peso,
+          data.color,
+          data.senias,
+          id_propietario,
+        ]
+      );
+      id_mascota = pacienteResult.insertId;
+    }
+
+    // 3. Verificar si ya existe expediente con mismo DUI y mascota
+    const expedienteExistente = await pool.query(
+      'SELECT id_expediente FROM expediente WHERE dui = ? AND id_mascota = ?',
+      [data.dui, id_mascota]
+    );
+
+    if (expedienteExistente.length > 0) {
+      return res.status(400).json({ mensaje: 'Ya existe un expediente con este DUI y mascota' });
+    }
+
+    // 4. Insertar expediente
+    const expedienteResult = await pool.query(
+      'INSERT INTO expediente (fecha, dui, motivo_consulta, id_mascota, id_propietario) VALUES (?, ?, ?, ?, ?)',
+      [data.fecha, data.dui, data.motivo_consulta, id_mascota, id_propietario]
+    );
+    const id_expediente = expedienteResult.insertId;
+
+    // 5. Información adicional
+    await pool.query(
+      `INSERT INTO info_adicional 
+      (id_expediente, vacuna_quintuple, vacuna_triple_felina, vacuna_rabia, vacuna_parvovirus, vacuna_leucemia, vacuna_bordetella, vacuna_giardia, vacuna_otra, desparasitacion_fecha, desparasitacion_medicamento, control_garrapatas_medicamento, tiempo_con_mascota, otras_mascotas, habitat, acceso_calle, contacto_enfermos, enfermedades_anteriores, dieta, sintomas, observaciones, medicamentos_casa) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        id_expediente,
+        data.vacuna_quintuple,
+        data.vacuna_triple_felina,
+        data.vacuna_rabia,
+        data.vacuna_parvovirus,
+        data.vacuna_leucemia,
+        data.vacuna_bordetella,
+        data.vacuna_giardia,
+        data.vacuna_otra,
+        data.desparasitacion_fecha,
+        data.desparasitacion_medicamento,
+        data.control_garrapatas_medicamento,
+        data.tiempo_con_mascota,
+        data.otras_mascotas,
+        data.habitat,
+        data.acceso_calle,
+        data.contacto_enfermos,
+        data.enfermedades_anteriores,
+        data.dieta,
+        data.sintomas,
+        data.observaciones,
+        data.medicamentos_casa,
+      ]
+    );
+
+    // 6. Exploración
+    await pool.query(
+      `INSERT INTO exploracion 
+      (id_expediente, tegumentario_aspecto, tegumentario_lesiones, tegumentario_alopecia, tegumentario_parasitos) 
+      VALUES (?, ?, ?, ?, ?)`,
+      [
+        id_expediente,
+        data.tegumentario_aspecto,
+        data.tegumentario_lesiones,
+        data.tegumentario_alopecia,
+        data.tegumentario_parasitos,
+      ]
+    );
+
+    // 7. Examen físico
+    await pool.query(
+      `INSERT INTO examen_fisico 
+      (id_expediente, fc, fr, temperatura, pulso, reflejo_pupilar, mucosas, dentadura, condicion_corporal, otras_observaciones) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        id_expediente,
+        data.fc,
+        data.fr,
+        data.temperatura,
+        data.pulso,
+        data.reflejo_pupilar,
+        data.mucosas,
+        data.dentadura,
+        data.condicion_corporal,
+        data.otras_observaciones,
+      ]
+    );
+
+    // 8. Diagnósticos
+    await pool.query(`INSERT INTO diagnosticos (id_expediente, dx_presuntivo, dx_diferencial) VALUES (?, ?, ?)`, [
+      id_expediente,
+      data.dx_presuntivo,
+      data.dx_diferencial,
+    ]);
+
+    res.json({ mensaje: 'Expediente guardado correctamente', id_expediente });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al guardar expediente', error: error.message });
+  }
 });
 
-// Ruta para guardar presentaciones.
-router.post('/g_presentaciones', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	try {
-		// Creamos el array de los datos enviador por el usuario.
-		const [cod, nombre, cantidad, fecha, usuario] = req.body;
+// Ruta para listar los cliente con sus expedientes.
+router.get('/listar', async (req, res) => {
+  try {
+    const expedientes = await pool.query(`
+      SELECT e.id_expediente, e.dui, p.nombre AS propietario, m.nombre AS mascota
+      FROM expediente e
+      INNER JOIN propietarios p ON e.id_propietario = p.id
+      INNER JOIN mascotas m ON e.id_mascota = m.id
+    `);
 
-		console.log(nombre);
-
-		// Verificar si ya existe una presentación con el mismo nombre
-		const existe = await pool.query(`SELECT COUNT(*) AS total FROM presentaciones WHERE detalle_presentacion = ?`, [
-			nombre,
-		]);
-
-		// Validamos.
-		if (existe.total > 0) {
-			return res.json({ mensaje: 'Presentación registrada' });
-		}
-
-		// Insertar nueva presentación
-		await pool.query(
-			`INSERT INTO presentaciones (cod_presentacion, detalle_presentacion, cantidad_presentacion, fecha_registro, user_registro)
-             VALUES (?, ?, ?, ?, ?)`,
-			[cod, nombre, cantidad, fecha, usuario]
-		);
-
-		res.json({ mensaje: 'Presentación guardada con exito.' });
-	} catch (error) {
-		console.error('Error al guardar presentación:', error);
-		res.status(500).json({ mensaje: 'Error interno al guardar presentación.' });
-	}
+    res.json(expedientes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al listar expedientes', error: error.message });
+  }
 });
 
-// Ruta para listar las presentaciones...
-router.post('/list_presentaciones', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	let dato_busqueda = '%' + req.body.nombre_presentacion + '%';
-	const pagina = parseInt(req.body.page);
-	const limite = parseInt(req.body.limit);
-	const desfase = (pagina - 1) * limite;
+// Ruta para llenar el formulario del expediente...
+router.post('/detalle', async (req, res) => {
+  const { id } = req.body; // ahora recibes el id en el body
+  try {
+    const expediente = await pool.query(
+      `
+      SELECT 
+        e.id_expediente,
+        DATE(e.fecha) AS fecha,
+        e.dui,
+        e.motivo_consulta,
 
-	try {
-		let totalQuery = '';
-		let dataQuery = '';
-		let paramsTotal = [];
-		let paramsData = [];
+        -- Datos del paciente
+        m.nombre AS mascota_nombre,
+        m.especie,
+        m.raza,
+        m.edad,
+        m.sexo,
+        m.peso,
+        m.color,
+        m.senias,
 
-		if (req.body.nombre_presentacion.trim() === '') {
-			// Sin búsqueda
-			totalQuery = `SELECT COUNT(*) AS total FROM presentaciones`;
-			dataQuery = `SELECT * FROM presentaciones ORDER BY detalle_presentacion ASC LIMIT ? OFFSET ?`;
-			paramsData = [limite, desfase];
-		} else {
-			// Con búsqueda
-			totalQuery = `SELECT COUNT(*) AS total FROM presentaciones WHERE detalle_presentacion LIKE ?`;
-			dataQuery = `SELECT * FROM presentaciones WHERE detalle_presentacion LIKE ? ORDER BY detalle_presentacion ASC LIMIT ? OFFSET ?`;
-			paramsTotal = [dato_busqueda];
-			paramsData = [dato_busqueda, limite, desfase];
-		}
+        -- Datos del propietario
+        p.nombre AS propietario_nombre,
+        p.correo,
+        p.direccion,
+        p.telefono,
+        p.celular,
 
-		// Obtener total de filas
-		const totalRows = await pool.query(totalQuery, paramsTotal);
-		const cant_filas = totalRows[0].total;
+        -- Información adicional
+        ia.vacuna_quintuple,
+        ia.vacuna_triple_felina,
+        ia.vacuna_rabia,
+        ia.vacuna_parvovirus,
+        ia.vacuna_leucemia,
+        ia.vacuna_bordetella,
+        ia.vacuna_giardia,
+        ia.vacuna_otra,
+        DATE(ia.desparasitacion_fecha) AS desparasitacion_fecha,
+        ia.desparasitacion_medicamento,
+        ia.control_garrapatas_medicamento,
+        ia.tiempo_con_mascota,
+        ia.otras_mascotas,
+        ia.habitat,
+        ia.acceso_calle,
+        ia.contacto_enfermos,
+        ia.enfermedades_anteriores,
+        ia.dieta,
+        ia.sintomas,
+        ia.observaciones,
+        ia.medicamentos_casa,
 
-		// Obtener datos paginados
-		const datos = await pool.query(dataQuery, paramsData);
+        -- Exploración
+        ex.tegumentario_lesiones,
+        ex.tegumentario_alopecia,
+        ex.tegumentario_parasitos,
+        ex.tegumentario_aspecto,
 
-		// Enviar respuesta
-		res.json([datos, cant_filas, desfase]);
-	} catch (error) {
-		console.error('Error en paginación:', error);
-		res.status(500).json({ error: 'Error al obtener presentaciones' });
-	}
+        -- Examen físico
+        ef.fc,
+        ef.fr,
+        ef.temperatura,
+        ef.pulso,
+        ef.reflejo_pupilar,
+        ef.mucosas,
+        ef.dentadura,
+        ef.condicion_corporal,
+        ef.otras_observaciones,
+
+        -- Diagnósticos
+        d.dx_presuntivo,
+        d.dx_diferencial
+
+      FROM expediente e
+      INNER JOIN propietarios p ON e.id_propietario = p.id
+      INNER JOIN mascotas m ON e.id_mascota = m.id
+      LEFT JOIN info_adicional ia ON e.id_expediente = ia.id_expediente
+      LEFT JOIN exploracion ex ON e.id_expediente = ex.id_expediente
+      LEFT JOIN examen_fisico ef ON e.id_expediente = ef.id_expediente
+      LEFT JOIN diagnosticos d ON e.id_expediente = d.id_expediente
+      WHERE e.id_expediente = ?
+    `,
+      [id]
+    );
+
+    res.json(expediente[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al obtener expediente', error: error.message });
+  }
 });
 
-// Ruta para llenar el formulario de usuario para editar los datos...
-router.post('/cargar_presentacion', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	let dato_busqueda = req.body.cod_presentacion;
-	await pool.query(
-		`SELECT * FROM presentaciones WHERE cod_presentacion = ?`,
-		[dato_busqueda],
-		async (error, rows, fields) => {
-			res.json(rows);
-		}
-	);
-});
+// Ruta para editar el expediente en las 7 tablas...
+router.post('/editar', async (req, res) => {
+  const data = req.body;
+  const { id_expediente } = data;
 
-// Ruta para editar presentaciones
-router.post('/editar_presentacion', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res, next) => {
-	let cod_presentacion = req.body.cod;
-	let name_presentacion = req.body.nombre_presentacion;
-	let cant_presentacion = req.body.cantid_presentacion;
+  try {
+    // Obtener IDs relacionados
+    const expedienteRow = await pool.query('SELECT id_propietario, id_mascota FROM expediente WHERE id_expediente=?', [
+      id_expediente,
+    ]);
+    const id_propietario = expedienteRow[0].id_propietario;
+    const id_mascota = expedienteRow[0].id_mascota;
 
-	try {
-		// Verificar si el DUI ya existe en otro usuario
-		const nombreExistente = await pool.query(
-			'SELECT cod_presentacion FROM presentaciones WHERE detalle_presentacion = ? AND cod_presentacion != ?',
-			[name_presentacion, cod_presentacion]
-		);
+    // 1. Actualizar expediente
+    await pool.query('UPDATE expediente SET fecha=?, dui=?, motivo_consulta=? WHERE id_expediente=?', [
+      data.fecha,
+      data.dui,
+      data.motivo_consulta,
+      id_expediente,
+    ]);
 
-		if (nombreExistente.length > 0) {
-			// Ya existe otro usuario con ese DUI
-			return res.json({ mensaje: 'El nombre ya esta registrado en otra presentación.' });
-		}
+    // 2. Actualizar propietario
+    await pool.query('UPDATE propietarios SET nombre=?, direccion=?, correo=?, telefono=?, celular=? WHERE id=?', [
+      data.propietario,
+      data.direccion,
+      data.correo,
+      data.telefono,
+      data.celular,
+      id_propietario,
+    ]);
 
-		// Si no hay conflicto, actualizamos
-		await pool.query(
-			'UPDATE presentaciones SET detalle_presentacion = ?, cantidad_presentacion = ? WHERE cod_presentacion = ?',
-			[name_presentacion, cant_presentacion, cod_presentacion]
-		);
+    // 3. Actualizar mascota
+    await pool.query(
+      'UPDATE mascotas SET nombre=?, especie=?, raza=?, edad=?, sexo=?, peso=?, color=?, senias=? WHERE id=?',
+      [data.paciente, data.especie, data.raza, data.edad, data.sexo, data.peso, data.color, data.senias, id_mascota]
+    );
 
-		res.json({ mensaje: 'Presentación actualizada con exito.' });
-	} catch (error) {
-		console.error('Error al editar usuario:', error);
-		res.json({ mensaje: 'Error al editar usuario.' });
-	}
-});
+    // 4. Actualizar info adicional
+    await pool.query(
+      `UPDATE info_adicional SET vacuna_quintuple=?, vacuna_triple_felina=?, vacuna_rabia=?, vacuna_parvovirus=?, vacuna_leucemia=?, vacuna_bordetella=?, vacuna_giardia=?, vacuna_otra=?, desparasitacion_fecha=?, desparasitacion_medicamento=?, control_garrapatas_medicamento=?, tiempo_con_mascota=?, otras_mascotas=?, habitat=?, acceso_calle=?, contacto_enfermos=?, enfermedades_anteriores=?, dieta=?, sintomas=?, observaciones=?, medicamentos_casa=? 
+       WHERE id_expediente=?`,
+      [
+        data.vacuna_quintuple,
+        data.vacuna_triple_felina,
+        data.vacuna_rabia,
+        data.vacuna_parvovirus,
+        data.vacuna_leucemia,
+        data.vacuna_bordetella,
+        data.vacuna_giardia,
+        data.vacuna_otra,
+        data.desparasitacion_fecha,
+        data.desparasitacion_medicamento,
+        data.control_garrapatas_medicamento,
+        data.tiempo_con_mascota,
+        data.otras_mascotas,
+        data.habitat,
+        data.acceso_calle,
+        data.contacto_enfermos,
+        data.enfermedades_anteriores,
+        data.dieta,
+        data.sintomas,
+        data.observaciones,
+        data.medicamentos_casa,
+        id_expediente,
+      ]
+    );
 
-// Ruta para eliminar presentación.
-router.post('/eliminar_presentacion', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	const cod_presentacion = req.body.cod_presentacion;
+    // 5. Actualizar exploración
+    await pool.query(
+      'UPDATE exploracion SET tegumentario_aspecto=?, tegumentario_lesiones=?, tegumentario_alopecia=?, tegumentario_parasitos=? WHERE id_expediente=?',
+      [
+        data.tegumentario_aspecto,
+        data.tegumentario_lesiones,
+        data.tegumentario_alopecia,
+        data.tegumentario_parasitos,
+        id_expediente,
+      ]
+    );
 
-	try {
-		// Verificar si la presentación existe
-		const rows = await pool.query('SELECT COUNT(*) AS total FROM presentaciones WHERE cod_presentacion = ?', [
-			cod_presentacion,
-		]);
+    // 6. Actualizar examen físico
+    await pool.query(
+      'UPDATE examen_fisico SET fc=?, fr=?, temperatura=?, pulso=?, reflejo_pupilar=?, mucosas=?, dentadura=?, condicion_corporal=?, otras_observaciones=? WHERE id_expediente=?',
+      [
+        data.fc,
+        data.fr,
+        data.temperatura,
+        data.pulso,
+        data.reflejo_pupilar,
+        data.mucosas,
+        data.dentadura,
+        data.condicion_corporal,
+        data.otras_observaciones,
+        id_expediente,
+      ]
+    );
 
-		if (rows[0].total === 0) {
-			return res.json({ mensaje: 'Presentación no encontrada.' });
-		} else {
-			// Eliminar la presentación
-			await pool.query('DELETE FROM presentaciones WHERE cod_presentacion = ?', [cod_presentacion]);
-			res.json({ mensaje: 'Presentación eliminada con exito.' });
-		}
-	} catch (error) {
-		console.error('Error al eliminar la presentación:', error);
-		res.json({ mensaje: 'Error al eliminar la presentación.' });
-	}
+    // 7. Actualizar diagnósticos
+    await pool.query('UPDATE diagnosticos SET dx_presuntivo=?, dx_diferencial=? WHERE id_expediente=?', [
+      data.dx_presuntivo,
+      data.dx_diferencial,
+      id_expediente,
+    ]);
+
+    res.json({ mensaje: 'Expediente actualizado correctamente' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al actualizar expediente', error: error.message });
+  }
 });
 
 /* -------------------------------------------------------------------------- */

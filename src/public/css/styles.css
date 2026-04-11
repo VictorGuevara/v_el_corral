@@ -979,13 +979,11 @@ td.fecha_prod_file {
   grid-gap: 1%;
 }
 
-
-.vista_tabla_form_5047 {
+.vista_tabla_form_4750 {
   display: grid;
-  grid-template-columns: 50% 47%;
+  grid-template-columns: 47% 50%;
   grid-gap: 1%;
 }
-
 
 .content_search_datos {
   display: grid;
@@ -1039,6 +1037,12 @@ button.btn_reporte:hover {
   grid-gap: 1%;
 }
 
+.input_grup_4 {
+  display: grid;
+  grid-template-columns: 25% 25% 25% 24%;
+  grid-gap: 1%;
+}
+
 .form .input_grup {
   margin-bottom: 15px;
 }
@@ -1048,7 +1052,7 @@ button.btn_reporte:hover {
   font-size: 12px;
 }
 
-.form .input_grup input, 
+.form .input_grup input,
 .form .input_grup textarea {
   width: 100%;
   padding: 10px;

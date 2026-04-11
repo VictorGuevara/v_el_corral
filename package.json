@@ -28,6 +28,7 @@
     "moment": "^2.30.1",
     "morgan": "^1.10.1",
     "mysql": "^2.18.1",
+    "mysql2": "^3.22.0",
     "officegen": "^0.6.5",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
