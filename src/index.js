@@ -65,7 +65,7 @@ app.use('/admin', require('./routes/admin.routes'));
 app.use('/menu', require('./routes/menu.routes'));
 app.use('/usuarios', require('./routes/usuarios.routes'));
 app.use('/expedientes', require('./routes/expedientes.routes'));
-app.use('/citas', require('./routes/citas.routes'));
+app.use('/reg_citas', require('./routes/citas.routes'));
 app.use('/notificar_citas', require('./routes/notificar_citas.routes'));
 
 // Public

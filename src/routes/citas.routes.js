@@ -1,30 +1,49 @@
 /* -------------------------------------------------------------------------- */
+/*                                                                            */
+/*                                                                            */
 /*                               IMPORTACIONES                                */
+/*                                                                            */
+/*                                                                            */
 /* -------------------------------------------------------------------------- */
 
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
-const path = require('path');
 const pool = require('../database');
 const { isLoggedIn, authCiudad } = require('../lib/auth');
 
 /* -------------------------------------------------------------------------- */
+/*                                                                            */
+/*                                                                            */
 /*                                   RUTAS                                    */
+/*                                                                            */
+/*                                                                            */
 /* -------------------------------------------------------------------------- */
 
-// Ruta de renderizar la vista de compras.
-router.get('/', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	// Renderizamos la vista de compras...
-	await res.render('admin/presentaciones');
+/* -------------------------------------------------------------------------- */
+/*                               RUTAS DE VISTAS                              */
+/* -------------------------------------------------------------------------- */
+
+// Ruta de ventas.
+router.get('/', isLoggedIn, async (req, res) => {
+	await res.render('admin/calendario');
 });
 
-// Consultamos cuantos regitros existen en la tabla de presentaciones.
-router.post('/count_presentaciones', isLoggedIn, async (req, res) => {
-	await pool.query('SELECT COUNT(*) AS cant_presentacion FROM presentaciones', (error, rows, fields) => {
+/* -------------------------------------------------------------------------- */
+/*                                   PROFILES                                 */
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/*                                    CITAS                                   */
+/* -------------------------------------------------------------------------- */
+
+// Consultamos cuantos regitros existen en la tabla de citas...
+router.post('/count_citas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+	await pool.query('SELECT COUNT(*) AS total_citas FROM citas', (error, rows, fields) => {
 		if (!error) {
 			// Si no existe error, devolvemos la cantidad del contador.
-			res.json({ cant_presentacion: rows[0]['cant_presentacion'] });
+			res.json({ cant_citas: rows[0]['total_citas'] });
+		} else if (error == null) {
+			res.json({ cant_citas: 0 });
 		} else {
 			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
 			console.log(error);
@@ -32,146 +51,247 @@ router.post('/count_presentaciones', isLoggedIn, async (req, res) => {
 	});
 });
 
-// Ruta para guardar presentaciones.
-router.post('/g_presentaciones', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	try {
-		// Creamos el array de los datos enviador por el usuario.
-		const [cod, nombre, cantidad, fecha, usuario] = req.body;
+// Guardamos las citas y opcionalmente en expediente_historial
+// Guardamos las citas y opcionalmente en expediente_historial
+// Guardamos las citas, historial y notificación
+router.post('/g_citas', (req, res) => {
+	const {
+		cod_cita,
+		dia_cita,
+		mes_cita,
+		anio_cita,
+		ncl_cita,
+		hora_inicio,
+		hora_fin,
+		fecha_regis,
+		user_regist,
+		tipo_evento,
+		descripcion,
+		id_expediente,
+		telefono_cliente, // nuevo campo en el formulario
+	} = req.body;
 
-		console.log(nombre);
-
-		// Verificar si ya existe una presentación con el mismo nombre
-		const existe = await pool.query(`SELECT COUNT(*) AS total FROM presentaciones WHERE detalle_presentacion = ?`, [
-			nombre,
-		]);
-
-		// Validamos.
-		if (existe.total > 0) {
-			return res.json({ mensaje: 'Presentación registrada' });
+	pool.getConnection((err, conn) => {
+		if (err) {
+			console.error('Error al obtener conexión:', err);
+			return res.status(500).json({ mensaje: 'Error de conexión' });
 		}
 
-		// Insertar nueva presentación
-		await pool.query(
-			`INSERT INTO presentaciones (cod_presentacion, detalle_presentacion, cantidad_presentacion, fecha_registro, user_registro)
-             VALUES (?, ?, ?, ?, ?)`,
-			[cod, nombre, cantidad, fecha, usuario]
-		);
+		conn.beginTransaction((err) => {
+			if (err) {
+				conn.release();
+				return res.status(500).json({ mensaje: 'Error al iniciar transacción' });
+			}
 
-		res.json({ mensaje: 'Presentación guardada con exito.' });
-	} catch (error) {
-		console.error('Error al guardar presentación:', error);
-		res.status(500).json({ mensaje: 'Error interno al guardar presentación.' });
-	}
+			// 1. Insertar en citas
+			conn.query(
+				`INSERT INTO citas 
+         (codigo_citas, dia_cita, mes_cita, anio_cita, nombre_cliente, hora_inicio, hora_fin, fecha_registro, user_registro) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+				[cod_cita, dia_cita, mes_cita, anio_cita, ncl_cita, hora_inicio, hora_fin, fecha_regis, user_regist],
+				(err, result) => {
+					if (err) {
+						return conn.rollback(() => {
+							conn.release();
+							console.error('Error al guardar cita:', err);
+							res.status(500).json({ mensaje: 'Error al guardar cita', error: err.message });
+						});
+					}
+
+					// 2. Insertar en expediente_historial si corresponde
+					const insertHistorial = (callback) => {
+						if (id_expediente && tipo_evento && tipo_evento !== 'simple') {
+							conn.query(
+								`INSERT INTO expediente_historial 
+                 (id_expediente, codigo_cita, tipo_evento, descripcion, fecha_evento, user_registro) 
+                 VALUES (?, ?, ?, ?, ?, ?)`,
+								[id_expediente, cod_cita, tipo_evento, descripcion, fecha_regis, user_regist],
+								(err2) => {
+									if (err2) {
+										return conn.rollback(() => {
+											conn.release();
+											console.error('Error al guardar historial:', err2);
+											res.status(500).json({ mensaje: 'Error al guardar historial', error: err2.message });
+										});
+									}
+									callback();
+								}
+							);
+						} else {
+							callback();
+						}
+					};
+
+					// 3. Insertar en notificaciones
+					insertHistorial(() => {
+						conn.query(
+							`INSERT INTO notificaciones 
+               (id_cita, telefono_cliente, mensaje, fecha_programada, user_registro) 
+               VALUES (?, ?, ?, ?, ?)`,
+							[
+								result.insertId, // id_cita recién creado
+								telefono_cliente,
+								`Hola ${ncl_cita}, le recordamos su cita el ${dia_cita}/${mes_cita}/${anio_cita} a las ${hora_inicio}.`,
+								fecha_regis,
+								user_regist,
+							],
+							(err3) => {
+								if (err3) {
+									return conn.rollback(() => {
+										conn.release();
+										console.error('Error al guardar notificación:', err3);
+										res.status(500).json({ mensaje: 'Error al guardar notificación', error: err3.message });
+									});
+								}
+
+								// Commit final
+								conn.commit((errCommit) => {
+									conn.release();
+									if (errCommit) {
+										console.error('Error al hacer commit:', errCommit);
+										return res.status(500).json({ mensaje: 'Error al confirmar transacción' });
+									}
+									res.json({ mensaje: 'Se guardó la cita correctamente.' });
+								});
+							}
+						);
+					});
+				}
+			);
+		});
+	});
 });
 
-// Ruta para listar las presentaciones...
-router.post('/list_presentaciones', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	let dato_busqueda = '%' + req.body.nombre_presentacion + '%';
-	const pagina = parseInt(req.body.page);
-	const limite = parseInt(req.body.limit);
-	const desfase = (pagina - 1) * limite;
+// Consultamos cuantos regitros existen en la tabla de productos...
+router.post('/citas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+	let dia_cita = req.body.dia_cita;
+	let mes_cita = req.body.mes_cita;
+	let anio_cita = req.body.anio_cita;
+	let array_one = [];
+	let array_tow = [];
+	let filas_one = 0;
+	let filas_tow = 0;
+	let filas_tree = 0;
 
-	try {
-		let totalQuery = '';
-		let dataQuery = '';
-		let paramsTotal = [];
-		let paramsData = [];
-
-		if (req.body.nombre_presentacion.trim() === '') {
-			// Sin búsqueda
-			totalQuery = `SELECT COUNT(*) AS total FROM presentaciones`;
-			dataQuery = `SELECT * FROM presentaciones ORDER BY detalle_presentacion ASC LIMIT ? OFFSET ?`;
-			paramsData = [limite, desfase];
-		} else {
-			// Con búsqueda
-			totalQuery = `SELECT COUNT(*) AS total FROM presentaciones WHERE detalle_presentacion LIKE ?`;
-			dataQuery = `SELECT * FROM presentaciones WHERE detalle_presentacion LIKE ? ORDER BY detalle_presentacion ASC LIMIT ? OFFSET ?`;
-			paramsTotal = [dato_busqueda];
-			paramsData = [dato_busqueda, limite, desfase];
-		}
-
-		// Obtener total de filas
-		const totalRows = await pool.query(totalQuery, paramsTotal);
-		const cant_filas = totalRows[0].total;
-
-		// Obtener datos paginados
-		const datos = await pool.query(dataQuery, paramsData);
-
-		// Enviar respuesta
-		res.json([datos, cant_filas, desfase]);
-	} catch (error) {
-		console.error('Error en paginación:', error);
-		res.status(500).json({ error: 'Error al obtener presentaciones' });
-	}
-});
-
-// Ruta para llenar el formulario de usuario para editar los datos...
-router.post('/cargar_presentacion', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	let dato_busqueda = req.body.cod_presentacion;
 	await pool.query(
-		`SELECT * FROM presentaciones WHERE cod_presentacion = ?`,
-		[dato_busqueda],
-		async (error, rows, fields) => {
-			res.json(rows);
+		'SELECT codigo_citas, dia_cita, mes_cita, anio_cita FROM citas WHERE dia_cita = ? AND mes_cita = ? AND anio_cita = ?',
+		[dia_cita, mes_cita, anio_cita],
+		async (error, rows) => {
+			if (!error && rows.length > 0) {
+				const filas_one = rows;
+				const count = rows.length;
+
+				await pool.query(
+					'SELECT nombre_cliente, hora_inicio, hora_fin FROM citas WHERE dia_cita = ? AND mes_cita = ? AND anio_cita = ?',
+					[dia_cita, mes_cita, anio_cita],
+					(error, rows) => {
+						if (!error) {
+							let array_tow = [];
+							for (let index = 0; index < count; index++) {
+								filas_tow = {
+									title: rows[index].nombre_cliente,
+									hora_inicio: rows[index].hora_inicio,
+									hora_fin: rows[index].hora_fin,
+								};
+
+								array_tow.push(filas_tow);
+							}
+
+							let filas_tree = {
+								cod_cita: filas_one[0].codigo_citas,
+								day: filas_one[0].dia_cita,
+								month: filas_one[0].mes_cita,
+								year: filas_one[0].anio_cita,
+								events: array_tow,
+							};
+
+							res.json({ array_one: [filas_tree] });
+						} else {
+							console.log(error);
+						}
+					}
+				);
+			}
 		}
 	);
 });
 
-// Ruta para editar presentaciones
-router.post('/editar_presentacion', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res, next) => {
-	let cod_presentacion = req.body.cod;
-	let name_presentacion = req.body.nombre_presentacion;
-	let cant_presentacion = req.body.cantid_presentacion;
+// Ruta para eliminar citas.
+router.delete('/delete_cita', isLoggedIn, async (req, res, next) => {
+	let cod_cita = req.body.cod_cita;
+	let dia = req.body.dia;
+	let mes = req.body.mes;
+	let anio = req.body.anio;
 
-	try {
-		// Verificar si el DUI ya existe en otro usuario
-		const nombreExistente = await pool.query(
-			'SELECT cod_presentacion FROM presentaciones WHERE detalle_presentacion = ? AND cod_presentacion != ?',
-			[name_presentacion, cod_presentacion]
-		);
-
-		if (nombreExistente.length > 0) {
-			// Ya existe otro usuario con ese DUI
-			return res.json({ mensaje: 'El nombre ya esta registrado en otra presentación.' });
+	await pool.query(
+		'DELETE FROM citas WHERE codigo_citas = ? AND dia_cita = ? AND mes_cita = ? AND anio_cita = ?',
+		[cod_cita, dia, mes, anio],
+		(error) => {
+			if (!error) {
+				res.json({ mensaje: 'Cita eliminada con exito.' });
+			} else {
+				console.log(error);
+				res.json({ mensaje: error });
+			}
 		}
-
-		// Si no hay conflicto, actualizamos
-		await pool.query(
-			'UPDATE presentaciones SET detalle_presentacion = ?, cantidad_presentacion = ? WHERE cod_presentacion = ?',
-			[name_presentacion, cant_presentacion, cod_presentacion]
-		);
-
-		res.json({ mensaje: 'Presentación actualizada con exito.' });
-	} catch (error) {
-		console.error('Error al editar usuario:', error);
-		res.json({ mensaje: 'Error al editar usuario.' });
-	}
+	);
 });
 
-// Ruta para eliminar presentación.
-router.post('/eliminar_presentacion', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	const cod_presentacion = req.body.cod_presentacion;
-
+// Buscar expediente por DUI
+router.post('/buscar_expediente', async (req, res) => {
 	try {
-		// Verificar si la presentación existe
-		const rows = await pool.query('SELECT COUNT(*) AS total FROM presentaciones WHERE cod_presentacion = ?', [
-			cod_presentacion,
-		]);
+		const { dui } = req.body;
+		if (!dui) return res.status(400).json({ error: 'DUI requerido' });
 
-		if (rows[0].total === 0) {
-			return res.json({ mensaje: 'Presentación no encontrada.' });
+		const rows = await pool.query(
+			'SELECT id_expediente, telefono FROM expediente e JOIN propietarios p ON e.id_propietario = p.id WHERE e.dui = ?',
+			[dui]
+		);
+
+		if (rows.length > 0) {
+			res.json({ id_expediente: rows[0].id_expediente, telefono: rows[0].telefono });
 		} else {
-			// Eliminar la presentación
-			await pool.query('DELETE FROM presentaciones WHERE cod_presentacion = ?', [cod_presentacion]);
-			res.json({ mensaje: 'Presentación eliminada con exito.' });
+			res.json({ id_expediente: null, telefono: null });
 		}
 	} catch (error) {
-		console.error('Error al eliminar la presentación:', error);
-		res.json({ mensaje: 'Error al eliminar la presentación.' });
+		console.error(error);
+		res.status(500).json({ error: 'Error al buscar expediente' });
 	}
 });
 
 /* -------------------------------------------------------------------------- */
+/*                                   VENTAS                                 */
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/*                                  PRODUCTOS                                 */
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/*                                   CREDITOS                                 */
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/*                                   SALDOS                                 */
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/*                                   INVENTARIO                                 */
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/*                                    kARDEX                                  */
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/*                                   USUARIOS                                 */
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/*                                                                            */
+/*                                                                            */
 /*                               EXPORTACIONES                                */
+/*                                                                            */
+/*                                                                            */
 /* -------------------------------------------------------------------------- */
 module.exports = router;

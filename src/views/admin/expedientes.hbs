@@ -9,168 +9,347 @@
       <div class='formularios'>
         <form id='form_expediente' class='form'>
 
-        <!-- 1. Expediente -->
-        <h2>Expediente</h2>
-        <div class="input_grup_2">
-          <div class='input_grup'><label>Fecha:</label><input type='date' name='fecha' id="fecha"></div>
-          <div class='input_grup'><label>DUI:</label><input type='number' name='dui'></div>
-        </div>
-        <div class='input_grup'><label>Motivo de consulta:</label><textarea name='motivo_consulta'></textarea></div>
+          <!-- 1. Expediente -->
+          <h2>Expediente</h2>
+          <div class='input_grup_2'>
+            <div class='input_grup'><label>Fecha:</label><input type='date' name='fecha' id='fecha' /></div>
+            <div class='input_grup'><label>DUI:</label><input type='number' name='dui' /></div>
+          </div>
+          <div class='input_grup'><label>Motivo de consulta:</label><textarea name='motivo_consulta'></textarea></div>
 
-        <!-- 2. Datos del Paciente -->
-        <h2>Datos del Paciente</h2>
-        <div class="input_grup_2">
-          <div class='input_grup'><label>Paciente:</label><input type='text' name='paciente'></div>
-          <div class='input_grup'><label>Especie:</label><input type='text' name='especie'></div>
-        </div>
-        <div class="input_grup_2">
-          <div class='input_grup'><label>Raza:</label><input type='text' name='raza'></div>
-          <div class='input_grup'><label>Edad:</label><input type='number' name='edad'></div>
-        </div>
-        <div class="input_grup_3">
-          <div class='input_grup'><label>Sexo:</label><input type='text' name='sexo'></div>
-          <div class='input_grup'><label>Peso:</label><input type='number' step='0.1' name='peso'></div>
-          <div class='input_grup'><label>Color:</label><input type='text' name='color'></div>
-        </div>
-        <div class='input_grup'><label>Señas:</label><textarea name='senias'></textarea></div>
+          <!-- 2. Datos del Paciente -->
+          <h2>Datos del Paciente</h2>
+          <div class='input_grup_2'>
+            <div class='input_grup'><label>Paciente:</label><input type='text' name='paciente' /></div>
+            <div class='input_grup'><label>Especie:</label><input type='text' name='especie' /></div>
+          </div>
+          <div class='input_grup_2'>
+            <div class='input_grup'><label>Raza:</label><input type='text' name='raza' /></div>
+            <div class='input_grup'><label>Edad:</label><input type='number' name='edad' /></div>
+          </div>
+          <div class='input_grup_3'>
+            <div class='input_grup'><label>Sexo:</label><input type='text' name='sexo' /></div>
+            <div class='input_grup'><label>Peso:</label><input type='number' step='0.1' name='peso' /></div>
+            <div class='input_grup'><label>Color:</label><input type='text' name='color' /></div>
+          </div>
+          <div class='input_grup'><label>Señas:</label><textarea name='senias'></textarea></div>
 
-        <!-- 3. Datos del Propietario -->
-        <h2>Datos del Propietario</h2>
-        <div class='input_grup_2'>
-        <div class='input_grup'><label>Propietario:</label><input type='text' name='propietario'></div>
-        <div class='input_grup'><label>Correo:</label><input type='email' name='correo'></div>
-        </div>
-        <div class='input_grup'><label>Dirección:</label><input type='text' name='direccion'></div>
-        <div class="input_grup_2">
-          <div class='input_grup'><label>Teléfono:</label><input type='text' name='telefono'></div>
-          <div class='input_grup'><label>Celular:</label><input type='text' name='celular'></div>
+          <!-- 3. Datos del Propietario -->
+          <h2>Datos del Propietario</h2>
+          <div class='input_grup_2'>
+            <div class='input_grup'><label>Propietario:</label><input type='text' name='propietario' /></div>
+            <div class='input_grup'><label>Correo:</label><input type='email' name='correo' /></div>
+          </div>
+          <div class='input_grup'><label>Dirección:</label><input type='text' name='direccion' /></div>
+          <div class='input_grup_2'>
+            <div class='input_grup'><label>Teléfono:</label><input type='text' name='telefono' /></div>
+            <div class='input_grup'><label>Celular:</label><input type='text' name='celular' /></div>
+          </div>
+
+          <!-- 4. Información Adicional -->
+          <h2>Información Adicional - VACUNAS</h2>
+          <div class='input_grup_4'>
+            <div class='input_grup'>
+              <label for='vacuna_quintuple'>Quintuple: </label><input type='checkbox' name='vacuna_quintuple' />
+            </div>
+            <div class='input_grup'>
+              <label for='vacuna_triple_felina'>Triple Felina: </label><input
+                type='checkbox'
+                name='vacuna_triple_felina'
+              />
+            </div>
+            <div class='input_grup'>
+              <label for='vacuna_rabia'>Rabia: </label><input type='checkbox' name='vacuna_rabia' />
+            </div>
+            <div class='input_grup'>
+              <label for='vacuna_parvovirus'>Parvovirus: </label><input type='checkbox' name='vacuna_parvovirus' />
+            </div>
+          </div>
+          <div class='input_grup_4'>
+            <div class='input_grup'>
+              <label for='vacuna_leucemia'>Leucemia: </label><input type='checkbox' name='vacuna_leucemia' />
+            </div>
+            <div class='input_grup'>
+
+              <label for='vacuna_bordetella'>Bordetella: </label><input type='checkbox' name='vacuna_bordetella' />
+            </div>
+            <div class='input_grup'>
+
+              <label for='vacuna_giardia'>Giardia: </label><input type='checkbox' name='vacuna_giardia' />
+            </div>
+          </div>
+          <div class='input_grup'>
+            <label>Otra - Expecificar:</label>
+            <input type='text' name='vacuna_otra' placeholder='Expecificar:' />
+          </div>
+          <div class='input_grup_2'>
+            <div class='input_grup'>
+              <label>Desparasitación:</label>
+              <input type='date' name='desparasitacion_fecha' />
+            </div>
+            <div class='input_grup'>
+              <label>Control de garrapatas:</label>
+              <input type='text' name='control_garrapatas_medicamento' />
+            </div>
+          </div>
+          <div class='input_grup_2'>
+            <div class='input_grup'>
+              <label for='desparasitacion_medicamento'>Medicamento:</label>
+              <input type='text' name='desparasitacion_medicamento' />
+            </div>
+            <div class='input_grup'>
+              <label>Tiempo con mascota:</label>
+              <input type='text' name='tiempo_con_mascota' />
+            </div>
+          </div>
+          <div class='input_grup_2'>
+            <div class='input_grup'><label>Otras mascotas:</label><input type='checkbox' name='otras_mascotas' /></div>
+            <div class='input_grup'><label>Hábitat:</label><input type='text' name='habitat' /></div>
+          </div>
+          <div class='input_grup_2'>
+            <div class='input_grup'><label>Acceso a la calle:</label><input type='checkbox' name='acceso_calle' /></div>
+            <div class='input_grup'><label>Contacto con enfermos:</label><input
+                type='checkbox'
+                name='contacto_enfermos'
+              /></div>
+          </div>
+          <div class='input_grup_2'>
+            <div class='input_grup'><label>Enfermedades anteriores:</label><textarea
+                name='enfermedades_anteriores'
+              ></textarea></div>
+            <div class='input_grup'><label>Dieta alimenticia:</label><textarea name='dieta'></textarea></div>
+          </div>
+          <div class='input_grup_2'>
+            <div class='input_grup'><label>Síntomas:</label><textarea name='sintomas'></textarea></div>
+            <div class='input_grup'><label>Observaciones:</label><textarea name='observaciones'></textarea></div>
+          </div>
+          <div class='input_grup'><label>Medicamentos en casa:</label><textarea
+              name='medicamentos_casa'
+            ></textarea></div>
+
+          <!-- 5. Exploración -->
+          <h2>Exploración Física</h2>
+          <div class='input_grup_2'>
+            <div class='input_grup'>
+              <label for='tegumentario_lesiones'>Tegumentario Leciones</label><input
+                type='checkbox'
+                name='tegumentario_lesiones'
+              />
+            </div>
+            <div class='input_grup'>
+              <label for='tegumentario_lesiones'>Tegumentario Alopecia</label><input
+                type='checkbox'
+                name='tegumentario_alopecia'
+              />
+            </div>
+          </div>
+          <div class='input_grup_2'>
+            <div class='input_grup'>
+              <label for='tegumentario_lesiones'>Tegumentario Parásitos</label><input
+                type='checkbox'
+                name='tegumentario_parasitos'
+              />
+            </div>
+            <div class='input_grup'>
+              <label for='tegumentario_lesiones'>Tegumentario Aspecto</label>
+              <input type='text' name='tegumentario_aspecto' />
+            </div>
+          </div>
+          <!-- Aquí seguirían los demás sistemas: músculo, digestivo, respiratorio, cardiovascular, urogenital, nervioso, ojos, oídos -->
+
+          <!-- 6. Examen Físico -->
+          <h2>Examen Físico</h2>
+          <div class='input_grup_2'>
+            <div class='input_grup'><label>FC:</label><input type='text' name='fc' /></div>
+            <div class='input_grup'><label>FR:</label><input type='text' name='fr' /></div>
+          </div>
+          <div class='input_grup_2'>
+            <div class='input_grup'><label>Temperatura:</label><input
+                type='number'
+                step='0.1'
+                name='temperatura'
+              /></div>
+            <div class='input_grup'><label>Pulso:</label><input type='text' name='pulso' /></div>
+          </div>
+          <div class='input_grup_2'>
+            <div class='input_grup'><label>Reflejo pupilar:</label><input type='text' name='reflejo_pupilar' /></div>
+            <div class='input_grup'><label>Mucosas:</label><input type='text' name='mucosas' /></div>
+          </div>
+          <div class='input_grup_2'>
+            <div class='input_grup'><label>Dentadura:</label><input type='text' name='dentadura' /></div>
+            <div class='input_grup'><label>Condición corporal:</label><input
+                type='text'
+                name='condicion_corporal'
+              /></div>
+          </div>
+          <div class='input_grup'><label>Otras observaciones:</label><textarea
+              name='otras_observaciones'
+            ></textarea></div>
+
+          <!-- 7. Diagnósticos -->
+          <h2>Diagnósticos</h2>
+          <div class='input_grup_2'>
+            <div class='input_grup'><label>Dx Presuntivo:</label><textarea name='dx_presuntivo'></textarea></div>
+            <div class='input_grup'><label>Dx Diferencial:</label><textarea name='dx_diferencial'></textarea></div>
+          </div>
+
+          <div class='input_grup'>
+            <input type='submit' id='btn_guardar_expediente' value='Guardar Expediente' />
+            <input type='submit' id='btn_editar_expediente' value='Editar Expediente' />
+            <input type='submit' id='btn_cancelar_edicion' value='Cancelar Edición' />
+          </div>
+        </form>
+
+        <div id='form_agregar' style='display:none;'>
+          <form class='form'>
+            <h1>Agregar Examenes Al Expediente</h1>
+
+            <!-- Exámenes -->
+            <h4>Exámen 1:</h4>
+            <div class='examen'>
+              <div class='input_grup_2'>
+                <div class='input_grup'>
+                  <label for='nombre_examen_1'>Nombre del examen:</label>
+                  <input type='text' name='nombre_examen_1' placeholder='Nombre de examen a realizar' />
+                </div>
+                <div class='input_grup'>
+                  <label for='fecha_examen_1'>Fecha:</label>
+                  <input type='date' name='fecha_examen_1' />
+                </div>
+              </div>
+              <div class='input_grup'>
+                <label for='resultado_1'>Resultado:</label>
+                <textarea name='resultado_1' placeholder='Resultado del examen'></textarea>
+              </div>
+            </div>
+            <hr />
+            <br />
+            <h4>Exámen 2:</h4>
+            <div class='examen'>
+              <div class='input_grup_2'>
+
+                <div class='input_grup'>
+                  <label for='nombre_examen_2'>Nombre del examen:</label>
+                  <input type='text' name='nombre_examen_2' placeholder='Nombre de examen a realizar' />
+                </div>
+                <div class='input_grup'>
+                  <label for='fecha_examen_2'>Fecha:</label>
+                  <input type='date' name='fecha_examen_2' />
+                </div>
+              </div>
+              <div class='input_grup'>
+                <label for='resultado_2'>Resultado:</label>
+                <textarea name='resultado_2' placeholder='Resultado del examen'></textarea>
+              </div>
+            </div>
+            <hr />
+            <br />
+            <h4>Exámen 3:</h4>
+            <div class='examen'>
+              <div class='input_grup_2'>
+
+                <div class='input_grup'>
+                  <label for='nombre_examen_3'>Nombre del examen:</label>
+                  <input type='text' name='nombre_examen_3' placeholder='Nombre de examen a realizar' />
+                </div>
+                <div class='input_grup'>
+                  <label for='fecha_examen_3'>Fecha:</label>
+                  <input type='date' name='fecha_examen_3' />
+                </div>
+              </div>
+              <div class='input_grup'>
+                <label for='resultado_3'>Resultado:</label>
+                <textarea name='resultado_3' placeholder='Resultado del examen'></textarea>
+              </div>
+            </div>
+
+            <!-- Medicamentos -->
+            <h1>Agregar Medicamentos o Recetas Al Expediente</h1>
+            <!-- Medicamentos 1 -->
+            <h4>Medicamentos 1:</h4>
+            <div class='medicamento'>
+              <div class='input_grup_2'>
+                <div class='input_grup'><label>Medicamento:</label><input
+                    type='text'
+                    name='nombre_medicamento_1'
+                  /></div>
+                <div class='input_grup'><label>Dosis:</label><input type='text' name='dosis_1' /></div>
+              </div>
+              <div class='input_grup_3'>
+                <div class='input_grup'><label>Frecuencia:</label><input type='text' name='frecuencia_1' /></div>
+                <div class='input_grup'><label>Duración:</label><input type='text' name='duracion_1' /></div>
+                <div class='input_grup'><label>Vía de administración:</label><input
+                    type='text'
+                    name='via_administracion_1'
+                  /></div>
+              </div>
+              <div class='input_grup_2'>
+                <div class='input_grup'><label>Fecha inicio:</label><input type='date' name='fecha_inicio_1' /></div>
+                <div class='input_grup'><label>Fecha fin:</label><input type='date' name='fecha_fin_1' /></div>
+              </div>
+              <div class='input_grup'><label>Observaciones:</label><textarea name='observaciones_1'></textarea></div>
+            </div>
+            <hr />
+            <br />
+
+            <!-- Medicamentos 2 -->
+            <h4>Medicamentos 2:</h4>
+            <div class='medicamento'>
+              <div class='input_grup_2'>
+                <div class='input_grup'><label>Medicamento:</label><input
+                    type='text'
+                    name='nombre_medicamento_2'
+                  /></div>
+                <div class='input_grup'><label>Dosis:</label><input type='text' name='dosis_2' /></div>
+              </div>
+              <div class='input_grup_3'>
+                <div class='input_grup'><label>Frecuencia:</label><input type='text' name='frecuencia_2' /></div>
+                <div class='input_grup'><label>Duración:</label><input type='text' name='duracion_2' /></div>
+                <div class='input_grup'><label>Vía de administración:</label><input
+                    type='text'
+                    name='via_administracion_2'
+                  /></div>
+              </div>
+              <div class='input_grup_2'>
+                <div class='input_grup'><label>Fecha inicio:</label><input type='date' name='fecha_inicio_2' /></div>
+                <div class='input_grup'><label>Fecha fin:</label><input type='date' name='fecha_fin_2' /></div>
+              </div>
+              <div class='input_grup'><label>Observaciones:</label><textarea name='observaciones_2'></textarea></div>
+            </div>
+            <hr />
+            <br />
+
+            <!-- Medicamentos 3 -->
+            <h4>Medicamentos 3:</h4>
+            <div class='medicamento'>
+              <div class='input_grup_2'>
+                <div class='input_grup'><label>Medicamento:</label><input
+                    type='text'
+                    name='nombre_medicamento_3'
+                  /></div>
+                <div class='input_grup'><label>Dosis:</label><input type='text' name='dosis_3' /></div>
+              </div>
+              <div class='input_grup_3'>
+                <div class='input_grup'><label>Frecuencia:</label><input type='text' name='frecuencia_3' /></div>
+                <div class='input_grup'><label>Duración:</label><input type='text' name='duracion_3' /></div>
+                <div class='input_grup'><label>Vía de administración:</label><input
+                    type='text'
+                    name='via_administracion_3'
+                  /></div>
+              </div>
+              <div class='input_grup_2'>
+                <div class='input_grup'><label>Fecha inicio:</label><input type='date' name='fecha_inicio_3' /></div>
+                <div class='input_grup'><label>Fecha fin:</label><input type='date' name='fecha_fin_3' /></div>
+              </div>
+              <div class='input_grup'><label>Observaciones:</label><textarea name='observaciones_3'></textarea></div>
+            </div>
+            <div class='input_grup' style='text-align: center;'>
+              <button class='btn_guardar' id='btn_guardar_agregar'>Guardar</button>
+              <button class='btn_guardar' id='btn_cancelar_agregar'>Cancelar</button>
+            </div>
+          </form>
         </div>
 
-        <!-- 4. Información Adicional -->
-        <h2>Información Adicional - VACUNAS</h2>
-        <div class="input_grup_4">
-          <div class='input_grup'>
-            <label for="vacuna_quintuple">Quintuple: </label><input type='checkbox' name='vacuna_quintuple'> 
-          </div>
-          <div class='input_grup'>
-            <label for="vacuna_triple_felina">Triple Felina: </label><input type='checkbox' name='vacuna_triple_felina'>
-          </div>
-          <div class='input_grup'>
-            <label for="vacuna_rabia">Rabia: </label><input type='checkbox' name='vacuna_rabia'> 
-          </div>
-          <div class='input_grup'>
-            <label for="vacuna_parvovirus">Parvovirus: </label><input type='checkbox' name='vacuna_parvovirus'> 
-          </div>
-        </div>
-        <div class="input_grup_4">
-          <div class='input_grup'>
-            <label for="vacuna_leucemia">Leucemia: </label><input type='checkbox' name='vacuna_leucemia'>
-          </div>
-          <div class='input_grup'>
-
-          <label for="vacuna_bordetella">Bordetella: </label><input type='checkbox' name='vacuna_bordetella'>
-          </div>
-        <div class='input_grup'>
-
-          <label for="vacuna_giardia">Giardia: </label><input type='checkbox' name='vacuna_giardia'>
-          </div>
-        </div>
-        <div class='input_grup'>
-          <label>Otra - Expecificar:</label>
-          <input type='text' name='vacuna_otra' placeholder='Expecificar:'>
-        </div>
-        <div class="input_grup_2">  
-          <div class='input_grup'>
-            <label>Desparasitación:</label>
-            <input type='date' name='desparasitacion_fecha'>
-          </div>
-          <div class='input_grup'>
-            <label>Control de garrapatas:</label>
-            <input type='text' name='control_garrapatas_medicamento'>
-          </div>
-        </div>
-        <div class="input_grup_2">
-          <div class='input_grup'>
-            <label for="desparasitacion_medicamento">Medicamento:</label>
-            <input type='text' name='desparasitacion_medicamento'>
-          </div>
-          <div class='input_grup'>
-            <label>Tiempo con mascota:</label>
-            <input type='text' name='tiempo_con_mascota'>
-          </div>
-        </div>
-        <div class="input_grup_2">
-          <div class='input_grup'><label>Otras mascotas:</label><input type='checkbox' name='otras_mascotas'></div>
-          <div class='input_grup'><label>Hábitat:</label><input type='text' name='habitat'></div>
-        </div>
-        <div class="input_grup_2">
-          <div class='input_grup'><label>Acceso a la calle:</label><input type='checkbox' name='acceso_calle'></div>
-          <div class='input_grup'><label>Contacto con enfermos:</label><input type='checkbox' name='contacto_enfermos'></div>
-        </div>
-        <div class='input_grup_2'>
-        <div class='input_grup'><label>Enfermedades anteriores:</label><textarea name='enfermedades_anteriores'></textarea></div>
-        <div class='input_grup'><label>Dieta alimenticia:</label><textarea name='dieta'></textarea></div>
-        </div>
-        <div class='input_grup_2'>
-        <div class='input_grup'><label>Síntomas:</label><textarea name='sintomas'></textarea></div>
-        <div class='input_grup'><label>Observaciones:</label><textarea name='observaciones'></textarea></div>
-        </div>
-        <div class='input_grup'><label>Medicamentos en casa:</label><textarea name='medicamentos_casa'></textarea></div>
-
-        <!-- 5. Exploración -->
-        <h2>Exploración Física</h2>
-        <div class='input_grup_2'>
-          <div class='input_grup'>
-          <label for="tegumentario_lesiones">Tegumentario Leciones</label><input type='checkbox' name='tegumentario_lesiones'>
-          </div>
-          <div class='input_grup'>
-          <label for="tegumentario_lesiones">Tegumentario Alopecia</label><input type='checkbox' name='tegumentario_alopecia'>
-          </div>
-        </div>
-        <div class='input_grup_2'>
-          <div class='input_grup'>
-          <label for="tegumentario_lesiones">Tegumentario Parásitos</label><input type='checkbox' name='tegumentario_parasitos'>
-          </div>
-          <div class='input_grup'>
-            <label for="tegumentario_lesiones">Tegumentario Aspecto</label>
-            <input type='text' name='tegumentario_aspecto'>
-          </div>
-        </div>
-        <!-- Aquí seguirían los demás sistemas: músculo, digestivo, respiratorio, cardiovascular, urogenital, nervioso, ojos, oídos -->
-
-        <!-- 6. Examen Físico -->
-        <h2>Examen Físico</h2>
-        <div class='input_grup_2'>
-        <div class='input_grup'><label>FC:</label><input type='text' name='fc'></div>
-        <div class='input_grup'><label>FR:</label><input type='text' name='fr'></div>
-        </div>
-        <div class='input_grup_2'>
-        <div class='input_grup'><label>Temperatura:</label><input type='number' step='0.1' name='temperatura'></div>
-        <div class='input_grup'><label>Pulso:</label><input type='text' name='pulso'></div>
-        </div>
-        <div class='input_grup_2'>
-        <div class='input_grup'><label>Reflejo pupilar:</label><input type='text' name='reflejo_pupilar'></div>
-        <div class='input_grup'><label>Mucosas:</label><input type='text' name='mucosas'></div>
-        </div>
-        <div class='input_grup_2'>
-        <div class='input_grup'><label>Dentadura:</label><input type='text' name='dentadura'></div>
-        <div class='input_grup'><label>Condición corporal:</label><input type='text' name='condicion_corporal'></div>
-        </div>
-        <div class='input_grup'><label>Otras observaciones:</label><textarea name='otras_observaciones'></textarea></div>
-
-        <!-- 7. Diagnósticos -->
-        <h2>Diagnósticos</h2>
-        <div class='input_grup_2'>
-        <div class='input_grup'><label>Dx Presuntivo:</label><textarea name='dx_presuntivo'></textarea></div>
-        <div class='input_grup'><label>Dx Diferencial:</label><textarea name='dx_diferencial'></textarea></div>
-        </div>
-
-        <div class='input_grup'>
-          <input type='submit' id='btn_guardar_expediente' value='Guardar Expediente' />
-          <input type='submit' id='btn_editar_expediente' value='Editar Expediente' />
-          <input type='submit' id='btn_cancelar_edicion' value='Cancelar Edición' />
-        </div>
-      </form>
       </div>
       <div class='tabla_datos'>
         <div class='content_search_datos'>
@@ -189,9 +368,9 @@
                 <th>Propietario</th>
                 <th>DUI</th>
                 <th>Mascota</th>
-                <th class='center_text'><i class="fa-solid fa-box-archive"></i></th>
-                <th class='center_text'><i class="fa-solid fa-box-archive"></i></th>
-                <th class='center_text'><i class="fa-solid fa-box-archive"></i></th>
+                <th class='center_text'><i class='fa-solid fa-box-archive'></i></th>
+                <th class='center_text'><i class='fa-solid fa-box-archive'></i></th>
+                <th class='center_text'><i class='fa-solid fa-box-archive'></i></th>
               </tr>
             </thead>
             <tbody id='tableBody_expedientes'>

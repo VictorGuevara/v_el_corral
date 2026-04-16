@@ -1,0 +1,96 @@
+<div class='main_content'>
+  <main>
+    <section>
+      <h1>Citas De Clientes</h1>
+      <h3 class='ruta_system'>Administración / Calendario de citas</h3>
+    </section>
+    <br />
+    <section class='vista_tabla_form_100'>
+
+      <link rel='stylesheet' type='text/css' href='/css/styles_calendar.css' />
+
+      <div class='container'>
+        <div class='left'>
+          <div class='calendar'>
+            <div class='month'>
+              <i class='fas fa-angle-left prev'></i>
+              <div class='date'>december 2015</div>
+              <i class='fas fa-angle-right next'></i>
+            </div>
+            <div class='weekdays'>
+              <div>Domingo</div>
+              <div>Lunes</div>
+              <div>Martes</div>
+              <div>Miercoles</div>
+              <div>Jueves</div>
+              <div>Viernes</div>
+              <div>Sábado</div>
+            </div>
+            <div class='days'></div>
+            <div class='goto-today'>
+              <div class='goto'>
+                <input type='text' placeholder='mm/yyyy' class='date-input' />
+                <button class='goto-btn'>IR</button>
+              </div>
+              <button class='today-btn'>Hoy</button>
+            </div>
+          </div>
+        </div>
+        <div class='right'>
+          <div class='today-date'>
+            <div class='event-day'>wed</div>
+            <div class='event-date'>12th december 2022</div>
+          </div>
+          <div class='events'></div>
+          <div class='add-event-wrapper'>
+            <div class='add-event-header'>
+              <div class='title'>Agregar Cita</div>
+              <i class='fas fa-times close'></i>
+            </div>
+
+            <div class='add-event-body'>
+              <div class='add-event-input'>
+                <input type='text' class='event-name' placeholder='¿Nombre del cliente?' />
+              </div>
+              <div class='add-event-input'>
+                <input type='time' class='event-time-from' placeholder='¿Hora Inicio?' />
+              </div>
+              <div class='add-event-input'>
+                <input type='time' class='event-time-to' placeholder='¿Hora Final?' />
+              </div>
+
+              <!-- Select para tipo de cita -->
+              <div class='add-event-input'>
+                <select id='tipo_evento'>
+                  <option value='simple'>Solo cita (no expediente)</option>
+                  <option value='vacuna'>Vacuna</option>
+                  <option value='diagnostico'>Diagnóstico</option>
+                  <option value='tratamiento'>Tratamiento</option>
+                  <option value='baño'>Baño</option>
+                  <option value='estetica'>Estética</option>
+                </select>
+              </div>
+
+              <!-- Campos adicionales para expediente -->
+              <div id='expediente_fields' style='display:none; margin-top:10px;'>
+                <div class='add-event-input'>
+                  <input type='text' id='dui' placeholder='00000000-0' />
+                </div>
+                <!-- Campo oculto para id_expediente -->
+                <input type='hidden' id='id_expediente' />
+                <input type='hidden' id='telefono_cliente' />
+              </div>
+            </div>
+
+            <div class='add-event-footer'>
+              <button class='add-event-btn'>Agregar Cita</button>
+            </div>
+          </div>
+        </div>
+        <button class='add-event' id='add_cita'> + </button>
+      </div>
+
+    </section>
+    <datalist id='lista_proveedores'></datalist>
+  </main>
+</div>

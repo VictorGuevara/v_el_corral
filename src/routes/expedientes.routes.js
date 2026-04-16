@@ -379,6 +379,101 @@ router.post('/editar', async (req, res) => {
   }
 });
 
+router.post('/agregar_examenes', async (req, res) => {
+  const { id_expediente, nombre_examen, resultado, fecha } = req.body;
+  try {
+    await pool.query('INSERT INTO examenes (id_expediente, nombre_examen, resultado, fecha) VALUES (?, ?, ?, ?)', [
+      id_expediente,
+      nombre_examen,
+      resultado,
+      fecha,
+    ]);
+    res.json({ mensaje: 'Examen agregado correctamente' });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al agregar examen', error: error.message });
+  }
+});
+
+router.post('/agregar_medicamentos', async (req, res) => {
+  const {
+    id_expediente,
+    nombre_medicamento,
+    dosis,
+    frecuencia,
+    duracion,
+    observaciones,
+    via_administracion,
+    fecha_inicio,
+    fecha_fin,
+  } = req.body;
+
+  try {
+    await pool.query(
+      `INSERT INTO medicamentos 
+       (id_expediente, nombre_medicamento, dosis, frecuencia, duracion, observaciones, via_administracion, fecha_inicio, fecha_fin) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        id_expediente,
+        nombre_medicamento,
+        dosis,
+        frecuencia,
+        duracion,
+        observaciones,
+        via_administracion,
+        fecha_inicio,
+        fecha_fin,
+      ]
+    );
+
+    res.json({ mensaje: 'Medicamento agregado correctamente' });
+  } catch (error) {
+    console.error('Error al agregar medicamento:', error);
+    res.status(500).json({ mensaje: 'Error al agregar medicamento', error: error.message });
+  }
+});
+
+router.post('/ver_expediente', async (req, res) => {
+  const { id } = req.body;
+  try {
+    // Expediente principal
+    const [expediente] = await pool.query(
+      `SELECT e.*, 
+              p.nombre AS propietario_nombre, p.direccion, p.correo, p.telefono, p.celular,
+              m.nombre AS mascota_nombre, m.especie, m.raza, m.edad, m.sexo, m.peso, m.color, m.senias,
+              i.vacuna_quintuple, i.vacuna_triple_felina, i.vacuna_rabia, i.vacuna_parvovirus, i.vacuna_leucemia,
+              i.vacuna_bordetella, i.vacuna_giardia, i.vacuna_otra, i.desparasitacion_fecha, i.desparasitacion_medicamento,
+              i.control_garrapatas_medicamento, i.tiempo_con_mascota, i.otras_mascotas, i.habitat, i.acceso_calle,
+              i.contacto_enfermos, i.enfermedades_anteriores, i.dieta, i.sintomas, i.observaciones, i.medicamentos_casa,
+              ex.tegumentario_aspecto, ex.tegumentario_lesiones, ex.tegumentario_alopecia, ex.tegumentario_parasitos,
+              ef.fc, ef.fr, ef.temperatura, ef.pulso, ef.reflejo_pupilar, ef.mucosas, ef.dentadura, ef.condicion_corporal, ef.otras_observaciones,
+              d.dx_presuntivo, d.dx_diferencial
+       FROM expediente e
+       LEFT JOIN propietarios p ON e.id_propietario = p.id
+       LEFT JOIN mascotas m ON e.id_mascota = m.id
+       LEFT JOIN info_adicional i ON e.id_expediente = i.id_expediente
+       LEFT JOIN exploracion ex ON e.id_expediente = ex.id_expediente
+       LEFT JOIN examen_fisico ef ON e.id_expediente = ef.id_expediente
+       LEFT JOIN diagnosticos d ON e.id_expediente = d.id_expediente
+       WHERE e.id_expediente=?`,
+      [id]
+    );
+
+    // Exámenes y medicamentos
+    const examenes = await pool.query('SELECT * FROM examenes WHERE id_expediente=?', [id]);
+    const medicamentos = await pool.query('SELECT * FROM medicamentos WHERE id_expediente=?', [id]);
+    // Historial ligado
+    const historial = await pool.query(
+      'SELECT * FROM expediente_historial WHERE id_expediente=? ORDER BY fecha_evento DESC',
+      [id]
+    );
+
+    res.json({ expediente, examenes, medicamentos, historial });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al obtener expediente', error: error.message });
+  }
+});
+
 /* -------------------------------------------------------------------------- */
 /*                               EXPORTACIONES                                */
 /* -------------------------------------------------------------------------- */

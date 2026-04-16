@@ -973,6 +973,12 @@ td.fecha_prod_file {
 
 /* Seccion de tabla y formulario */
 
+.vista_tabla {
+  display: grid;
+  grid-template-columns: 98%;
+  grid-gap: 1%;
+}
+
 .vista_tabla_form {
   display: grid;
   grid-template-columns: 70% 27%;
@@ -1284,4 +1290,35 @@ article.card .badge_noVerified {
   color: var(--color_negro);
   border: 1px solid var(--text_grey);
   text-transform: uppercase;
+}
+
+.expediente-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* dos columnas */
+  gap: 20px;
+  text-align: left;
+}
+
+.expediente-section h2 {
+  color: var(--main_color);
+}
+
+.expediente-section h3 {
+  color: var(--thead_color);
+  margin-bottom: 10px;
+}
+
+.expediente-section p {
+  margin-left: 10px;
+}
+
+.expediente-section p b,
+.expediente-section ul b {
+  color: var(--text_label_form);
+}
+
+.expediente-section ul span,
+.expediente-section p span {
+  color: var(--color_celeste);
+  font-size: 15px;
 }

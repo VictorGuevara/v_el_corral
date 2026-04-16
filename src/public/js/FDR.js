@@ -184,6 +184,24 @@ const fecha_sum = (dias) => {
 	return fecha;
 };
 
+/* --------------------------------------------- */
+/* Función para formatear fechas ISO a legibles. */
+/* --------------------------------------------- */
+const formatearFecha = (fechaISO, formato = 'YYYY-MM-DD') => {
+	if (!fechaISO) return '';
+
+	const fecha = new Date(fechaISO);
+	const año = fecha.getFullYear();
+	const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+	const dia = String(fecha.getDate()).padStart(2, '0');
+
+	if (formato === 'DD/MM/YYYY') {
+		return `${dia}/${mes}/${año}`;
+	} else {
+		return `${año}-${mes}-${dia}`;
+	}
+};
+
 /* ---------------------------------------------------- */
 /* Configuración de los Toas. (Notificaciones pequeñas) */
 /* ---------------------------------------------------- */
@@ -337,39 +355,54 @@ function actualizarBotonesNumericos() {
 	}
 }
 
-// Boton de página de inicio.
-document.getElementById('btn_pag_init').addEventListener('click', () => {
-	num_pagina = 1;
-	ejecutarFuncionListado();
-});
-
 // Botón de página final.
-document.getElementById('btn_pag_final').addEventListener('click', () => {
-	num_pagina = total_paginas;
-	ejecutarFuncionListado();
-});
+const btnFinal = document.getElementById('btn_pag_final');
+if (btnFinal) {
+	btnFinal.addEventListener('click', () => {
+		num_pagina = total_paginas;
+		ejecutarFuncionListado();
+	});
+}
 
 // Botón de salto de página anterior.
-document.getElementById('btn_saltoAnt_pag').addEventListener('click', () => {
-	if (num_pagina > 1) {
-		num_pagina--;
-		ejecutarFuncionListado();
-	}
-});
+const btnAnt = document.getElementById('btn_saltoAnt_pag');
+if (btnAnt) {
+	btnAnt.addEventListener('click', () => {
+		if (num_pagina > 1) {
+			num_pagina--;
+			ejecutarFuncionListado();
+		}
+	});
+}
 
 // Botón de salto de página siguiente.
-document.getElementById('btn_saltoDes_pag').addEventListener('click', () => {
-	if (num_pagina < total_paginas) {
-		num_pagina++;
-		ejecutarFuncionListado();
-	}
-});
+const btnSig = document.getElementById('btn_saltoDes_pag');
+if (btnSig) {
+	btnSig.addEventListener('click', () => {
+		if (num_pagina < total_paginas) {
+			num_pagina++;
+			ejecutarFuncionListado();
+		}
+	});
+}
 
 // Botón de la ultima página.
-document.getElementById('ultimo_num_pag').addEventListener('click', () => {
-	num_pagina = total_paginas;
-	ejecutarFuncionListado();
-});
+const btnUlt = document.getElementById('ultimo_num_pag');
+if (btnUlt) {
+	btnUlt.addEventListener('click', () => {
+		num_pagina = total_paginas;
+		ejecutarFuncionListado();
+	});
+}
+
+// Boton de página de inicio.
+const btnInit = document.getElementById('btn_pag_init');
+if (btnInit) {
+	btnInit.addEventListener('click', () => {
+		num_pagina = 1;
+		ejecutarFuncionListado();
+	});
+}
 
 // Función que pregunta si existe las funciones de listado.
 function ejecutarFuncionListado() {

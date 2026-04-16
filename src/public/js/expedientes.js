@@ -212,7 +212,10 @@ async function editarExpediente(id) {
     form.querySelector('[name="dx_presuntivo"]').value = expediente.dx_presuntivo || '';
     form.querySelector('[name="dx_diferencial"]').value = expediente.dx_diferencial || '';
 
-    Swal.fire({ icon: 'info', title: 'Editar expediente', text: 'Los datos se han cargado en el formulario' });
+    Toast.fire({
+      icon: 'info',
+      title: 'Los datos se han cargado en el formulario',
+    });
 
     // Mostrar botones de edición
     btn_guardar.style.display = 'none';
@@ -292,6 +295,268 @@ function verExpediente(id) {
 function agregarReceta(id) {
   console.log('Agregar receta al expediente:', id);
   // Aquí tu lógica para receta
+}
+
+function agregarReceta(id) {
+  // Guardamos el id del expediente en el formulario de agregar
+  const formAgregar = document.getElementById('form_agregar');
+  formAgregar.dataset.idExpediente = id;
+
+  // Ocultar formulario de expediente
+  formExpediente.style.display = 'none';
+
+  // Mostrar formulario de agregar
+  formAgregar.style.display = 'block';
+
+  Toast.fire({
+    icon: 'info',
+    text: 'Puedes registrar exámenes y/o medicamentos para este expediente',
+  });
+}
+
+document.getElementById('btn_guardar_agregar').addEventListener('click', async (event) => {
+  event.preventDefault();
+  const id_expediente = document.getElementById('form_agregar').dataset.idExpediente;
+
+  try {
+    // Guardar exámenes
+    for (let i = 1; i <= 5; i++) {
+      const nombre = document.querySelector(`[name="nombre_examen_${i}"]`);
+      const fecha = document.querySelector(`[name="fecha_examen_${i}"]`);
+      const resultado = document.querySelector(`[name="resultado_${i}"]`);
+
+      if (nombre && nombre.value) {
+        await fetch('/expedientes/agregar_examenes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id_expediente,
+            nombre_examen: nombre.value,
+            fecha: fecha ? fecha.value : null,
+            resultado: resultado ? resultado.value : null,
+          }),
+        });
+      }
+    }
+
+    // Guardar medicamentos
+    for (let i = 1; i <= 5; i++) {
+      const nombre = document.querySelector(`[name="nombre_medicamento_${i}"]`);
+      const dosis = document.querySelector(`[name="dosis_${i}"]`);
+      const frecuencia = document.querySelector(`[name="frecuencia_${i}"]`);
+      const duracion = document.querySelector(`[name="duracion_${i}"]`);
+      const observaciones = document.querySelector(`[name="observaciones_${i}"]`);
+      const via = document.querySelector(`[name="via_administracion_${i}"]`);
+      const fechaInicio = document.querySelector(`[name="fecha_inicio_${i}"]`);
+      const fechaFin = document.querySelector(`[name="fecha_fin_${i}"]`);
+
+      if (nombre && nombre.value) {
+        await fetch('/expedientes/agregar_medicamentos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id_expediente,
+            nombre_medicamento: nombre.value,
+            dosis: dosis ? dosis.value : null,
+            frecuencia: frecuencia ? frecuencia.value : null,
+            duracion: duracion ? duracion.value : null,
+            observaciones: observaciones ? observaciones.value : null,
+            via_administracion: via ? via.value : null,
+            fecha_inicio: fechaInicio ? fechaInicio.value : null,
+            fecha_fin: fechaFin ? fechaFin.value : null,
+          }),
+        });
+      }
+    }
+
+    Swal.fire({ icon: 'success', title: 'Datos guardados', text: 'Se han agregado los registros' });
+
+    document.getElementById('form_agregar').style.display = 'none';
+    formExpediente.style.display = 'block';
+  } catch (error) {
+    console.error('Error al guardar examen/medicamento:', error);
+    Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo guardar' });
+  }
+});
+
+function llenarFormularioAgregar() {
+  const formAgregar = document.getElementById('form_agregar');
+
+  if (!formAgregar) {
+    console.error("No se encontró el formulario con id='form_agregar'");
+    return;
+  }
+
+  // Llenar exámenes de ejemplo
+  for (let i = 1; i <= 5; i++) {
+    const nombreExamen = formAgregar.querySelector(`[name="nombre_examen_${i}"]`);
+    const fechaExamen = formAgregar.querySelector(`[name="fecha_examen_${i}"]`);
+    const resultadoExamen = formAgregar.querySelector(`[name="resultado_${i}"]`);
+
+    if (nombreExamen) nombreExamen.value = `Examen ${i}`;
+    if (fechaExamen) fechaExamen.value = `2026-04-${10 + i}`;
+    if (resultadoExamen) resultadoExamen.value = i % 2 === 0 ? 'Pendiente' : 'Resultado normal';
+  }
+
+  // Llenar medicamentos de ejemplo
+  for (let i = 1; i <= 5; i++) {
+    const nombreMed = formAgregar.querySelector(`[name="nombre_medicamento_${i}"]`);
+    const dosisMed = formAgregar.querySelector(`[name="dosis_${i}"]`);
+    const frecuenciaMed = formAgregar.querySelector(`[name="frecuencia_${i}"]`);
+    const duracionMed = formAgregar.querySelector(`[name="duracion_${i}"]`);
+    const observacionesMed = formAgregar.querySelector(`[name="observaciones_${i}"]`);
+    const viaMed = formAgregar.querySelector(`[name="via_administracion_${i}"]`);
+    const fechaInicioMed = formAgregar.querySelector(`[name="fecha_inicio_${i}"]`);
+    const fechaFinMed = formAgregar.querySelector(`[name="fecha_fin_${i}"]`);
+
+    if (nombreMed) nombreMed.value = `Medicamento ${i}`;
+    if (dosisMed) dosisMed.value = `${i * 100} mg`;
+    if (frecuenciaMed) frecuenciaMed.value = 'Cada 12 horas';
+    if (duracionMed) duracionMed.value = `${i} días`;
+    if (observacionesMed) observacionesMed.value = i % 2 === 0 ? 'Tomar con alimentos' : 'Sin observaciones';
+    if (viaMed) viaMed.value = i % 2 === 0 ? 'Oral' : 'Inyectable';
+    if (fechaInicioMed) fechaInicioMed.value = `2026-04-${10 + i}`;
+    if (fechaFinMed) fechaFinMed.value = `2026-04-${12 + i}`;
+  }
+
+  console.log('Formulario de agregar llenado con datos de prueba.');
+}
+
+async function verExpediente(id) {
+  try {
+    const response = await fetch('/expedientes/ver_expediente', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    });
+    const { expediente, examenes, medicamentos, historial } = await response.json();
+    console.log('Expediente:', expediente); // objeto
+    console.log('Exámenes:', examenes.length); // número de exámenes
+    console.log('Medicamentos:', medicamentos.length); // número de medicamentos
+    console.log('Historial:', historial.length); // número de eventos
+
+    let html = `
+  <div class="expediente-grid" style="max-height:80vh; overflow-y:auto;">
+  
+  <!-- Columna izquierda -->
+  <div class="expediente-section">
+    <h3>Datos generales</h3>
+    <p><b>Fecha:</b> <span>${new Date(expediente.fecha).toLocaleDateString()}</span></p>
+    <p><b>DUI:</b> <span>${expediente.dui}</span></p>
+    <p><b>Motivo consulta:</b> <span>${expediente.motivo_consulta}</span></p>
+
+    <h3>Paciente</h3>
+    <p><b>Nombre:</b> <span>${expediente.mascota_nombre}</span></p>
+    <p><b>Especie:</b> <span>${expediente.especie}</span></p>
+    <p><b>Raza:</b> <span>${expediente.raza}</span></p>
+    <p><b>Edad:</b> <span>${expediente.edad}</span></p>
+    <p><b>Sexo:</b> <span>${expediente.sexo}</span></p>
+    <p><b>Peso:</b> <span>${expediente.peso} kg</span></p>
+    <p><b>Color:</b> <span>${expediente.color}</span></p>
+    <p><b>Señas:</b> <span>${expediente.senias}</span></p>
+
+    <h3>Propietario</h3>
+    <p><b>Nombre:</b> <span>${expediente.propietario_nombre}</span></p>
+    <p><b>Correo:</b> <span>${expediente.correo}</span></p>
+    <p><b>Dirección:</b> <span>${expediente.direccion}</span></p>
+    <p><b>Teléfono:</b> <span>${expediente.telefono}</span></p>
+    <p><b>Celular:</b> <span>${expediente.celular}</span></p>
+
+    <h3>Información adicional</h3>
+    <p><b>Dieta:</b> <span>${expediente.dieta}</span></p>
+    <p><b>Síntomas:</b> <span>${expediente.sintomas}</span></p>
+    <p><b>Observaciones:</b> <span>${expediente.observaciones}</span></p>
+    <p><b>Medicamentos en casa:</b> <span>${expediente.medicamentos_casa}</span></p>
+
+    <h3>Exploración</h3>
+    <p><b>Tegumentario aspecto:</b> <span>${expediente.tegumentario_aspecto}</span></p>
+    <p><b>Lesiones:</b> <span>${expediente.tegumentario_lesiones}</span></p>
+    <p><b>Alopecia:</b> <span>${expediente.tegumentario_alopecia}</span></p>
+    <p><b>Parásitos:</b> <span>${expediente.tegumentario_parasitos}</span></p>
+
+    <h3>Examen físico</h3>
+    <p><b>FC:</b> <span>${expediente.fc}</span></p>
+    <p><b>FR:</b> <span>${expediente.fr}</span></p>
+    <p><b>Temperatura:</b> <span>${expediente.temperatura}</span></p>
+    <p><b>Pulso:</b> <span>${expediente.pulso}</span></p>
+    <p><b>Reflejo pupilar:</b> <span>${expediente.reflejo_pupilar}</span></p>
+    <p><b>Mucosas:</b> <span>${expediente.mucosas}</span></p>
+    <p><b>Dentadura:</b> <span>${expediente.dentadura}</span></p>
+    <p><b>Condición corporal:</b> <span>${expediente.condicion_corporal}</span></p>
+    <p><b>Otras observaciones:</b> <span>${expediente.otras_observaciones}</span></p>
+
+    <h3>Diagnósticos</h3>
+    <p><b>Presuntivo:</b> <span>${expediente.dx_presuntivo}</span></p>
+    <p><b>Diferencial:</b> <span>${expediente.dx_diferencial}</span></p>
+  </div>
+
+  <!-- Columna derecha -->
+  <div class="expediente-section">
+    <h3>Exámenes realizados</h3>
+    <ul>
+      ${
+        examenes.length > 0
+          ? examenes
+              .map(
+                (e) => `<li><b>${e.nombre_examen}</b> - <span>(${formatearFecha(e.fecha)}) - ${e.resultado}</span></li>`
+              )
+              .join('')
+          : '<li>No hay exámenes registrados</li>'
+      }
+    </ul>
+
+    <h3>Medicamentos recetados</h3>
+    <ul>
+      ${
+        medicamentos.length > 0
+          ? medicamentos
+              .map(
+                (m) =>
+                  `<li><b>${m.nombre_medicamento}</b> <span>- ${m.dosis}, ${m.frecuencia}, ${m.duracion}. ${m.observaciones || ''}</span></li>`
+              )
+              .join('')
+          : '<li>No hay medicamentos registrados</li>'
+      }
+    </ul>
+
+    <h3>Historial de eventos</h3>
+<ul>
+  ${
+    historial.length > 0
+      ? historial
+          .map(
+            (h) => `
+              <li>
+                <b>${h.tipo_evento}</b> 
+                <span style="color:gray;">(${formatearFecha(h.fecha_evento)})</span><br>
+                <i>${h.descripcion || 'Sin descripción'}</i><br>
+                <small>Registrado por: ${h.user_registro}</small>
+              </li>
+            `
+          )
+          .join('')
+      : '<li>No hay eventos registrados</li>'
+  }
+</ul>
+
+  </div>
+</div>
+
+`;
+
+    Swal.fire({
+      title: 'Expediente completo',
+      html,
+      width: '90%', // ventana más grande
+      heightAuto: false,
+      scrollbarPadding: false,
+      showCloseButton: true,
+      showConfirmButton: false,
+    });
+  } catch (error) {
+    console.error('Error al ver expediente:', error);
+    Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo cargar el expediente' });
+  }
 }
 
 /* -------------------------------------------------------------------------- */
