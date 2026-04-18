@@ -5,12 +5,11 @@
 const formExpediente = document.getElementById('form_expediente');
 const campoFecha = document.getElementById('fecha');
 const campoDui = document.querySelector('[name="dui"]');
-
 const tbodyExpedientes = document.getElementById('tableBody_expedientes');
-
 const btn_guardar = document.getElementById('btn_guardar_expediente');
 const btn_editar = document.getElementById('btn_editar_expediente');
 const btn_cancel = document.getElementById('btn_cancelar_edicion');
+const btn_guardar_add = document.getElementById('btn_guardar_agregar');
 
 /* -------------------------------------------------------------------------- */
 /*                                 FUNCIONES                                  */
@@ -20,84 +19,6 @@ const btn_cancel = document.getElementById('btn_cancelar_edicion');
 function setFechaActual() {
   const hoy = new Date().toISOString().split('T')[0];
   campoFecha.value = hoy;
-}
-
-// Función para resetear el formulario y dejar el foco en DUI
-function resetFormulario() {
-  formExpediente.reset();
-  setFechaActual();
-  campoDui.focus();
-}
-
-// Función para llenar el formulario con datos de prueba
-function llenarFormularioExpediente() {
-  if (!formExpediente) {
-    console.error("No se encontró el formulario con id='form_expediente'");
-    return;
-  }
-
-  // Asignar valores de prueba a cada campo
-  formExpediente.querySelector('[name="fecha"]').value = '2026-04-10';
-  formExpediente.querySelector('[name="dui"]').value = '12345678';
-  formExpediente.querySelector('[name="motivo_consulta"]').value = 'Consulta general de prueba';
-
-  // Paciente
-  formExpediente.querySelector('[name="paciente"]').value = 'Firulais';
-  formExpediente.querySelector('[name="especie"]').value = 'Canino';
-  formExpediente.querySelector('[name="raza"]').value = 'Labrador';
-  formExpediente.querySelector('[name="edad"]').value = '5';
-  formExpediente.querySelector('[name="sexo"]').value = 'Macho';
-  formExpediente.querySelector('[name="peso"]').value = '25.5';
-  formExpediente.querySelector('[name="color"]').value = 'Negro';
-  formExpediente.querySelector('[name="senias"]').value = 'Mancha blanca en el pecho';
-
-  // Propietario
-  formExpediente.querySelector('[name="propietario"]').value = 'Juan Pérez';
-  formExpediente.querySelector('[name="correo"]').value = 'juan@example.com';
-  formExpediente.querySelector('[name="direccion"]').value = 'Colonia Centro, Usulután';
-  formExpediente.querySelector('[name="telefono"]').value = '2622-0000';
-  formExpediente.querySelector('[name="celular"]').value = '7777-8888';
-
-  // Información adicional
-  formExpediente.querySelector('[name="vacuna_quintuple"]').checked = true;
-  formExpediente.querySelector('[name="vacuna_rabia"]').checked = true;
-  formExpediente.querySelector('[name="vacuna_otra"]').value = 'Coronavirus';
-  formExpediente.querySelector('[name="desparasitacion_fecha"]').value = '2026-04-01';
-  formExpediente.querySelector('[name="desparasitacion_medicamento"]').value = 'Ivermectina';
-  formExpediente.querySelector('[name="control_garrapatas_medicamento"]').value = 'Frontline';
-  formExpediente.querySelector('[name="tiempo_con_mascota"]').value = '3 años';
-  formExpediente.querySelector('[name="otras_mascotas"]').checked = false;
-  formExpediente.querySelector('[name="habitat"]').value = 'Casa';
-  formExpediente.querySelector('[name="acceso_calle"]').checked = true;
-  formExpediente.querySelector('[name="contacto_enfermos"]').checked = false;
-  formExpediente.querySelector('[name="enfermedades_anteriores"]').value = 'Ninguna';
-  formExpediente.querySelector('[name="dieta"]').value = 'Concentrado premium';
-  formExpediente.querySelector('[name="sintomas"]').value = 'Ninguno';
-  formExpediente.querySelector('[name="observaciones"]').value = 'Buen estado general';
-  formExpediente.querySelector('[name="medicamentos_casa"]').value = 'Vitaminas';
-
-  // Exploración
-  formExpediente.querySelector('[name="tegumentario_lesiones"]').checked = false;
-  formExpediente.querySelector('[name="tegumentario_alopecia"]').checked = false;
-  formExpediente.querySelector('[name="tegumentario_parasitos"]').checked = false;
-  formExpediente.querySelector('[name="tegumentario_aspecto"]').value = 'Pelaje brillante';
-
-  // Examen físico
-  formExpediente.querySelector('[name="fc"]').value = '90';
-  formExpediente.querySelector('[name="fr"]').value = '20';
-  formExpediente.querySelector('[name="temperatura"]').value = '38.5';
-  formExpediente.querySelector('[name="pulso"]').value = 'Normal';
-  formExpediente.querySelector('[name="reflejo_pupilar"]').value = 'Normal';
-  formExpediente.querySelector('[name="mucosas"]').value = 'Rosadas';
-  formExpediente.querySelector('[name="dentadura"]').value = 'Completa';
-  formExpediente.querySelector('[name="condicion_corporal"]').value = 'Buena';
-  formExpediente.querySelector('[name="otras_observaciones"]').value = 'Sin hallazgos relevantes';
-
-  // Diagnósticos
-  formExpediente.querySelector('[name="dx_presuntivo"]').value = 'Animal sano';
-  formExpediente.querySelector('[name="dx_diferencial"]').value = 'Ninguno';
-
-  console.log('Formulario llenado con datos de prueba.');
 }
 
 // Renderizar la tabla de expedientes
@@ -126,7 +47,7 @@ function renderTablaExpedientes(expedientes) {
   });
 }
 
-// Funcion temporal
+// Funcion que edita el fomulario de expediente.
 async function editarExpediente(id) {
   try {
     const response = await fetch('/expedientes/detalle', {
@@ -287,16 +208,14 @@ const editar_expediente = async () => {
   }
 };
 
-function verExpediente(id) {
-  console.log('Ver expediente:', id);
-  // Aquí tu lógica para ver
+// Función para resetear el formulario y dejar el foco en DUI
+function resetFormulario() {
+  formExpediente.reset();
+  setFechaActual();
+  campoDui.focus();
 }
 
-function agregarReceta(id) {
-  console.log('Agregar receta al expediente:', id);
-  // Aquí tu lógica para receta
-}
-
+// Función muestra la ventana para agregar recetas.
 function agregarReceta(id) {
   // Guardamos el id del expediente en el formulario de agregar
   const formAgregar = document.getElementById('form_agregar');
@@ -314,8 +233,8 @@ function agregarReceta(id) {
   });
 }
 
-document.getElementById('btn_guardar_agregar').addEventListener('click', async (event) => {
-  event.preventDefault();
+// Función que guarda los examenes.
+const guardar_examenes_recetas = async () => {
   const id_expediente = document.getElementById('form_agregar').dataset.idExpediente;
 
   try {
@@ -377,51 +296,9 @@ document.getElementById('btn_guardar_agregar').addEventListener('click', async (
     console.error('Error al guardar examen/medicamento:', error);
     Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo guardar' });
   }
-});
+};
 
-function llenarFormularioAgregar() {
-  const formAgregar = document.getElementById('form_agregar');
-
-  if (!formAgregar) {
-    console.error("No se encontró el formulario con id='form_agregar'");
-    return;
-  }
-
-  // Llenar exámenes de ejemplo
-  for (let i = 1; i <= 5; i++) {
-    const nombreExamen = formAgregar.querySelector(`[name="nombre_examen_${i}"]`);
-    const fechaExamen = formAgregar.querySelector(`[name="fecha_examen_${i}"]`);
-    const resultadoExamen = formAgregar.querySelector(`[name="resultado_${i}"]`);
-
-    if (nombreExamen) nombreExamen.value = `Examen ${i}`;
-    if (fechaExamen) fechaExamen.value = `2026-04-${10 + i}`;
-    if (resultadoExamen) resultadoExamen.value = i % 2 === 0 ? 'Pendiente' : 'Resultado normal';
-  }
-
-  // Llenar medicamentos de ejemplo
-  for (let i = 1; i <= 5; i++) {
-    const nombreMed = formAgregar.querySelector(`[name="nombre_medicamento_${i}"]`);
-    const dosisMed = formAgregar.querySelector(`[name="dosis_${i}"]`);
-    const frecuenciaMed = formAgregar.querySelector(`[name="frecuencia_${i}"]`);
-    const duracionMed = formAgregar.querySelector(`[name="duracion_${i}"]`);
-    const observacionesMed = formAgregar.querySelector(`[name="observaciones_${i}"]`);
-    const viaMed = formAgregar.querySelector(`[name="via_administracion_${i}"]`);
-    const fechaInicioMed = formAgregar.querySelector(`[name="fecha_inicio_${i}"]`);
-    const fechaFinMed = formAgregar.querySelector(`[name="fecha_fin_${i}"]`);
-
-    if (nombreMed) nombreMed.value = `Medicamento ${i}`;
-    if (dosisMed) dosisMed.value = `${i * 100} mg`;
-    if (frecuenciaMed) frecuenciaMed.value = 'Cada 12 horas';
-    if (duracionMed) duracionMed.value = `${i} días`;
-    if (observacionesMed) observacionesMed.value = i % 2 === 0 ? 'Tomar con alimentos' : 'Sin observaciones';
-    if (viaMed) viaMed.value = i % 2 === 0 ? 'Oral' : 'Inyectable';
-    if (fechaInicioMed) fechaInicioMed.value = `2026-04-${10 + i}`;
-    if (fechaFinMed) fechaFinMed.value = `2026-04-${12 + i}`;
-  }
-
-  console.log('Formulario de agregar llenado con datos de prueba.');
-}
-
+// Función para ver expediente completo del paciente.
 async function verExpediente(id) {
   try {
     const response = await fetch('/expedientes/ver_expediente', {
@@ -641,3 +518,127 @@ btn_editar.addEventListener('click', async (event) => {
   event.preventDefault();
   await editar_expediente();
 });
+
+// Botón de guardar examenes y recetas.
+btn_guardar_add.addEventListener('click', async (event) => {
+  event.preventDefault();
+  await guardar_examenes_recetas();
+});
+
+/* -------------------------------------------------------------------------- */
+/*                           FUNCIONES TEMPORALES                             */
+/* -------------------------------------------------------------------------- */
+
+// Función para llenar el formulario con datos de prueba
+function llenarFormularioExpediente() {
+  if (!formExpediente) {
+    console.error("No se encontró el formulario con id='form_expediente'");
+    return;
+  }
+
+  // Asignar valores de prueba a cada campo
+  formExpediente.querySelector('[name="fecha"]').value = '2026-04-10';
+  formExpediente.querySelector('[name="dui"]').value = '12345678';
+  formExpediente.querySelector('[name="motivo_consulta"]').value = 'Consulta general de prueba';
+
+  // Paciente
+  formExpediente.querySelector('[name="paciente"]').value = 'Firulais';
+  formExpediente.querySelector('[name="especie"]').value = 'Canino';
+  formExpediente.querySelector('[name="raza"]').value = 'Labrador';
+  formExpediente.querySelector('[name="edad"]').value = '5';
+  formExpediente.querySelector('[name="sexo"]').value = 'Macho';
+  formExpediente.querySelector('[name="peso"]').value = '25.5';
+  formExpediente.querySelector('[name="color"]').value = 'Negro';
+  formExpediente.querySelector('[name="senias"]').value = 'Mancha blanca en el pecho';
+
+  // Propietario
+  formExpediente.querySelector('[name="propietario"]').value = 'Juan Pérez';
+  formExpediente.querySelector('[name="correo"]').value = 'juan@example.com';
+  formExpediente.querySelector('[name="direccion"]').value = 'Colonia Centro, Usulután';
+  formExpediente.querySelector('[name="telefono"]').value = '2622-0000';
+  formExpediente.querySelector('[name="celular"]').value = '7777-8888';
+
+  // Información adicional
+  formExpediente.querySelector('[name="vacuna_quintuple"]').checked = true;
+  formExpediente.querySelector('[name="vacuna_rabia"]').checked = true;
+  formExpediente.querySelector('[name="vacuna_otra"]').value = 'Coronavirus';
+  formExpediente.querySelector('[name="desparasitacion_fecha"]').value = '2026-04-01';
+  formExpediente.querySelector('[name="desparasitacion_medicamento"]').value = 'Ivermectina';
+  formExpediente.querySelector('[name="control_garrapatas_medicamento"]').value = 'Frontline';
+  formExpediente.querySelector('[name="tiempo_con_mascota"]').value = '3 años';
+  formExpediente.querySelector('[name="otras_mascotas"]').checked = false;
+  formExpediente.querySelector('[name="habitat"]').value = 'Casa';
+  formExpediente.querySelector('[name="acceso_calle"]').checked = true;
+  formExpediente.querySelector('[name="contacto_enfermos"]').checked = false;
+  formExpediente.querySelector('[name="enfermedades_anteriores"]').value = 'Ninguna';
+  formExpediente.querySelector('[name="dieta"]').value = 'Concentrado premium';
+  formExpediente.querySelector('[name="sintomas"]').value = 'Ninguno';
+  formExpediente.querySelector('[name="observaciones"]').value = 'Buen estado general';
+  formExpediente.querySelector('[name="medicamentos_casa"]').value = 'Vitaminas';
+
+  // Exploración
+  formExpediente.querySelector('[name="tegumentario_lesiones"]').checked = false;
+  formExpediente.querySelector('[name="tegumentario_alopecia"]').checked = false;
+  formExpediente.querySelector('[name="tegumentario_parasitos"]').checked = false;
+  formExpediente.querySelector('[name="tegumentario_aspecto"]').value = 'Pelaje brillante';
+
+  // Examen físico
+  formExpediente.querySelector('[name="fc"]').value = '90';
+  formExpediente.querySelector('[name="fr"]').value = '20';
+  formExpediente.querySelector('[name="temperatura"]').value = '38.5';
+  formExpediente.querySelector('[name="pulso"]').value = 'Normal';
+  formExpediente.querySelector('[name="reflejo_pupilar"]').value = 'Normal';
+  formExpediente.querySelector('[name="mucosas"]').value = 'Rosadas';
+  formExpediente.querySelector('[name="dentadura"]').value = 'Completa';
+  formExpediente.querySelector('[name="condicion_corporal"]').value = 'Buena';
+  formExpediente.querySelector('[name="otras_observaciones"]').value = 'Sin hallazgos relevantes';
+
+  // Diagnósticos
+  formExpediente.querySelector('[name="dx_presuntivo"]').value = 'Animal sano';
+  formExpediente.querySelector('[name="dx_diferencial"]').value = 'Ninguno';
+
+  console.log('Formulario llenado con datos de prueba.');
+}
+
+function llenarFormularioAgregar() {
+  const formAgregar = document.getElementById('form_agregar');
+
+  if (!formAgregar) {
+    console.error("No se encontró el formulario con id='form_agregar'");
+    return;
+  }
+
+  // Llenar exámenes de ejemplo
+  for (let i = 1; i <= 5; i++) {
+    const nombreExamen = formAgregar.querySelector(`[name="nombre_examen_${i}"]`);
+    const fechaExamen = formAgregar.querySelector(`[name="fecha_examen_${i}"]`);
+    const resultadoExamen = formAgregar.querySelector(`[name="resultado_${i}"]`);
+
+    if (nombreExamen) nombreExamen.value = `Examen ${i}`;
+    if (fechaExamen) fechaExamen.value = `2026-04-${10 + i}`;
+    if (resultadoExamen) resultadoExamen.value = i % 2 === 0 ? 'Pendiente' : 'Resultado normal';
+  }
+
+  // Llenar medicamentos de ejemplo
+  for (let i = 1; i <= 5; i++) {
+    const nombreMed = formAgregar.querySelector(`[name="nombre_medicamento_${i}"]`);
+    const dosisMed = formAgregar.querySelector(`[name="dosis_${i}"]`);
+    const frecuenciaMed = formAgregar.querySelector(`[name="frecuencia_${i}"]`);
+    const duracionMed = formAgregar.querySelector(`[name="duracion_${i}"]`);
+    const observacionesMed = formAgregar.querySelector(`[name="observaciones_${i}"]`);
+    const viaMed = formAgregar.querySelector(`[name="via_administracion_${i}"]`);
+    const fechaInicioMed = formAgregar.querySelector(`[name="fecha_inicio_${i}"]`);
+    const fechaFinMed = formAgregar.querySelector(`[name="fecha_fin_${i}"]`);
+
+    if (nombreMed) nombreMed.value = `Medicamento ${i}`;
+    if (dosisMed) dosisMed.value = `${i * 100} mg`;
+    if (frecuenciaMed) frecuenciaMed.value = 'Cada 12 horas';
+    if (duracionMed) duracionMed.value = `${i} días`;
+    if (observacionesMed) observacionesMed.value = i % 2 === 0 ? 'Tomar con alimentos' : 'Sin observaciones';
+    if (viaMed) viaMed.value = i % 2 === 0 ? 'Oral' : 'Inyectable';
+    if (fechaInicioMed) fechaInicioMed.value = `2026-04-${10 + i}`;
+    if (fechaFinMed) fechaFinMed.value = `2026-04-${12 + i}`;
+  }
+
+  console.log('Formulario de agregar llenado con datos de prueba.');
+}

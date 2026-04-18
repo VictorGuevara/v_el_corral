@@ -428,6 +428,7 @@ async function getEvents(activeDay) {
 // Ejecutamos al principio y al inicio...
 getEvents(activeDay);
 
+// Función para convertir fecha
 function convertTime(time) {
 	//convert time to 24 hour format
 	let timeArr = time.split(':');
@@ -485,46 +486,6 @@ const delete_cita = (cod_cita, dia, mes, anio) => {
 		}
 	});
 };
-
-document.getElementById('tipo_evento').addEventListener('change', function () {
-	const fields = document.getElementById('expediente_fields');
-	if (this.value !== 'simple') {
-		fields.style.display = 'block';
-	} else {
-		fields.style.display = 'none';
-	}
-});
-
-// Cuando la secretaria termina de escribir el DUI y sale del campo
-document.getElementById('dui').addEventListener('blur', async function () {
-	const dui = this.value.trim();
-	if (dui !== '') {
-		try {
-			const response = await fetch('/reg_citas/buscar_expediente', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ dui }),
-			});
-			const data = await response.json();
-
-			console.log(data);
-
-			if (data.id_expediente) {
-				document.getElementById('id_expediente').value = data.id_expediente;
-				if (data.telefono) {
-					document.getElementById('telefono_cliente').value = data.telefono;
-				}
-			}
-		} catch (error) {
-			console.error(error);
-			Swal.fire({
-				icon: 'error',
-				title: 'Error',
-				text: 'No se pudo buscar el expediente',
-			});
-		}
-	}
-});
 
 /* -------------------------------------------------------------------------- */
 /*                                                                            */
@@ -603,4 +564,45 @@ addEventTo.addEventListener('input', (e) => {
 //function to add event to eventsArr
 addEventSubmit.addEventListener('click', () => {
 	saveEvents();
+});
+
+// Evento para el campo del select para escribir el tipo de cita
+document.getElementById('tipo_evento').addEventListener('change', function () {
+	const fields = document.getElementById('expediente_fields');
+	if (this.value !== 'simple') {
+		fields.style.display = 'block';
+	} else {
+		fields.style.display = 'none';
+	}
+});
+
+// Cuando la secretaria termina de escribir el DUI y sale del campo
+document.getElementById('dui').addEventListener('blur', async function () {
+	const dui = this.value.trim();
+	if (dui !== '') {
+		try {
+			const response = await fetch('/reg_citas/buscar_expediente', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ dui }),
+			});
+			const data = await response.json();
+
+			console.log(data);
+
+			if (data.id_expediente) {
+				document.getElementById('id_expediente').value = data.id_expediente;
+				if (data.telefono) {
+					document.getElementById('telefono_cliente').value = data.telefono;
+				}
+			}
+		} catch (error) {
+			console.error(error);
+			Swal.fire({
+				icon: 'error',
+				title: 'Error',
+				text: 'No se pudo buscar el expediente',
+			});
+		}
+	}
 });

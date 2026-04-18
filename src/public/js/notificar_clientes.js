@@ -6,7 +6,8 @@
 /*                                 FUNCIONES                                  */
 /* -------------------------------------------------------------------------- */
 
-async function cargarNotificaciones() {
+// Funcion que lista las tabla de notificaciones.
+const cargarNotificaciones = async () => {
 	const response = await fetch('/notificar_citas/list');
 	const data = await response.json();
 
@@ -35,12 +36,10 @@ async function cargarNotificaciones() {
       </tr>
     `;
 	}
-}
+};
 
-// Ejecutar al cargar la página
-cargarNotificaciones();
-
-async function actualizarEstado(id, nuevoEstado) {
+// Funcion que hará que se notifique y que edita el estado.
+const actualizarEstado = async (id, nuevoEstado) => {
 	try {
 		const response = await fetch('/notificar_citas/estado', {
 			method: 'PUT',
@@ -64,9 +63,10 @@ async function actualizarEstado(id, nuevoEstado) {
 			text: 'No se pudo actualizar el estado',
 		});
 	}
-}
+};
 
-async function notificar(id) {
+// Funcion que enviará el mensaje
+const notificar = async (id) => {
 	try {
 		const response = await fetch('/notificar_citas/enviar', {
 			method: 'POST',
@@ -91,7 +91,10 @@ async function notificar(id) {
 			text: 'No se pudo enviar la notificación',
 		});
 	}
-}
+};
+
+// Ejecutar al cargar la página
+cargarNotificaciones();
 
 /* -------------------------------------------------------------------------- */
 /*                                  EVENTOS                                   */
