@@ -1,0 +1,100 @@
+<div class='main_content'>
+	<main>
+		<!-- TITULO -->
+		<section>
+			<h1>Kardex</h1>
+			<h3 class='ruta_system'>Administración / Registro de entradas y salidas de productos</h3>
+		</section>
+		<!-- SOLO TABLA -->
+		<section class='vista_tabla'>
+			<div class='tabla_datos'>
+				<!-- <form class="formne" action="/link/add" method="POST" autocomplete="off"> -->
+				<form class='formne' autocomplete='off' id=''>
+					<button type='submit' disabled class='none' aria-hidden='true'></button>
+					<h4><i class="fa-regular fa-file-lines"></i> Datos del producto:</h4>
+					<div class='input_grup_3'>
+						<div class='input_group'>
+							<input type='hidden' id='codigoProducto' />
+							<label for='nombreClienteVenta'>Nombre del producto</label>
+							<input
+								class='Minicial'
+								id='nombreClienteVenta'
+								type='text'
+								onkeyup='d_clientes(this)'
+								placeholder='*'
+								list='productos'
+							/>
+						</div>
+						<datalist id='productos'></datalist>
+						<div class='input_group'>
+							<label for='f_search_inicial_kardex'>Fecha Inicial:</label>
+							<input id='f_search_inicial_kardex' type='date' placeholder='*'/>
+						</div>
+                        <div class='input_group'>
+							<label for='f_search_final_kardex'>Fecha Final:</label>
+							<input id='f_search_final_kardex' type='date' placeholder='*'/>
+						</div>
+					</div>
+					<div>
+						<table class="table_link">
+                            <thead>
+                                <tr class="text_center">
+                                    <th colspan="1">Fecha Movimiento</th>
+                                    <th colspan="1" class="Minicial">Nompre P.</th>
+                                    <th colspan="3">Entrada/as</th>
+                                    <th colspan="3">Salida</th>
+                                    <th colspan="3">Existencias</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody_table_kardex">
+                                {{!-- Aqui se cargan desde JavaScript --}}
+                                <tr>
+                                    <td>04-04-2020</td>
+                                    <td>Lorem ipsum dolor sit amet consectetur adipisicing.</td>
+                                    <td>0000</td>
+                                    <td>0000</td>
+                                    <td>0000.00</td>
+                                    <td>0000</td>
+                                    <td>0000</td>
+                                    <td>0000.00</td>
+                                    <td>0000</td>
+                                    <td>0000</td>
+                                    <td>0000.00</td>
+                                </tr>
+                                <tr>
+                                    <td>04-04-2020</td>
+                                    <td>Lorem ipsum dolor sit amet consectetur adipisicing.</td>
+                                    <td>0000</td>
+                                    <td>0000</td>
+                                    <td>0000.00</td>
+                                    <td>0000</td>
+                                    <td>0000</td>
+                                    <td>0000.00</td>
+                                    <td>0000</td>
+                                    <td>0000</td>
+                                    <td>0000.00</td>
+                                </tr>
+                                <tr>
+                                    <td>04-04-2020</td>
+                                    <td>Lorem ipsum dolor sit amet consectetur adipisicing.</td>
+                                    <td>0000</td>
+                                    <td>0000</td>
+                                    <td>0000.00</td>
+                                    <td>0000</td>
+                                    <td>0000</td>
+                                    <td>0000.00</td>
+                                    <td>0000</td>
+                                    <td>0000</td>
+                                    <td>0000.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+					</div>
+					<div class='input_group'>
+						<input type='submit' value='Crear Reporte' />
+					</div>
+				</form>
+			</div>
+		</section>
+	</main>
+</div>

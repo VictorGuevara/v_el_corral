@@ -1,0 +1,257 @@
+<div class='main_content'>
+	<main>
+		<!-- TITULO -->
+		<section>
+			<h1>Ventas</h1>
+			<h3 class='ruta_system'>Administración / Ventas</h3>
+		</section>
+		<br />
+
+		<!-- SOLO TABLA -->
+		<section class='vista_tabla'>
+			<div class='tabla_datos'>
+
+				<!-- BUSQUEDA Y ACCIONES -->
+				<div class='content_search_datos'>
+					<div>
+						<button class='btn_reporte' id='btn_reporte_inventario'>¿Crear Reporte?</button>
+					</div>
+
+					<div class='content_search_btn'>
+						<input class='input_filter_table' type='text' id='busqueda_inventario' />
+						<button class='filtar_table' id='btn_search_inventario'>
+							<i class='ti-search'></i>
+							Buscar
+						</button>
+					</div>
+				</div>
+				<!-- <form class="formne" action="/link/add" method="POST" autocomplete="off"> -->
+				<form class='formne' autocomplete='off' id=''>
+					<button type='submit' disabled class='none' aria-hidden='true'></button>
+					<h4><span class='ti-write'></span> Datos de factura:</h4>
+					<div class='input_grup_2'>
+						<div class='input_group'>
+							<input type='hidden' id='codigoClienteVenta' />
+							<label for='nombreClienteVenta'>Nombre Cliente</label>
+							<input
+								class='Minicial'
+								id='nombreClienteVenta'
+								type='text'
+								onkeyup='d_clientes(this)'
+								placeholder='*'
+								list='clientes'
+							/>
+						</div>
+						<datalist id='clientes'></datalist>
+						<div class='input_group'>
+							<label for='telefonoClienteVenta'>Tel. Cliente:</label>
+							<input id='telefonoClienteVenta' type='number' placeholder='*' disabled />
+						</div>
+					</div>
+					<h4><span class='ti-write'></span> Detalles de la venta:</h4>
+					<div>
+						<table>
+							<thead>
+								<tr>
+									<th>Nombre P.</th>
+									<th>Valor U.</th>
+									<th>Tipo P.</th>
+									<th>Cant. P.</th>
+									<th>Subtotal</th>
+									<th>-</th>
+								</tr>
+							</thead>
+							<tbody id='body_aadFC_es_principal'>
+								<tr id='file_aadFV_es_principal'>
+									<td>
+										<input type='hidden' id='cod_producto_venta' />
+										<span class='title_file_detalle'>Nompre del producto:</span>
+										<input
+											class='Minicial'
+											id='nombreP_Pventa'
+											type='text'
+											placeholder='*'
+											list='lista_productos'
+											onkeyup='ll_productos(this)'
+											ondblclick='lf(this)'
+										/>
+									</td>
+									<td><span class='title_file_detalle'>Valor unitario:</span><input
+											id='valosU_Pventa'
+											type='text'
+											placeholder='*'
+											onkeyup='sumatorias()'
+											disabled='disabled'
+										/></td>
+									<td>
+										<span class='title_file_detalle'>Tipo de producto:</span>
+										<input class='Minicial' id='tipo_Pventa' type='text' placeholder='*' disabled='disabled' />
+										<input type='hidden' id='marca_Pventa' />
+									</td>
+									<td><span class='title_file_detalle'>Cantidad:</span><input
+											id='cantidad_Pventa'
+											type='number'
+											placeholder='*'
+											onkeyup='sumatorias()'
+										/></td>
+									<td><span class='title_file_detalle'>Subtotal</span><input
+											id='subTotal_Pventa'
+											type='text'
+											placeholder='*'
+											disabled='disabled'
+										/></td>
+									<td>
+										<a id='btn_eliminar_fila_Pventa' class='btn_delete_add' onclick='deleteRowVenta(this)'>Quitar F.</a>
+									</td>
+								</tr>
+							</tbody>
+							<datalist id='lista_productos'>
+								<!-- Aqui se llena los datos desde javascript -->
+							</datalist>
+							<tbody>
+								<tr class='tcde_tr_fcBtnAdd_btnQuestions'>
+									<td colspan="2">
+										<button class='btn_autiriced_j active' id='btn_ja'>
+											Descuentos
+										</button>
+									</td>
+									<td colspan="2">
+										<button class='btn_update_listP' id='bnt_upd_dlProducto'>
+											Actualizar Productos
+										</button>
+									</td>
+									<td colspan="2" class='fc_btn_add'>
+										<button id='btnAddFile' class='btn_add_file'>Agregar Fila</button>
+									</td>
+								</tr>
+							</tbody>
+							<thead>
+								<tr class='thtdAut_tr_grid dm_oculto'>
+									<th class='thAut_descuento'>Monto $</th>
+									<th class='thAut_descuento'>¿Porcentaje del descuento $?</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class='thtdAut_tr_grid'>
+									<td>
+										<span class='title_file_detalle'>Monto $:</span><input
+											id='aMontoDescuentoVenta'
+											type='number'
+											placeholder='*'
+										/>
+									</td>
+									<td>
+										<span class='title_file_detalle'>¿Porcentaje del descuento $?</span><input
+											id='aDesMontoDescuentoVenta'
+											type='text'
+											placeholder='*'
+											list='list_desc_ja'
+											onkeyup='calc_desc_ja(this.value)'
+										/>
+									</td>
+									<td class='monto_subTotal'>
+										<span>Subtotal:</span>
+										<span class='ssdt'>$</span>
+										<span id='tsub_ventaCocoa'>0.00</span>
+									</td>
+									<td class='monto_descuento'>
+										<span>Descuento:</span>
+										<span class='ssdt'>$</span>
+										<span id='tdes_ventaCocoa'>0.00</span>
+									</td>
+									<td colspan="2" class='monto_totalV'>
+										<span>Total Venta:</span>
+										<span class='ssdt'>$</span>
+										<span id='total_ventaCocoa'>0.00</span>
+									</td>
+								</tr>
+								<datalist id='list_desc_ja'>
+									<option value='10% De descuento'></option>
+									<option value='15% De descuento'></option>
+									<option value='20% De descuento'></option>
+								</datalist>
+							</tbody>
+						</table>
+					</div>
+					<div class='input_group'>
+						<input type='submit' id='btn_guardar_venta' value='Guardar Venta' />
+					</div>
+				</form>
+			</div>
+
+			{{! Imprimir }}
+			<div id='stikers_venta_cocoa' class='hidden_div'>
+				<style>
+					@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+					.stikers_venta_cocoa {
+						margin: 0;
+						padding: 5px;
+						box-sizing: border-box;
+						font-family: 'Albert Sans', sans-serif;
+						font-size: 12px;
+						min-width: 205px;
+						max-width: 205px;
+					}
+
+					.stikers_venta_cocoa h4.text,
+					.stikers_venta_cocoa p.text {
+						padding: 0;
+						margin: 0;
+						font-size: 12px;
+						min-width: 205px;
+						max-width: 205px;
+					}
+
+					.stikers_venta_cocoa p.text_obs {
+						padding: 0;
+						margin: 0;
+						font-size: 12px;
+						max-width: 160px;
+					}
+
+					.stikers_venta_cocoa p.text_m_i {
+						padding: 0;
+						margin: 0;
+						font-size: 12px;
+						text-transform: capitalize;
+						min-width: 205px;
+						max-width: 205px;
+					}
+
+					table thead tr.tr_stickers,
+					table tbody tr.tr_stickers {
+						display: grid;
+						grid-template-columns: 1fr 1fr;
+					}
+
+					tr.tr_stickers th,
+					tr.tr_stickers td {
+						font-size: 12px;
+						padding: 1px;
+						border-bottom: 1px dashed #888888;
+					}
+
+					tbody tr.tr_stickers td.valor {
+						text-align: right;
+					}
+
+					.img img {
+						width: 100%;
+					}
+
+					.img_qr {
+						padding: 30px;
+					}
+
+					.img_qr img {
+						width: 100%;
+					}
+				</style>
+				<div id='stickersPak' class='hidden_div'>
+					{{! Se llena desde JavaScript }}
+				</div>
+			</div>
+		</section>
+	</main>
+</div>

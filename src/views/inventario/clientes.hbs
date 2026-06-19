@@ -1,0 +1,90 @@
+<div class='main_content'>
+  <main>
+    <section>
+      <h1>Clientes</h1>
+      <h3 class='ruta_system'>Administración / Clientes</h3>
+    </section>
+    <br />
+
+    <section class='vista_tabla_form'>
+
+      <!-- TABLA -->
+      <div class='tabla_datos'>
+        <div class='content_search_datos'>
+          <div>
+            <button class='btn_reporte' id='btn_reporte_clientes'>¿Crear Reporte?</button>
+          </div>
+          <div class='content_search_btn'>
+            <input class='input_filter_table' type='text' id='busqueda_clientes' />
+            <button class='filtar_table' id='btn_search_clientes'>
+              <i class='ti-search'></i>
+              Buscar
+            </button>
+          </div>
+        </div>
+
+        <div class='table-container'>
+          <table>
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Fecha Nac.</th>
+                <th class='center_text'><i class='ti-pencil-alt'></i></th>
+                <th class='center_text'><i class='ti-trash'></i></th>
+              </tr>
+            </thead>
+            <tbody id='tableBody_clientes'></tbody>
+          </table>
+
+          <!-- PAGINACIÓN -->
+          <div class='paginacion' id='paginacion_clientes'>
+            <button class='btn_control_paginacion'><i class='ti-control-skip-backward'></i></button>
+            <button class='btn_control_paginacion'><i class='ti-control-backward'></i></button>
+            <button class='btn_control_numero active'>1</button>
+            <button class='btn_control_numero'>2</button>
+            <span class='separador_paginacion'>...</span>
+            <button class='btn_control_numero'>100</button>
+            <button class='btn_control_paginacion'><i class='ti-control-forward'></i></button>
+            <button class='btn_control_paginacion'><i class='ti-control-skip-forward'></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORMULARIO -->
+      <div class='formularios'>
+        <form id='form_clientes' class='form'>
+          <h1>Crear Cliente</h1>
+          <br />
+
+          <input type='hidden' id='cod_cliente' />
+
+          <div class='input_grup'>
+            <label>Nombre:</label>
+            <input type='text' id='nom_cliente' />
+          </div>
+
+          <div class='input_grup'>
+            <label>Teléfono:</label>
+            <input type='text' id='tel_cliente' />
+          </div>
+
+          <div class='input_grup'>
+            <label>Fecha Nacimiento:</label>
+            <input type='date' id='fnac_cliente' />
+          </div>
+
+          <div class='input_grup'>
+            <input type='submit' id='btn_create_cliente' value='Crear' />
+            <input type='submit' id='btn_update_cliente' value='Editar' />
+            <input type='submit' id='btn_cancel_cliente' value='Cancelar' />
+          </div>
+
+        </form>
+      </div>
+
+    </section>
+  </main>
+</div>

@@ -1,0 +1,152 @@
+<div class='main_content'>
+  <main>
+
+    <!-- TITULO -->
+    <section>
+      <h1>Productos</h1>
+      <h3 class='ruta_system'>Administración / Productos</h3>
+    </section>
+    <br />
+
+    <section class='vista_tabla_form'>
+
+      <!-- TABLA -->
+      <div class='tabla_datos'>
+
+        <!-- BUSCADOR + ACCIONES -->
+        <div class='content_search_datos'>
+          <div>
+            <button class='btn_reporte' id='btn_reporte_productos'>¿Crear Reporte?</button>
+          </div>
+
+          <div class='content_search_btn'>
+            <input class='input_filter_table' type='text' id='busqueda_productos' />
+            <button class='filtar_table' id='btn_search_productos'>
+              <i class='ti-search'></i>
+              Buscar
+            </button>
+          </div>
+        </div>
+
+        <!-- FILTROS (adaptados) -->
+        <div class='content_search_datos'>
+          <div>
+            <input type='checkbox' id='chk_servicios' />
+            <label for='chk_servicios'>Servicios</label>
+
+            <input type='checkbox' id='chk_productos' />
+            <label for='chk_productos'>Productos</label>
+
+            <input type='checkbox' id='chk_marykay' />
+            <label for='chk_marykay'>Mary Kay</label>
+          </div>
+        </div>
+
+        <!-- TABLA -->
+        <div class='table-container'>
+          <table>
+            <thead>
+              <tr>
+                <th>No.:</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Existencias</th>
+                <th>Precio</th>
+                <th>Margen %</th>
+                <th>Marca</th>
+                <th class='center_text'><i class='ti-pencil-alt'></i></th>
+                <th class='center_text'><i class='ti-trash'></i></th>
+              </tr>
+            </thead>
+            <tbody id='tableBody_productos'>
+              <!-- JS -->
+            </tbody>
+          </table>
+
+          <!-- PAGINACION -->
+          <div class='paginacion' id='paginacion_productos'>
+            <button class='btn_control_paginacion' id='btn_pag_init_prod'>
+              <i class='ti-control-skip-backward'></i>
+            </button>
+            <button class='btn_control_paginacion' id='btn_saltoAnt_pag_prod'>
+              <i class='ti-control-backward'></i>
+            </button>
+            <button class='btn_control_numero active' id='pri_num_pag_prod'>1</button>
+            <button class='btn_control_numero' id='seg_num_pag_prod'>2</button>
+            <button class='btn_control_numero' id='ter_num_pag_prod'>3</button>
+            <span class='separador_paginacion'>...</span>
+            <button class='btn_control_numero' id='ultimo_num_pag_prod'>1000</button>
+            <button class='btn_control_paginacion' id='btn_saltoDes_pag_prod'>
+              <i class='ti-control-forward'></i>
+            </button>
+            <button class='btn_control_paginacion' id='btn_pag_final_prod'>
+              <i class='ti-control-skip-forward'></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORMULARIO -->
+      <div class='formularios'>
+        <form id='form_productos' class='form'>
+
+          <h1>Crear Producto</h1>
+          <br />
+
+          <input type='hidden' id='id_producto' />
+
+          <div class='input_grup'>
+            <label>Nombre:</label>
+            <input type='text' id='name_producto' placeholder='Nombre del producto' />
+          </div>
+
+          <div class='input_grup'>
+            <label>Descripción:</label>
+            <input type='text' id='des_producto' placeholder='Descripción' />
+          </div>
+
+          <div class='input_grup'>
+            <label>Categoría:</label>
+            <input type='text' id='cat_producto' list='categorias' />
+          </div>
+
+          <div class='input_grup'>
+            <label>Precio:</label>
+            <input type='number' id='precio_producto' />
+          </div>
+
+          <div class='input_grup'>
+            <label>Ganancia %:</label>
+            <input type='number' id='gan_producto' />
+          </div>
+
+          <div class='input_grup'>
+            <label>Marca:</label>
+            <input type='text' id='marca_producto' list='marcas_proveedores' />
+          </div>
+
+          <div class='input_grup'>
+            <input type='submit' id='btn_create_producto' value='Crear Producto' />
+            <input type='submit' id='btn_update_producto' value='Editar Producto' />
+            <input type='submit' id='btn_cancel_update_producto' value='Cancelar Edicion' />
+          </div>
+
+        </form>
+
+        <!-- DATALIST -->
+        <datalist id='categorias'>
+          <option value='Servicio'></option>
+          <option value='Mary Kay'></option>
+          <option value='Otros Productos'></option>
+        </datalist>
+
+        <datalist id='marcas_proveedores'>
+          <!-- JS -->
+        </datalist>
+
+      </div>
+
+    </section>
+
+  </main>
+</div>

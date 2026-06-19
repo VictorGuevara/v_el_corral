@@ -67,6 +67,7 @@ app.use('/usuarios', require('./routes/usuarios.routes'));
 app.use('/expedientes', require('./routes/expedientes.routes'));
 app.use('/reg_citas', require('./routes/citas.routes'));
 app.use('/notificar_citas', require('./routes/notificar_citas.routes'));
+app.use('/acciones_inventario', require('./routes/ccikllppv.routes'));
 
 // Public
 app.use(express.static(path.join(__dirname, 'public')));

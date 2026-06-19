@@ -1,0 +1,113 @@
+<div class='main_content'>
+  <main>
+
+    <!-- TITULO -->
+    <section>
+      <h1>Proveedores</h1>
+      <h3 class='ruta_system'>Administración / Proveedores</h3>
+    </section>
+    <br />
+
+    <section class='vista_tabla_form'>
+
+      <!-- TABLA -->
+      <div class='tabla_datos'>
+
+        <!-- BUSCADOR Y ACCIONES -->
+        <div class='content_search_datos'>
+          <div>
+            <button class='btn_reporte' id='btn_reporte_proveedores'>¿Crear Reporte?</button>
+          </div>
+          <div class='content_search_btn'>
+            <input class='input_filter_table' type='text' id='busqueda_proveedores' />
+            <button class='filtar_table' id='btn_search_proveedores'>
+              <i class='ti-search'></i>
+              Buscar
+            </button>
+          </div>
+        </div>
+
+        <!-- TABLA -->
+        <div class='table-container'>
+          <table>
+            <thead>
+              <tr>
+                <th>No.:</th>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>DUI</th>
+                <th>Marca</th>
+                <th class='center_text'><i class='ti-pencil-alt'></i></th>
+                <th class='center_text'><i class='ti-trash'></i></th>
+              </tr>
+            </thead>
+            <tbody id='tableBody_proveedores'>
+              <!-- JS -->
+            </tbody>
+          </table>
+
+          <!-- PAGINACION (MISMO SISTEMA) -->
+          <div class='paginacion' id='paginacion_proveedores'>
+            <button class='btn_control_paginacion' id='btn_pag_init_prov'>
+              <i class='ti-control-skip-backward'></i>
+            </button>
+            <button class='btn_control_paginacion' id='btn_saltoAnt_pag_prov'>
+              <i class='ti-control-backward'></i>
+            </button>
+            <button class='btn_control_numero active' id='pri_num_pag_prov'>1</button>
+            <button class='btn_control_numero' id='seg_num_pag_prov'>2</button>
+            <button class='btn_control_numero' id='ter_num_pag_prov'>3</button>
+            <span class='separador_paginacion'>...</span>
+            <button class='btn_control_numero' id='ultimo_num_pag_prov'>1000</button>
+            <button class='btn_control_paginacion' id='btn_saltoDes_pag_prov'>
+              <i class='ti-control-forward'></i>
+            </button>
+            <button class='btn_control_paginacion' id='btn_pag_final_prov'>
+              <i class='ti-control-skip-forward'></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORMULARIO -->
+      <div class='formularios'>
+        <form id='form_proveedores' class='form'>
+
+          <h1>Crear Proveedor</h1>
+          <br />
+
+          <input type='hidden' id='id_proveedor' />
+
+          <div class='input_grup'>
+            <label>Nombre del proveedor:</label>
+            <input type='text' id='name_proveedor' placeholder='Nombre del proveedor' />
+          </div>
+
+          <div class='input_grup'>
+            <label>Teléfono:</label>
+            <input type='text' id='tel_proveedor' placeholder='Teléfono' />
+          </div>
+
+          <div class='input_grup'>
+            <label>DUI:</label>
+            <input type='text' id='dui_proveedor' placeholder='DUI' />
+          </div>
+
+          <div class='input_grup'>
+            <label>Marca:</label>
+            <input type='text' id='marca_proveedor' placeholder='Marca' />
+          </div>
+
+          <div class='input_grup'>
+            <input type='submit' id='btn_create_proveedor' value='Crear Proveedor' />
+            <input type='submit' id='btn_update_proveedor' value='Editar Proveedor' />
+            <input type='submit' id='btn_cancel_update_proveedor' value='Cancelar Edicion' />
+          </div>
+
+        </form>
+      </div>
+
+    </section>
+
+  </main>
+</div>

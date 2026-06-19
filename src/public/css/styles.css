@@ -124,11 +124,10 @@ form.formne video {
 form.formne input,
 form.formne select,
 form.formne textarea {
-  padding: 20px 30px;
+  padding: 12px 10px;
   width: 100%;
   border: 1px solid var(--border_gris_ultraclaro);
-  border-radius: 10px;
-  font-size: 20px;
+  color: var(--color_negro);
 }
 
 form.formne input:disabled {
@@ -931,6 +930,104 @@ button.btn_table_info:hover {
   transition: 0.3s;
 }
 
+
+td button.btn_delete_add,
+td a.btn_delete_add {
+  display: block;
+  margin: auto;
+  padding: 10px;
+  height: auto;
+  background: var(--color_danger);
+  color: var(--color_white);
+  width: 100%;
+  border: 1px solid var(--color_danger);
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+td button.btn_delete_add:hover,
+td a.btn_delete_add:hover {
+  background: var(--color_danger);
+  color: var(--color_yellow);
+}
+
+td button.btn_autiriced_j {
+  margin: auto;
+  padding: 10px;
+  height: auto;
+  background: var(--main_color);
+  color: var(--color_white);
+  margin-top: 2px;
+  width: 100%;
+  border: 1px solid var(--main_color);
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+td button.btn_autiriced_j:hover { 
+  background: var(--color_celeste);
+  transition: 0.5s;
+}
+
+td button.btn_update_listP {
+  margin: auto;
+  padding: 10px;
+  height: auto;
+  background: var(--color_white);
+  color: var(--naranja);
+  margin-top: 2px;
+  width: 100%;
+  border: 1px solid var(--naranja);
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+td button.btn_update_listP:hover {
+  background: var(--naranja);
+  color: var(--color_white);
+  outline: none;
+  cursor: pointer;  
+  transition: 0.5s;
+}
+
+td button.btn_add_file {
+  margin: auto;
+  padding: 10px;
+  height: auto;
+  background: var(--color_white);
+  color: var(--color_celeste);
+  margin-top: 2px;
+  width: 100%;
+  border: 1px solid var(--color_celeste);
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+td button.btn_add_file:hover { 
+  background: var(--color_celeste);
+  color: var(--color_white);
+  transition: 0.5s;
+}
+
+
+
+
 .center_text {
   text-align: center;
 }
@@ -1045,7 +1142,7 @@ button.btn_reporte:hover {
 
 .input_grup_4 {
   display: grid;
-  grid-template-columns: 25% 25% 25% 24%;
+  grid-template-columns: 25% 24% 24% 24%;
   grid-gap: 1%;
 }
 
@@ -1321,4 +1418,12 @@ article.card .badge_noVerified {
 .expediente-section p span {
   color: var(--color_celeste);
   font-size: 15px;
+}
+
+.monto_subTotal,
+.monto_descuento,
+.monto_totalC,
+.monto_totalV {
+  font-size: 18px;
+  font-weight: bold;
 }

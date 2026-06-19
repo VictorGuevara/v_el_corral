@@ -1,0 +1,74 @@
+<div class='main_content'>
+  <main>
+
+    <!-- TITULO -->
+    <section>
+      <h1>Inventario</h1>
+      <h3 class='ruta_system'>Administración / Inventario</h3>
+    </section>
+    <br />
+
+    <!-- SOLO TABLA -->
+    <section class='vista_tabla'>
+      <div class='tabla_datos'>
+
+        <!-- BUSQUEDA Y ACCIONES -->
+        <div class='content_search_datos'>
+          <div>
+            <button class='btn_reporte' id='btn_reporte_inventario'>¿Crear Reporte?</button>
+          </div>
+
+          <div class='content_search_btn'>
+            <input class='input_filter_table' type='text' id='busqueda_inventario' />
+            <button class='filtar_table' id='btn_search_inventario'>
+              <i class='ti-search'></i>
+              Buscar
+            </button>
+          </div>
+        </div>
+
+        <!-- TABLA -->
+        <div class='table-container'>
+          <table>
+            <thead>
+              <tr>
+                <th>No.:</th>
+                <th>Código Producto</th>
+                <th>Nombre</th>
+                <th>Marca</th>
+                <th>Existencias</th>
+                <th>No. Lotes</th>
+              </tr>
+            </thead>
+            <tbody id='tableBody_inventario'>
+              <!-- JS -->
+            </tbody>
+          </table>
+
+          <!-- PAGINACION -->
+          <div class='paginacion' id='paginacion_inventario'>
+            <button class='btn_control_paginacion' id='btn_pag_init_inv'>
+              <i class='ti-control-skip-backward'></i>
+            </button>
+            <button class='btn_control_paginacion' id='btn_saltoAnt_pag_inv'>
+              <i class='ti-control-backward'></i>
+            </button>
+            <button class='btn_control_numero active' id='pri_num_pag_inv'>1</button>
+            <button class='btn_control_numero' id='seg_num_pag_inv'>2</button>
+            <button class='btn_control_numero' id='ter_num_pag_inv'>3</button>
+            <span class='separador_paginacion'>...</span>
+            <button class='btn_control_numero' id='ultimo_num_pag_inv'>1000</button>
+            <button class='btn_control_paginacion' id='btn_saltoDes_pag_inv'>
+              <i class='ti-control-forward'></i>
+            </button>
+            <button class='btn_control_paginacion' id='btn_pag_final_inv'>
+              <i class='ti-control-skip-forward'></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
