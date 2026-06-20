@@ -153,7 +153,7 @@ const list_usuarios = async () => {
                         <button class="btn_table_edit" onclick="cargar_dUser_edit('${datos[i].cod_users}')"><i class="ti-pencil-alt"></i></button>
                     </td>
                     <td class="center_text">
-                        <button class="btn_table_delete" onclick="eliminar_usuario('${datos[i].cod_users}')"><i class="ti-trash"></i></button>
+                        <button class="btn_table_delete" onclick="eliminar_usuario('${datos[i].cod_users}')"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             `;

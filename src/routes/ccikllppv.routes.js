@@ -69,11 +69,125 @@ router.get('/kardex', isLoggedIn, async (req, res) => {
 });
 
 /* -------------------------------------------------------------------------- */
+/*                                   CLIENTES                                 */
+/* -------------------------------------------------------------------------- */
+
+// Consultamos cuantos regitros existen en la tabla de clientes...
+router.post('/count_clientes', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+	await pool.query('SELECT COUNT(*) AS total_clientes FROM clientes', (error, rows, fields) => {
+		if (!error) {
+			// Si no existe error, devolvemos la cantidad del contador.
+			res.json({ cant_clientes: rows[0]['total_clientes'] });
+		} else if (error == null) {
+			res.json({ cant_clientes: 0 });
+		} else {
+			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+			console.log(error);
+		}
+	});
+});
+
+// Guardamos los clientes...
+router.post('/g_clientes', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+	// Obtenemos los datos enviados por el usuario.
+	let cod_cliente = req.body.cod_cliente;
+	let nom_cliente = req.body.nom_cliente;
+	let tel_cliente = req.body.tel_cliente;
+	let fna_cliente = req.body.fna_cliente;
+	let fer_cliente = req.body.fecha_regis;
+	let use_cliente = req.body.user_regist;
+
+	// Creamos la consulta de validación.
+	let c_sql_p = 'SELECT * FROM clientes WHERE (tel_cliente = ?)';
+
+	// Ejecutamos las consultas SQL...
+	await pool.query(c_sql_p, [tel_cliente], (error, rows, fields) => {
+		if (!error && rows.length > 0) {
+			res.json({ mensaje: 'Ya existe el cliente con los dados proporcionados...' });
+		} else {
+			// Si no existe errror, ejecutamos la consulta para guardar.
+			pool.query(
+				'INSERT INTO clientes (codigo_cliente, nombre_cliente, tel_cliente, fnac_cliente, fecha_registro, user_registro) VALUES (?, ?, ?, ?, ?, ?)',
+				[cod_cliente, nom_cliente, tel_cliente, fna_cliente, fer_cliente, use_cliente],
+				(error, rows, fields) => {
+					if (!error) {
+						// SI NO EXISTE ERROR, DEVOLVEMOS UN JSON CON LAS FILAS OPTENIDAS.
+						res.json({ mensaje: 'Se guardo el cliente correctamente.' });
+					} else {
+						// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+						console.log(error);
+						res.json({ mensaje: error });
+					}
+				}
+			);
+		}
+	});
+});
+
+// Ruta para listar los clientes.
+router.post('/clientes', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+	let text = '%' + req.body.d_text + '%';
+
+	await pool.query('SELECT * FROM clientes WHERE nombre_cliente LIKE ?', [text], (error, rows, fields) => {
+		if (!error) {
+			// Si no existe error, devolvemos la cantidad del contador.
+			res.json({ rows });
+		} else {
+			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+			console.log(error);
+		}
+	});
+});
+
+// Ruta para editar clientes.
+router.post('/eClientes', isLoggedIn, async (req, res, next) => {
+	let cod_cliente = req.body.cod_cliente;
+	let num_cliente = req.body.num_cliente;
+	let tel_cliente = req.body.tel_cliente;
+	let fna_cliente = req.body.fna_cliente;
+
+	await pool.query(
+		'UPDATE clientes SET nombre_cliente = ?, tel_cliente = ?, fnac_cliente = ? WHERE codigo_cliente = ?',
+		[num_cliente, tel_cliente, fna_cliente, cod_cliente],
+		(error, rows, fields) => {
+			if (!error) {
+				// SI NO EXISTE ERROR, DEVOLVEMOS UN JSON CON LAS FILAS OPTENIDAS.
+				res.json({ mensaje: 'Cliente editado con exito.' });
+			} else {
+				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+				console.log(error);
+				res.json({ mensaje: error });
+			}
+		}
+	);
+});
+
+// Ruta para eliminar clientes.
+router.post('/dClientes', isLoggedIn, async (req, res, next) => {
+	let cod_cliente = req.body.cod_cliente;
+
+	await pool.query('DELETE FROM clientes WHERE codigo_cliente = ?', [cod_cliente], (error, rows, fields) => {
+		if (!error) {
+			// SI NO EXISTE ERROR, DEVOLVEMOS UN JSON CON LAS FILAS OPTENIDAS.
+			res.json({ mensaje: 'Cliente eliminado con exito.' });
+		} else {
+			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+			console.log(error);
+			res.json({ mensaje: error });
+		}
+	});
+});
+
+
+
+
+
+/* -------------------------------------------------------------------------- */
 /*                                   PROFILES                                 */
 /* -------------------------------------------------------------------------- */
 
 // Consultamos cuantos regitros existen de ventas por meses...
-router.post('/count_ventas_vec_meses', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/count_ventas_vec_meses', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let last_anio__c = req.body.n_anioc - 1;
 	let _anio__c = req.body.n_anioc;
 	let last_year = await pool.query(
@@ -91,7 +205,7 @@ router.post('/count_ventas_vec_meses', isLoggedIn, authCiudad('admin'), async (r
 });
 
 // Consultamos cuantos regitros existen de ventas por meses...
-router.post('/count_ventas_vec_todos_meses', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/count_ventas_vec_todos_meses', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let last_anio__c = req.body.n_anioc - 1;
 	let _anio__c = req.body.n_anioc;
 	// Años anteriores...
@@ -228,7 +342,7 @@ router.post('/count_ventas_vec_todos_meses', isLoggedIn, authCiudad('admin'), as
 });
 
 // Consultamos cuantos regitros existen como usuarios administradores...
-router.post('/count_administradores', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/count_administradores', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	await pool.query(
 		'SELECT COUNT(*) AS total_admin FROM users WHERE privilegio_user = "admin"',
 		(error, rows, fields) => {
@@ -246,7 +360,7 @@ router.post('/count_administradores', isLoggedIn, authCiudad('admin'), async (re
 });
 
 // Consultamos cuantos regitros existen como usuarios asistentes...
-router.post('/count_asitentes', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/count_asitentes', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	await pool.query('SELECT COUNT(*) AS total_asis FROM users WHERE privilegio_user = "asis"', (error, rows, fields) => {
 		if (!error) {
 			// Si no existe error, devolvemos la cantidad del contador.
@@ -261,7 +375,7 @@ router.post('/count_asitentes', isLoggedIn, authCiudad('admin'), async (req, res
 });
 
 // Consultamos cuantos regitros existen de servicios...
-router.post('/count_servicios', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/count_servicios', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	await pool.query(
 		'SELECT COUNT(*) AS total_servicios FROM productos WHERE categoria_producto = "servicio"',
 		(error, rows, fields) => {
@@ -279,7 +393,7 @@ router.post('/count_servicios', isLoggedIn, authCiudad('admin'), async (req, res
 });
 
 // Consultamos cuantos regitros existen  de productos tipo mary kay...
-router.post('/count_productos_mk', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/count_productos_mk', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	await pool.query(
 		'SELECT COUNT(*) AS total_productos_mk FROM productos WHERE categoria_producto = "Mary Kay"',
 		(error, rows, fields) => {
@@ -297,7 +411,7 @@ router.post('/count_productos_mk', isLoggedIn, authCiudad('admin'), async (req, 
 });
 
 // Consultamos cuantos regitros existen de compras...
-router.post('/count_inventario_no_cero', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/count_inventario_no_cero', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	await pool.query(
 		'SELECT COUNT(numlote_inventario) AS total_inventario FROM inventario WHERE existenciaslote_inventario <> 0',
 		(error, rows, fields) => {
@@ -315,7 +429,7 @@ router.post('/count_inventario_no_cero', isLoggedIn, authCiudad('admin'), async 
 });
 
 // Consultamos cuantos regitros existen de ventas...
-router.post('/dash_count_ventas', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/dash_count_ventas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	await pool.query('SELECT COUNT(DISTINCT nofactura_ventas) AS total_ventas FROM ventas', (error, rows, fields) => {
 		if (!error) {
 			// Si no existe error, devolvemos la cantidad del contador.
@@ -330,7 +444,7 @@ router.post('/dash_count_ventas', isLoggedIn, authCiudad('admin'), async (req, r
 });
 
 // Consultamos cuantos regitros existen de productos con cantidad minima...
-router.post('/count_productos_min', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/count_productos_min', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	await pool.query(
 		'SELECT * FROM productos WHERE existencia_total_lotes <= existencia_minima AND categoria_producto <> "servicio"',
 		(error, rows, fields) => {
@@ -347,12 +461,16 @@ router.post('/count_productos_min', isLoggedIn, authCiudad('admin'), async (req,
 	);
 });
 
+
+
+
+
 /* -------------------------------------------------------------------------- */
 /*                                   VENTAS                                 */
 /* -------------------------------------------------------------------------- */
 
 // Consultamos cuantos regitros existen en la tabla de productos...
-router.post('/list_clientes_ventas', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/list_clientes_ventas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let nombreC = req.body.nombreC;
 
 	if (nombreC != '') {
@@ -373,7 +491,7 @@ router.post('/list_clientes_ventas', isLoggedIn, authCiudad('admin'), async (req
 });
 
 // Consultamos cuantos regitros existen en la tabla de productos...
-router.post('/ll_clientes', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/ll_clientes', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let nombreC = req.body.nombre_cliente;
 
 	if (nombreC != '') {
@@ -394,7 +512,7 @@ router.post('/ll_clientes', isLoggedIn, authCiudad('admin'), async (req, res) =>
 });
 
 // Consultamos cuantos regitros existen en la tabla de productos...
-router.post('/list_f_productos_ventas', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/list_f_productos_ventas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let nombreP = req.body.nombreP;
 
 	if (nombreP != '') {
@@ -419,7 +537,7 @@ router.post('/list_f_productos_ventas', isLoggedIn, authCiudad('admin'), async (
 });
 
 // Consultamos el registro en la tabla de productos...
-router.post('/ll_f_productos_ventas', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/ll_f_productos_ventas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let n__p = req.body.nombre_p;
 
 	await pool.query('SELECT * FROM productos WHERE nombre_producto = ? LIMIT 25', [n__p], (error, rows, fields) => {
@@ -434,7 +552,7 @@ router.post('/ll_f_productos_ventas', isLoggedIn, authCiudad('admin'), async (re
 });
 
 // Consultamos cuantos regitros existen en la tabla de ventas...
-router.post('/count_ventas', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/count_ventas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	await pool.query('SELECT COUNT(*) AS total_ventas FROM ventas', (error, rows, fields) => {
 		if (!error) {
 			// Si no existe error, devolvemos la cantidad del contador.
@@ -449,7 +567,7 @@ router.post('/count_ventas', isLoggedIn, authCiudad('admin'), async (req, res) =
 });
 
 // Guardamos la venta...
-router.post('/g_venta', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/g_venta', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	// Guardamos en una variable todo el req.body que es el array de datos
 	let filas_ventas = req.body;
 
@@ -543,7 +661,7 @@ router.post('/g_venta', isLoggedIn, authCiudad('admin'), async (req, res) => {
 });
 
 // Consultamos los registros de las ventas...
-router.post('/list_ventas_vec', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/list_ventas_vec', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let _text_i = '%' + req.body.iS_text + '%';
 
 	await pool.query(
@@ -594,7 +712,7 @@ router.post('/list_ventas_vec', isLoggedIn, authCiudad('admin'), async (req, res
 });
 
 // Consultamos los registros de la división de las ventas..
-router.post('/l_ventas_noFactura', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/l_ventas_noFactura', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let _n_rastreo = req.body.noFactura_venta_vec;
 
 	await pool.query(
@@ -613,7 +731,7 @@ router.post('/l_ventas_noFactura', isLoggedIn, authCiudad('admin'), async (req, 
 });
 
 // Consultamos los registros de los productos de las vetnas..
-router.post('/l_ventas_noFacturaDetalle', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/l_ventas_noFacturaDetalle', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let _n_factura = req.body.noFactura_venta_vec;
 
 	await pool.query(
@@ -632,121 +750,11 @@ router.post('/l_ventas_noFacturaDetalle', isLoggedIn, authCiudad('admin'), async
 });
 
 /* -------------------------------------------------------------------------- */
-/*                                   CLIENTES                                 */
-/* -------------------------------------------------------------------------- */
-
-// Consultamos cuantos regitros existen en la tabla de clientes...
-router.post('/count_clientes', isLoggedIn, authCiudad('admin'), async (req, res) => {
-	await pool.query('SELECT COUNT(*) AS total_clientes FROM clientes', (error, rows, fields) => {
-		if (!error) {
-			// Si no existe error, devolvemos la cantidad del contador.
-			res.json({ cant_clientes: rows[0]['total_clientes'] });
-		} else if (error == null) {
-			res.json({ cant_clientes: 0 });
-		} else {
-			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-			console.log(error);
-		}
-	});
-});
-
-// Guardamos los clientes...
-router.post('/g_clientes', isLoggedIn, authCiudad('admin'), async (req, res) => {
-	// Obtenemos los datos enviados por el usuario.
-	let cod_cliente = req.body.cod_cliente;
-	let nom_cliente = req.body.nom_cliente;
-	let tel_cliente = req.body.tel_cliente;
-	let fna_cliente = req.body.fna_cliente;
-	let fer_cliente = req.body.fecha_regis;
-	let use_cliente = req.body.user_regist;
-
-	// Creamos la consulta de validación.
-	let c_sql_p = 'SELECT * FROM clientes WHERE (tel_cliente = ?)';
-
-	// Ejecutamos las consultas SQL...
-	await pool.query(c_sql_p, [tel_cliente], (error, rows, fields) => {
-		if (!error && rows.length > 0) {
-			res.json({ mensaje: 'Ya existe el cliente con los dados proporcionados...' });
-		} else {
-			// Si no existe errror, ejecutamos la consulta para guardar.
-			pool.query(
-				'INSERT INTO clientes (codigo_cliente, nombre_cliente, tel_cliente, fnac_cliente, fecha_registro, user_registro) VALUES (?, ?, ?, ?, ?, ?)',
-				[cod_cliente, nom_cliente, tel_cliente, fna_cliente, fer_cliente, use_cliente],
-				(error, rows, fields) => {
-					if (!error) {
-						// SI NO EXISTE ERROR, DEVOLVEMOS UN JSON CON LAS FILAS OPTENIDAS.
-						res.json({ mensaje: 'Se guardo el cliente correctamente.' });
-					} else {
-						// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-						console.log(error);
-						res.json({ mensaje: error });
-					}
-				}
-			);
-		}
-	});
-});
-
-// Ruta para listar los clientes.
-router.post('/clientes', isLoggedIn, authCiudad('admin'), async (req, res) => {
-	let text = '%' + req.body.d_text + '%';
-
-	await pool.query('SELECT * FROM clientes WHERE nombre_cliente LIKE ?', [text], (error, rows, fields) => {
-		if (!error) {
-			// Si no existe error, devolvemos la cantidad del contador.
-			res.json({ rows });
-		} else {
-			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-			console.log(error);
-		}
-	});
-});
-
-// Ruta para editar clientes.
-router.post('/eClientes', isLoggedIn, async (req, res, next) => {
-	let cod_cliente = req.body.cod_cliente;
-	let num_cliente = req.body.num_cliente;
-	let tel_cliente = req.body.tel_cliente;
-	let fna_cliente = req.body.fna_cliente;
-
-	await pool.query(
-		'UPDATE clientes SET nombre_cliente = ?, tel_cliente = ?, fnac_cliente = ? WHERE codigo_cliente = ?',
-		[num_cliente, tel_cliente, fna_cliente, cod_cliente],
-		(error, rows, fields) => {
-			if (!error) {
-				// SI NO EXISTE ERROR, DEVOLVEMOS UN JSON CON LAS FILAS OPTENIDAS.
-				res.json({ mensaje: 'Cliente editado con exito.' });
-			} else {
-				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-				console.log(error);
-				res.json({ mensaje: error });
-			}
-		}
-	);
-});
-
-// Ruta para eliminar clientes.
-router.post('/dClientes', isLoggedIn, async (req, res, next) => {
-	let cod_cliente = req.body.cod_cliente;
-
-	await pool.query('DELETE FROM clientes WHERE codigo_cliente = ?', [cod_cliente], (error, rows, fields) => {
-		if (!error) {
-			// SI NO EXISTE ERROR, DEVOLVEMOS UN JSON CON LAS FILAS OPTENIDAS.
-			res.json({ mensaje: 'Cliente eliminado con exito.' });
-		} else {
-			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-			console.log(error);
-			res.json({ mensaje: error });
-		}
-	});
-});
-
-/* -------------------------------------------------------------------------- */
 /*                                 PROVEEDORES                                */
 /* -------------------------------------------------------------------------- */
 
 // Consultamos cuantos regitros existen en la tabla de proveedores...
-router.post('/count_proveedores', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/count_proveedores', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	await pool.query('SELECT COUNT(*) AS total_proveedores FROM proveedores', (error, rows, fields) => {
 		if (!error) {
 			// Si no existe error, devolvemos la cantidad del contador.
@@ -761,7 +769,7 @@ router.post('/count_proveedores', isLoggedIn, authCiudad('admin'), async (req, r
 });
 
 // Guardamos los proveedores...
-router.post('/g_proveedores', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/g_proveedores', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	// Obtenemos los datos enviados por el usuario.
 	let cod_proveedor = req.body.cod_proveedor;
 	let nom_proveedor = req.body.nom_proveedor;
@@ -799,7 +807,7 @@ router.post('/g_proveedores', isLoggedIn, authCiudad('admin'), async (req, res) 
 });
 
 // Ruta para listar los proveedores.
-router.post('/proveedores', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/proveedores', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let text = '%' + req.body.d_text + '%';
 
 	await pool.query('SELECT * FROM proveedores WHERE nombre_proveedor LIKE ?', [text], (error, rows, fields) => {
@@ -858,7 +866,7 @@ router.post('/dProveedor', isLoggedIn, async (req, res, next) => {
 /* -------------------------------------------------------------------------- */
 
 // Ruta para las marcas de los proveedores...
-router.post('/list_marcas_proveedores', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/list_marcas_proveedores', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	await pool.query('SELECT marca_proveedor FROM proveedores', (error, rows, fields) => {
 		if (!error) {
 			// Si no existe error, devolvemos la cantidad del contador.
@@ -871,7 +879,7 @@ router.post('/list_marcas_proveedores', isLoggedIn, authCiudad('admin'), async (
 });
 
 // Consultamos cuantos regitros existen en la tabla de productos...
-router.post('/count_productos', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/count_productos', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	await pool.query('SELECT COUNT(*) AS total_productos FROM productos', (error, rows, fields) => {
 		if (!error) {
 			// Si no existe error, devolvemos la cantidad del contador.
@@ -886,7 +894,7 @@ router.post('/count_productos', isLoggedIn, authCiudad('admin'), async (req, res
 });
 
 // Guardamos los productos...
-router.post('/g_productos', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/g_productos', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	// Obtenemos los datos enviados por el usuario.
 	let cod_producto = req.body.cod_producto;
 	let nom_producto = req.body.nom_producto;
@@ -940,7 +948,7 @@ router.post('/g_productos', isLoggedIn, authCiudad('admin'), async (req, res) =>
 });
 
 // Ruta para listar todos los productos y servicios.
-router.post('/productos', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/productos', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let text = '%' + req.body.d_text + '%';
 
 	await pool.query('SELECT * FROM productos WHERE nombre_producto LIKE ?', [text], (error, rows, fields) => {
@@ -955,7 +963,7 @@ router.post('/productos', isLoggedIn, authCiudad('admin'), async (req, res) => {
 });
 
 // Ruta para listar los Servicios.
-router.post('/productos_servicio', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/productos_servicio', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let text = '%' + req.body.d_text + '%';
 
 	await pool.query(
@@ -974,7 +982,7 @@ router.post('/productos_servicio', isLoggedIn, authCiudad('admin'), async (req, 
 });
 
 // Ruta para listar los productos diferentes a Mary Kay y Servicios.
-router.post('/productos_d_mk_srv', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/productos_d_mk_srv', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let text = '%' + req.body.d_text + '%';
 
 	await pool.query(
@@ -993,7 +1001,7 @@ router.post('/productos_d_mk_srv', isLoggedIn, authCiudad('admin'), async (req, 
 });
 
 // Ruta para listar los Mary Kay.
-router.post('/productos_mk', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/productos_mk', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let text = '%' + req.body.d_text + '%';
 
 	await pool.query(
@@ -1069,7 +1077,7 @@ router.post('/dProductos', isLoggedIn, async (req, res, next) => {
 /* -------------------------------------------------------------------------- */
 
 // Ruta para las nombres de los proveedores...
-router.post('/list_proveedores_compras', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/list_proveedores_compras', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	await pool.query('SELECT nombre_proveedor FROM proveedores', (error, rows, fields) => {
 		if (!error) {
 			// Si no existe error, devolvemos la cantidad del contador.
@@ -1082,7 +1090,7 @@ router.post('/list_proveedores_compras', isLoggedIn, authCiudad('admin'), async 
 });
 
 // Ruta para las nombres de los proveedores...
-router.post('/cod_proveedor_compra', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/cod_proveedor_compra', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	const nompre_proveedor = req.body.nompre_proveedor;
 
 	await pool.query(
@@ -1101,7 +1109,7 @@ router.post('/cod_proveedor_compra', isLoggedIn, authCiudad('admin'), async (req
 });
 
 // Consultamos cuantos regitros existen en la tabla de productos...
-router.post('/list_f_productos', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/list_f_productos', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let nombreP = req.body.nombreP;
 
 	if (nombreP != '') {
@@ -1126,7 +1134,7 @@ router.post('/list_f_productos', isLoggedIn, authCiudad('admin'), async (req, re
 });
 
 // Consultamos el registro en la tabla de productos...
-router.post('/ll_f_productos', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/ll_f_productos', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let n__p = req.body.nombre_p;
 
 	await pool.query(
@@ -1145,7 +1153,7 @@ router.post('/ll_f_productos', isLoggedIn, authCiudad('admin'), async (req, res)
 });
 
 // Consultamos cuantos regitros existen en la tabla de compras...
-router.post('/count_compras', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/count_compras', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	await pool.query('SELECT COUNT(*) AS total_compras FROM compras', (error, rows, fields) => {
 		if (!error) {
 			// Si no existe error, devolvemos la cantidad del contador.
@@ -1160,7 +1168,7 @@ router.post('/count_compras', isLoggedIn, authCiudad('admin'), async (req, res) 
 });
 
 // Guardamos la compra...
-router.post('/g_compras', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/g_compras', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	// Guardamos en una variable todo el req.body que es el array de datos
 	let filas_compras = req.body;
 
@@ -1279,7 +1287,7 @@ router.post('/g_compras', isLoggedIn, authCiudad('admin'), async (req, res) => {
 });
 
 // Consultamos los registros de las compras...
-router.post('/list_compras_vec', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/list_compras_vec', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let _text_i = '%' + req.body.iS_text + '%';
 
 	await pool.query(
@@ -1334,7 +1342,7 @@ router.post('/list_compras_vec', isLoggedIn, authCiudad('admin'), async (req, re
 });
 
 // Consultamos los registros de la división de las compras..
-router.post('/l_compras_noFactura', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/l_compras_noFactura', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let _n_rastreo = req.body.noFactura_compra_vec;
 
 	await pool.query(
@@ -1353,7 +1361,7 @@ router.post('/l_compras_noFactura', isLoggedIn, authCiudad('admin'), async (req,
 });
 
 // Consultamos los registros de los productos de las compras..
-router.post('/l_compras_noFacturaDetalle', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/l_compras_noFacturaDetalle', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let _n_factura = req.body.noFactura_compra_vec;
 
 	await pool.query(
@@ -1384,7 +1392,7 @@ router.post('/l_compras_noFacturaDetalle', isLoggedIn, authCiudad('admin'), asyn
 /* -------------------------------------------------------------------------- */
 
 // Consultamos cuantos regitros existen en la tabla de inventarios...
-router.post('/count_inventario', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/count_inventario', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	await pool.query('SELECT COUNT(*) AS total_inventario FROM inventario', (error, rows, fields) => {
 		if (!error) {
 			// Si no existe error, devolvemos la cantidad del contador.
@@ -1399,7 +1407,7 @@ router.post('/count_inventario', isLoggedIn, authCiudad('admin'), async (req, re
 });
 
 // Consultamos el registro de existencias de productos en la tabla inventarios...
-router.post('/existenciaLotes_inventario', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/existenciaLotes_inventario', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let c__p = req.body.cod_p;
 
 	await pool.query(
@@ -1419,7 +1427,7 @@ router.post('/existenciaLotes_inventario', isLoggedIn, authCiudad('admin'), asyn
 });
 
 // Consultamos el número de lote del producto para crear uno nuevo en la tabla de inventario...
-router.post('/numeroLotes_inventario', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/numeroLotes_inventario', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let c__p = req.body.codigo_p;
 
 	await pool.query(
@@ -1439,7 +1447,7 @@ router.post('/numeroLotes_inventario', isLoggedIn, authCiudad('admin'), async (r
 });
 
 // Consultamos cuantos regitros existen en la tabla de inventario...
-router.post('/list_inventario', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/list_inventario', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let nombreP = req.body.d_text;
 
 	if (nombreP != '') {
@@ -1464,7 +1472,7 @@ router.post('/list_inventario', isLoggedIn, authCiudad('admin'), async (req, res
 });
 
 // Consultamos el registro de existencias de productos por lotes en la tabla inventarios...
-router.post('/existencia_total_lotes_inventario', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/existencia_total_lotes_inventario', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let c__p = req.body.codigo_p;
 
 	await pool.query(
@@ -1493,7 +1501,7 @@ router.post('/existencia_total_lotes_inventario', isLoggedIn, authCiudad('admin'
 });
 
 // Consultamos el registro de existencias de productos por lotes en la tabla inventarios...
-router.post('/existencia_lote_inventario', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/existencia_lote_inventario', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let c__p = req.body.codigo_p;
 
 	await pool.query(
@@ -1537,7 +1545,7 @@ router.post('/existencia_lote_inventario', isLoggedIn, authCiudad('admin'), asyn
 });
 
 // Consultamos el registro de existencias de productos por lotes en la tabla inventarios...
-router.post('/update_existencias_lotes', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/update_existencias_lotes', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let c_p_existencia_p = req.body.cod_producto;
 	let n_c_existencia_p = req.body.new_cantidad;
 	let n_l_existencia_p = req.body.num_loteInve;
@@ -1559,7 +1567,7 @@ router.post('/update_existencias_lotes', isLoggedIn, authCiudad('admin'), async 
 });
 
 // Consultamos el registro de existencias de productos por lotes en la tabla inventarios...
-router.post('/update_existencias_totales_productos', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/update_existencias_totales_productos', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let c_p_existencia_p = req.body.cod_producto;
 	let n_c_existencia_p = req.body.new_cantidad;
 
@@ -1584,7 +1592,7 @@ router.post('/update_existencias_totales_productos', isLoggedIn, authCiudad('adm
 /* -------------------------------------------------------------------------- */
 
 // Consultamos cuantos regitros existen en la tabla de kardex...
-router.post('/count_kardex', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/count_kardex', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	await pool.query('SELECT COUNT(*) AS total_kardex FROM kardex', (error, rows, fields) => {
 		if (!error) {
 			// Si no existe error, devolvemos la cantidad del contador.
@@ -1599,7 +1607,7 @@ router.post('/count_kardex', isLoggedIn, authCiudad('admin'), async (req, res) =
 });
 
 // Consultamos el número de lote del producto para crear uno nuevo en la tabla de inventario...
-router.post('/existencias_inventario', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/existencias_inventario', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let c__p = req.body.codigo_p;
 
 	await pool.query(
@@ -1622,7 +1630,7 @@ router.post('/existencias_inventario', isLoggedIn, authCiudad('admin'), async (r
 });
 
 // Consultamos cuantos regitros existen en la tabla de kardex...
-router.post('/list_kardex', isLoggedIn, authCiudad('admin'), async (req, res) => {
+router.post('/list_kardex', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
 	let nombreP = req.body.d_text;
 
 	if (nombreP != '') {

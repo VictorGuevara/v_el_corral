@@ -859,6 +859,7 @@ button.btn_pagar_pagadas:hover {
   transition: 0.5s;
 }
 
+a.btn_table_delete,
 button.btn_table_delete {
   border: none;
   border-radius: 4px;
@@ -870,12 +871,14 @@ button.btn_table_delete {
   transition: 0.3s;
 }
 
+a.btn_table_delete:hover,
 button.btn_table_delete:hover {
   background: var(--color_danger);
   cursor: pointer;
   transition: 0.3s;
 }
 
+a.btn_table_edit,
 button.btn_table_edit {
   border: none;
   border-radius: 4px;
@@ -888,6 +891,7 @@ button.btn_table_edit {
   transition: 0.3s;
 }
 
+a.btn_table_edit:hover,
 button.btn_table_edit:hover {
   background: var(--naranja);
   cursor: pointer;

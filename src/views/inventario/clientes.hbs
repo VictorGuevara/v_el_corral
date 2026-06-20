@@ -12,10 +12,10 @@
       <div class='tabla_datos'>
         <div class='content_search_datos'>
           <div>
-            <button class='btn_reporte' id='btn_reporte_clientes'>¿Crear Reporte?</button>
+            <button class='btn_reporte' id='bnt_gR_clientes'>¿Crear Reporte?</button>
           </div>
           <div class='content_search_btn'>
-            <input class='input_filter_table' type='text' id='busqueda_clientes' />
+            <input class='input_filter_table' type='text' id='i_sClientes' />
             <button class='filtar_table' id='btn_search_clientes'>
               <i class='ti-search'></i>
               Buscar
@@ -36,7 +36,7 @@
                 <th class='center_text'><i class='ti-trash'></i></th>
               </tr>
             </thead>
-            <tbody id='tableBody_clientes'></tbody>
+            <tbody id='tbody_table_clientes'></tbody>
           </table>
 
           <!-- PAGINACIÓN -->
@@ -55,15 +55,13 @@
 
       <!-- FORMULARIO -->
       <div class='formularios'>
-        <form id='form_clientes' class='form'>
+        <form id='add_clientes_form' class='form'>
           <h1>Crear Cliente</h1>
           <br />
-
-          <input type='hidden' id='cod_cliente' />
-
           <div class='input_grup'>
             <label>Nombre:</label>
-            <input type='text' id='nom_cliente' />
+            <input type='hidden' id='cod_cliente' />
+            <input type='text' id='name_cliente' />
           </div>
 
           <div class='input_grup'>
@@ -73,13 +71,13 @@
 
           <div class='input_grup'>
             <label>Fecha Nacimiento:</label>
-            <input type='date' id='fnac_cliente' />
+            <input type='date' id='fn_cliente' />
           </div>
 
           <div class='input_grup'>
-            <input type='submit' id='btn_create_cliente' value='Crear' />
-            <input type='submit' id='btn_update_cliente' value='Editar' />
-            <input type='submit' id='btn_cancel_cliente' value='Cancelar' />
+            <input type='submit' id='btn_add_cliente' value='Crear' />
+            <input type='submit' id='btn_edit_cliente' value='Editar' />
+            <input type='submit' id='bnt_cancelar_edit' value='Cancelar' />
           </div>
 
         </form>
