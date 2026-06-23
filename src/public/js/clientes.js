@@ -5,22 +5,17 @@
 /* -------------------------------------------------------------------------- */
 
 // Formulario de guardar.
+const form_clientes = document.getElementById('add_clientes_form');
+const codigo = document.getElementById('cod_cliente');
 const nombre = document.getElementById('name_cliente');
 const telefono = document.getElementById('tel_cliente');
 const fecha_nacimiento = document.getElementById('fn_cliente');
-
-// Fromulario de editar.
-const codigo_edit = document.getElementById('cod_cliente_edit');
-const nombre_edit = document.getElementById('name_cliente_edit');
-const telefono_edit = document.getElementById('tel_cliente_edit');
-const fecha_nacimiento_edit = document.getElementById('fn_cliente_edit');
 
 // Variables de utilidad.
 const btn_guardar = document.getElementById('btn_add_cliente');
 const btn_reporte_clientes = document.getElementById('bnt_gR_clientes');
 const btn_editar = document.getElementById('btn_edit_cliente');
 const btn_cancelar = document.getElementById('bnt_cancelar_edit');
-const form_clientes = document.getElementById('add_clientes_form');
 const tbody_clientes = document.getElementById('tbody_table_clientes');
 const i_sClientes = document.getElementById('i_sClientes');
 let fecha_actual = fecha_a();
@@ -127,10 +122,10 @@ const list_clientes = async () => {
 			let t_rows = datos.rows.length;
 			tbody_clientes.innerHTML = '';
 
-      let contador = 0;
+			let contador = 0;
 			for (let i = 0; i < t_rows; i++) {
-        // aumentamos el contador...
-        contador++;
+				// aumentamos el contador...
+				contador++;
 
 				tbody_clientes.innerHTML += `
                 <tr>
@@ -157,37 +152,38 @@ const list_clientes = async () => {
 // Retrazamos esta ejecución 15 milisegundos...
 setTimeout(() => {
 	list_clientes(); // Ejecutamos al inicio...
-  cancelEditClientes();
+	cancelEditClientes();
 }, 150);
 
 // Función que llena los datos en el formulario de editar...
-const ll_dEditV = (codigo, nombre, telefono, fecha_na) => {
-	form_clientes_edit.classList.remove('hidden_form');
-	form_clientes.classList.add('hidden_form');
+const ll_dEditV = (d_codigo, d_nombre, d_telefono, d_fecha_na) => {
+	// Limpiamos el formulario.
+	form_clientes.reset();
 
 	// Agregamos los datos a los campos correspondientes.
-	codigo_edit.value = '';
-	codigo_edit.value = codigo;
-	nombre_edit.value = '';
-	nombre_edit.value = nombre;
-	telefono_edit.value = '';
-	telefono_edit.value = telefono;
-	fecha_nacimiento_edit.value = '';
-	fecha_nacimiento_edit.value = fecha_na;
+	codigo.value = d_codigo;
+	nombre.value = d_nombre;
+	telefono.value = d_telefono;
+	fecha_nacimiento.value = formatearFecha(d_fecha_na, 'DD-MM-YYYY');
+
+	// Hacemos visibles los botones.
+	btn_guardar.style.display = 'none';
+	btn_editar.style.display = 'block';
+	btn_cancelar.style.display = 'block';
 };
 
 // Función editar cargas.
 const editClientes = async () => {
 	// Creamos el objeto a enviar.
 	let dU = {
-		cod_cliente: codigo_edit.value,
-		num_cliente: nombre_edit.value,
-		tel_cliente: telefono_edit.value,
-		fna_cliente: fecha_nacimiento_edit.value,
+		cod_cliente: codigo.value,
+		num_cliente: nombre.value,
+		tel_cliente: telefono.value,
+		fna_cliente: fecha_nacimiento.value,
 	};
 
 	// Consultamos...
-	await fetch('/asis/eClientes', {
+	await fetch('/acciones_inventario/eClientes', {
 		method: 'POST',
 		body: JSON.stringify(dU),
 		headers: {
@@ -197,7 +193,8 @@ const editClientes = async () => {
 		.then((response) => response.json())
 		.then((datos) => {
 			if (datos.mensaje == 'Cliente editado con exito.') {
-				Toast.fire({
+				console.log(datos.mensaje);
+				Swal.fire({
 					icon: 'success',
 					title: datos.mensaje,
 				});
@@ -212,9 +209,10 @@ const editClientes = async () => {
 
 // Función para cancelar edición de clientes.
 const cancelEditClientes = async () => {
+	form_clientes.reset();
 	btn_guardar.style.display = 'block';
-btn_editar.style.display = 'none';
-btn_cancelar.style.display = 'none';
+	btn_editar.style.display = 'none';
+	btn_cancelar.style.display = 'none';
 };
 
 // Función editar usuario.
@@ -239,7 +237,7 @@ const deleteCliente = async (codCliente) => {
 			Swal.fire('Operación Cancelada', 'No se eliminó el cliente :)', 'error');
 		} else if ((result.value = true)) {
 			// Consultamos...
-			fetch('/asis/dClientes', {
+			fetch('/acciones_inventario/dClientes', {
 				method: 'POST',
 				body: JSON.stringify(dD),
 				headers: {
@@ -260,7 +258,7 @@ const deleteCliente = async (codCliente) => {
 	});
 };
 
-// Validamos el formulario de agregar carga...
+// Validamos el formulario de agregar cliente...
 const valid_form_g_cliente = () => {
 	if (nombre.value == '') {
 		nombre.focus();
@@ -270,6 +268,19 @@ const valid_form_g_cliente = () => {
 		fecha_nacimiento.focus();
 	} else {
 		g_cliente();
+	}
+};
+
+// Validamos el formulario de editar cliente...
+const valid_form_e_cliente = () => {
+	if (nombre.value == '') {
+		nombre.focus();
+	} else if (telefono.value == '') {
+		telefono.focus();
+	} else if (fecha_nacimiento.value == '') {
+		fecha_nacimiento.focus();
+	} else {
+		editClientes();
 	}
 };
 
@@ -300,7 +311,7 @@ btn_guardar.addEventListener('click', (event) => {
 // Evento clic para el boton editar de clientes...
 btn_editar.addEventListener('click', (event) => {
 	event.preventDefault();
-	valid_form_e_clientes();
+	valid_form_e_cliente();
 });
 
 // Evento clic para el boton de cancelar edición de clientes...

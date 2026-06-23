@@ -934,7 +934,6 @@ button.btn_table_info:hover {
   transition: 0.3s;
 }
 
-
 td button.btn_delete_add,
 td a.btn_delete_add {
   display: block;
@@ -976,7 +975,7 @@ td button.btn_autiriced_j {
   transition: 0.5s;
 }
 
-td button.btn_autiriced_j:hover { 
+td button.btn_autiriced_j:hover {
   background: var(--color_celeste);
   transition: 0.5s;
 }
@@ -1002,7 +1001,7 @@ td button.btn_update_listP:hover {
   background: var(--naranja);
   color: var(--color_white);
   outline: none;
-  cursor: pointer;  
+  cursor: pointer;
   transition: 0.5s;
 }
 
@@ -1023,14 +1022,11 @@ td button.btn_add_file {
   transition: 0.5s;
 }
 
-td button.btn_add_file:hover { 
+td button.btn_add_file:hover {
   background: var(--color_celeste);
   color: var(--color_white);
   transition: 0.5s;
 }
-
-
-
 
 .center_text {
   text-align: center;

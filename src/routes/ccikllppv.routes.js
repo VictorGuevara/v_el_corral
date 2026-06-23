@@ -178,10 +178,6 @@ router.post('/dClientes', isLoggedIn, async (req, res, next) => {
 	});
 });
 
-
-
-
-
 /* -------------------------------------------------------------------------- */
 /*                                   PROFILES                                 */
 /* -------------------------------------------------------------------------- */
@@ -205,141 +201,146 @@ router.post('/count_ventas_vec_meses', isLoggedIn, authCiudad(['Administrador', 
 });
 
 // Consultamos cuantos regitros existen de ventas por meses...
-router.post('/count_ventas_vec_todos_meses', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	let last_anio__c = req.body.n_anioc - 1;
-	let _anio__c = req.body.n_anioc;
-	// Años anteriores...
-	const month01_last_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 01 AND YEAR(fecha_registro) = ' +
-			last_anio__c
-	);
-	const month02_last_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 02 AND YEAR(fecha_registro) = ' +
-			last_anio__c
-	);
-	const month03_last_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 03 AND YEAR(fecha_registro) = ' +
-			last_anio__c
-	);
-	const month04_last_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 04 AND YEAR(fecha_registro) = ' +
-			last_anio__c
-	);
-	const month05_last_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 05 AND YEAR(fecha_registro) = ' +
-			last_anio__c
-	);
-	const month06_last_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 06 AND YEAR(fecha_registro) = ' +
-			last_anio__c
-	);
-	const month07_last_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 07 AND YEAR(fecha_registro) = ' +
-			last_anio__c
-	);
-	const month08_last_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 08 AND YEAR(fecha_registro) = ' +
-			last_anio__c
-	);
-	const month09_last_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 09 AND YEAR(fecha_registro) = ' +
-			last_anio__c
-	);
-	const month10_last_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 10 AND YEAR(fecha_registro) = ' +
-			last_anio__c
-	);
-	const month11_last_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 11 AND YEAR(fecha_registro) = ' +
-			last_anio__c
-	);
-	const month12_last_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 12 AND YEAR(fecha_registro) = ' +
-			last_anio__c
-	);
+router.post(
+	'/count_ventas_vec_todos_meses',
+	isLoggedIn,
+	authCiudad(['Administrador', 'Contador']),
+	async (req, res) => {
+		let last_anio__c = req.body.n_anioc - 1;
+		let _anio__c = req.body.n_anioc;
+		// Años anteriores...
+		const month01_last_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 01 AND YEAR(fecha_registro) = ' +
+				last_anio__c
+		);
+		const month02_last_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 02 AND YEAR(fecha_registro) = ' +
+				last_anio__c
+		);
+		const month03_last_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 03 AND YEAR(fecha_registro) = ' +
+				last_anio__c
+		);
+		const month04_last_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 04 AND YEAR(fecha_registro) = ' +
+				last_anio__c
+		);
+		const month05_last_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 05 AND YEAR(fecha_registro) = ' +
+				last_anio__c
+		);
+		const month06_last_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 06 AND YEAR(fecha_registro) = ' +
+				last_anio__c
+		);
+		const month07_last_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 07 AND YEAR(fecha_registro) = ' +
+				last_anio__c
+		);
+		const month08_last_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 08 AND YEAR(fecha_registro) = ' +
+				last_anio__c
+		);
+		const month09_last_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 09 AND YEAR(fecha_registro) = ' +
+				last_anio__c
+		);
+		const month10_last_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 10 AND YEAR(fecha_registro) = ' +
+				last_anio__c
+		);
+		const month11_last_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 11 AND YEAR(fecha_registro) = ' +
+				last_anio__c
+		);
+		const month12_last_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 12 AND YEAR(fecha_registro) = ' +
+				last_anio__c
+		);
 
-	// Años actuales...
-	const month01_current_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 01 AND YEAR(fecha_registro) = ' +
-			_anio__c
-	);
-	const month02_current_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 02 AND YEAR(fecha_registro) = ' +
-			_anio__c
-	);
-	const month03_current_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 03 AND YEAR(fecha_registro) = ' +
-			_anio__c
-	);
-	const month04_current_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 04 AND YEAR(fecha_registro) = ' +
-			_anio__c
-	);
-	const month05_current_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 05 AND YEAR(fecha_registro) = ' +
-			_anio__c
-	);
-	const month06_current_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 06 AND YEAR(fecha_registro) = ' +
-			_anio__c
-	);
-	const month07_current_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 07 AND YEAR(fecha_registro) = ' +
-			_anio__c
-	);
-	const month08_current_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 08 AND YEAR(fecha_registro) = ' +
-			_anio__c
-	);
-	const month09_current_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 09 AND YEAR(fecha_registro) = ' +
-			_anio__c
-	);
-	const month10_current_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 10 AND YEAR(fecha_registro) = ' +
-			_anio__c
-	);
-	const month11_current_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 11 AND YEAR(fecha_registro) = ' +
-			_anio__c
-	);
-	const month12_current_year = await pool.query(
-		'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 12 AND YEAR(fecha_registro) = ' +
-			_anio__c
-	);
+		// Años actuales...
+		const month01_current_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 01 AND YEAR(fecha_registro) = ' +
+				_anio__c
+		);
+		const month02_current_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 02 AND YEAR(fecha_registro) = ' +
+				_anio__c
+		);
+		const month03_current_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 03 AND YEAR(fecha_registro) = ' +
+				_anio__c
+		);
+		const month04_current_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 04 AND YEAR(fecha_registro) = ' +
+				_anio__c
+		);
+		const month05_current_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 05 AND YEAR(fecha_registro) = ' +
+				_anio__c
+		);
+		const month06_current_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 06 AND YEAR(fecha_registro) = ' +
+				_anio__c
+		);
+		const month07_current_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 07 AND YEAR(fecha_registro) = ' +
+				_anio__c
+		);
+		const month08_current_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 08 AND YEAR(fecha_registro) = ' +
+				_anio__c
+		);
+		const month09_current_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 09 AND YEAR(fecha_registro) = ' +
+				_anio__c
+		);
+		const month10_current_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 10 AND YEAR(fecha_registro) = ' +
+				_anio__c
+		);
+		const month11_current_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 11 AND YEAR(fecha_registro) = ' +
+				_anio__c
+		);
+		const month12_current_year = await pool.query(
+			'SELECT COUNT(DISTINCT nofactura_ventas) AS count_ventas_m FROM ventas WHERE MONTH(fecha_registro) = 12 AND YEAR(fecha_registro) = ' +
+				_anio__c
+		);
 
-	// Creamos los array de los meses...
-	let meses_anteriores = [
-		month01_last_year,
-		month02_last_year,
-		month03_last_year,
-		month04_last_year,
-		month05_last_year,
-		month06_last_year,
-		month07_last_year,
-		month08_last_year,
-		month09_last_year,
-		month10_last_year,
-		month11_last_year,
-		month12_last_year,
-	];
-	let meses_actuales = [
-		month01_current_year,
-		month02_current_year,
-		month03_current_year,
-		month04_current_year,
-		month05_current_year,
-		month06_current_year,
-		month07_current_year,
-		month08_current_year,
-		month09_current_year,
-		month10_current_year,
-		month11_current_year,
-		month12_current_year,
-	];
+		// Creamos los array de los meses...
+		let meses_anteriores = [
+			month01_last_year,
+			month02_last_year,
+			month03_last_year,
+			month04_last_year,
+			month05_last_year,
+			month06_last_year,
+			month07_last_year,
+			month08_last_year,
+			month09_last_year,
+			month10_last_year,
+			month11_last_year,
+			month12_last_year,
+		];
+		let meses_actuales = [
+			month01_current_year,
+			month02_current_year,
+			month03_current_year,
+			month04_current_year,
+			month05_current_year,
+			month06_current_year,
+			month07_current_year,
+			month08_current_year,
+			month09_current_year,
+			month10_current_year,
+			month11_current_year,
+			month12_current_year,
+		];
 
-	await res.json({ total_ventasVec_m_last_year: meses_anteriores, total_ventasVec_m_current_year: meses_actuales });
-});
+		await res.json({ total_ventasVec_m_last_year: meses_anteriores, total_ventasVec_m_current_year: meses_actuales });
+	}
+);
 
 // Consultamos cuantos regitros existen como usuarios administradores...
 router.post('/count_administradores', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
@@ -460,10 +461,6 @@ router.post('/count_productos_min', isLoggedIn, authCiudad(['Administrador', 'Co
 		}
 	);
 });
-
-
-
-
 
 /* -------------------------------------------------------------------------- */
 /*                                   VENTAS                                 */
@@ -1472,11 +1469,15 @@ router.post('/list_inventario', isLoggedIn, authCiudad(['Administrador', 'Contad
 });
 
 // Consultamos el registro de existencias de productos por lotes en la tabla inventarios...
-router.post('/existencia_total_lotes_inventario', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	let c__p = req.body.codigo_p;
+router.post(
+	'/existencia_total_lotes_inventario',
+	isLoggedIn,
+	authCiudad(['Administrador', 'Contador']),
+	async (req, res) => {
+		let c__p = req.body.codigo_p;
 
-	await pool.query(
-		`
+		await pool.query(
+			`
 			SELECT 
 				SUM(existenciaslote_inventario) AS exitencia_total, 
 				codproducto_inventario
@@ -1485,20 +1486,21 @@ router.post('/existencia_total_lotes_inventario', isLoggedIn, authCiudad(['Admin
 			WHERE 
 				codproducto_inventario = ?
 		`,
-		[c__p],
-		(error, rows, fields) => {
-			if (!error && rows[0]['exitencia_total'] != null) {
-				console.log(rows[0]['exitencia_total']);
-				// Si no existe error, devolvemos la cantidad del contador.
-				res.json({ existencias: rows[0]['exitencia_total'], codigo_producto: rows[0]['codproducto_inventario'] });
-			} else {
-				res.json({ existencias: 0, codigo_producto: 0 });
-				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-				console.log(error);
+			[c__p],
+			(error, rows, fields) => {
+				if (!error && rows[0]['exitencia_total'] != null) {
+					console.log(rows[0]['exitencia_total']);
+					// Si no existe error, devolvemos la cantidad del contador.
+					res.json({ existencias: rows[0]['exitencia_total'], codigo_producto: rows[0]['codproducto_inventario'] });
+				} else {
+					res.json({ existencias: 0, codigo_producto: 0 });
+					// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+					console.log(error);
+				}
 			}
-		}
-	);
-});
+		);
+	}
+);
 
 // Consultamos el registro de existencias de productos por lotes en la tabla inventarios...
 router.post('/existencia_lote_inventario', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
@@ -1567,25 +1569,30 @@ router.post('/update_existencias_lotes', isLoggedIn, authCiudad(['Administrador'
 });
 
 // Consultamos el registro de existencias de productos por lotes en la tabla inventarios...
-router.post('/update_existencias_totales_productos', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	let c_p_existencia_p = req.body.cod_producto;
-	let n_c_existencia_p = req.body.new_cantidad;
+router.post(
+	'/update_existencias_totales_productos',
+	isLoggedIn,
+	authCiudad(['Administrador', 'Contador']),
+	async (req, res) => {
+		let c_p_existencia_p = req.body.cod_producto;
+		let n_c_existencia_p = req.body.new_cantidad;
 
-	await pool.query(
-		'UPDATE productos SET existencia_total_lotes = ? WHERE codigo_producto = ?',
-		[n_c_existencia_p, c_p_existencia_p],
-		(error, rows, fields) => {
-			if (!error) {
-				// Si no existe error, devolvemos la cantidad del contador.
-				res.json({ mensaje: 'Se actualizo la existencia de producto' });
-			} else {
-				res.json({ mensaje: 'Error, no se actualizo' });
-				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-				console.log(error);
+		await pool.query(
+			'UPDATE productos SET existencia_total_lotes = ? WHERE codigo_producto = ?',
+			[n_c_existencia_p, c_p_existencia_p],
+			(error, rows, fields) => {
+				if (!error) {
+					// Si no existe error, devolvemos la cantidad del contador.
+					res.json({ mensaje: 'Se actualizo la existencia de producto' });
+				} else {
+					res.json({ mensaje: 'Error, no se actualizo' });
+					// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+					console.log(error);
+				}
 			}
-		}
-	);
-});
+		);
+	}
+);
 
 /* -------------------------------------------------------------------------- */
 /*                                    kARDEX                                  */
