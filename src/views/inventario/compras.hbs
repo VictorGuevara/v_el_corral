@@ -26,164 +26,195 @@
 					</div>
 				</div>
 				<!-- <form class="formne" action="/link/add" method="POST" autocomplete="off"> -->
-				<form class="formne" autocomplete="off" id="">
-					<button type="submit" disabled class="none" aria-hidden="true"></button>
-							<h4><span class="ti-write"></span> Datos de factura:</h4>
-							<div class="input_grup_3">
-								<div class="input_group">
-									<label for="noFacturaCompra">No. Factura:</label>
-									<input id="noFacturaCompra" type="text" placeholder="*">
-								</div>
-								<div class="input_group">
-									<label for="nombreProveedorCompra">Nombre Proveedor</label>
-                                    <input type="hidden" id="codigoProveedorCompra">
-									<input class="Minicial" id="nombreProveedorCompra" type="text" placeholder="*" list="nombres_proveedores">
-								</div>
-								<div class="input_group">
-									<label for="city_csv">Tipo De Compra:</label>
-                                    <select id="tipo_compra">
-                                        <option value="contado">Contado</option>
-                                        <option value="credito">Crédito</option>
-                                    </select>
-								</div>
-							</div>
-							<datalist id="nombres_proveedores"></datalist>
-							
-							<h4><span class="ti-write"></span> Datos de compra al crédito:</h4>
-							<div class="input_grup_4">
-								<div class="input_group">
-									<label for="pPagoCompra">Periodo De Pago:</label>
-									<input id="pPagoCompra" type="text" placeholder="*" list="periodo_pago">
-								</div>
-								<div class="input_group">
-									<input type="hidden" id="codId_cusa">
-									<label for="noCuotasCompra">No. Cuotas:</label>
-									<input id="noCuotasCompra" type="number" placeholder="*" list="cuotas">
-								</div>
-								<div class="input_group">
-									<label for="fInPagoCompra">Inicio De Pago:</label>
-									<input id="fInPagoCompra" type="date" placeholder="*">
-								</div>
-                                <div class="input_group">
-									<label for="estadoCompraCred">Estatus:</label>
-									<input id="estadoCompraCred" type="text" placeholder="*" list="estatus">
-								</div>
-							</div>
-                            <datalist id="periodo_pago">
-                                <option value="Semanal"></option>
-                                <option value="Quincenal"></option>
-                                <option value="Mensual"></option>
-                            </datalist>
-                            <datalist id="cuotas">
-                                <option value="2"></option>
-                                <option value="4"></option>
-                                <option value="6"></option>
-                                <option value="8"></option>
-                                <option value="10"></option>
-                                <option value="11"></option>
-                                <option value="12"></option>
-                                <option value="13"></option>
-                                <option value="14"></option>
-                                <option value="15"></option>
-                                <option value="16"></option>
-                                <option value="17"></option>
-                                <option value="18"></option>
-                                <option value="19"></option>
-                                <option value="20"></option>
-                            </datalist>
-							<datalist id="estatus">
-                                <option value="No Iniciado"></option>
-                                <option value="Iniciado"></option>
-                            </datalist>
-							<h4><span class="ti-write"></span> Detalles de la Compra:</h4>
-							<div>
-								<table>
-									<thead>
-										<tr>
-											<th>Nombre P.</th>
-											<th>Valor U.</th>
-											<th>Tipo P.</th>
-											<th>Cant. P.</th>
-											<th>Subtotal</th>
-											<th>-</th>
-										</tr>
-									</thead>
-									<tbody id="body_aadFC_es_principal">
-										<tr id="file_aadFC_es_principal">
-											<td>
-												<input type="hidden" id="cod_producto_compra">
-												<span class="title_file_detalle_enc">Nompre del producto:</span>
-												<input class="Minicial" id="nombreP_Pcompra" type="text" placeholder="*" list="lista_productos" onkeyup="ll_productos(this)" ondblclick="lf(this)">
-											</td>
-											<td><span class="title_file_detalle_enc">Valor unitario:</span><input id="valosU_Pcompra" type="text" placeholder="*" onkeyup="sumatorias()"></td>
-											<td>
-												<span class="title_file_detalle_enc">Tipo  de producto:</span>
-												<input class="Minicial" id="tipo_Pcompra" type="text" placeholder="*" disabled="disabled">
-												<input type="hidden" id="marca_Pcompra">
-												<input type="hidden" id="existencia_Pcompra">
-												<input type="hidden" id="noLotes_Pcompra">
-											</td>
-											<td><span class="title_file_detalle_enc">Cantidad:</span><input id="cantidad_Pcompra" type="number" placeholder="*" onkeyup="sumatorias()"></td>
-											<td><span class="title_file_detalle_enc">Subtotal</span><input id="subTotal_Pcompra" type="text" placeholder="*" disabled="disabled"></td>
-											<td>
-												<a id="btn_eliminar_fila_Pcompra" class="btn_delete_add" onclick="deleteRowCompra(this)">Quitar F.</a>
-											</td>
-										</tr>
-									</tbody>
-									<datalist id="lista_productos">
-										<!-- Aqui se llena los datos desde javascript -->
-									</datalist>
-									<tbody>
-										<tr class="tcde_tr_fcBtnAdd_btnQuestions">
-											<td colspan="2" class="td_oservaciones dm_oculto">Observaciones:</td>
-											<td colspan="2">
-												<button class="btn_update_listP" id="bnt_upd_dlProducto">
-													Actualizar Productos
-													<span id="span_btn_aj" class="ti-arrow-up active_r"></span>
-												</button>
-											</td>
-											<td colspan="2" class="fc_btn_add">
-												<button id="btnAddFile" class="btn_add_file">Agregar Fila</button>
-											</td>
-										</tr>
-									</tbody>
-									<tbody>
-										<tr>
-											<td colspan="6">
-												<textarea class="textarea_observaciones_encsv" id="observaciones_compra" rows="5" placeholder="Escribe las observaciones de la compra aqui:"></textarea>
-											</td>
-										</tr>
-									</tbody>
-									<tbody>
-										<tr>
-											<td colspan="2"></td>
-											<td class="monto_subTotal">
-                                                <span>Subtotal:</span>
-												<span class="ssdt">$</span>
-												<span id="tsub_compraCocoa">0.00</span>
-											</td>
-											<td class="monto_descuento">
-                                                <span>Descuento:</span>
-												<span class="ssdt">$</span>
-												<span id="tdes_compraCocoa">0.00</span>
-											</td>
-											<td colspan="2" class="monto_totalC">
-                                                <span>Total Compra:</span>
-												<span class="ssdt">$</span>
-												<span id="total_compraVeterinaria">0.00</span>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div class="input_group">
-								<input type="submit" id="btn_guardar_compra" value="Agregar Compra">
-							</div>
-						</form>
+				<form class='formne' autocomplete='off' id=''>
+					<button type='submit' disabled class='none' aria-hidden='true'></button>
+					<h4><span class='ti-write'></span> Datos de factura:</h4>
+					<div class='input_grup_3'>
+						<div class='input_group'>
+							<label for='noFacturaCompra'>No. Factura:</label>
+							<input id='noFacturaCompra' type='text' placeholder='*' />
+						</div>
+						<div class='input_group'>
+							<label for='nombreProveedorCompra'>Nombre Proveedor</label>
+							<input type='hidden' id='codigoProveedorCompra' />
+							<input
+								class='Minicial'
+								id='nombreProveedorCompra'
+								type='text'
+								placeholder='*'
+								list='nombres_proveedores'
+							/>
+						</div>
+						<div class='input_group'>
+							<label for='city_csv'>Tipo De Compra:</label>
+							<select id='tipo_compra'>
+								<option value='contado'>Contado</option>
+								<option value='credito'>Crédito</option>
+							</select>
+						</div>
+					</div>
+					<datalist id='nombres_proveedores'></datalist>
+
+					<h4><span class='ti-write'></span> Datos de compra al crédito:</h4>
+					<div class='input_grup_4'>
+						<div class='input_group'>
+							<label for='pPagoCompra'>Periodo De Pago:</label>
+							<input id='pPagoCompra' type='text' placeholder='*' list='periodo_pago' />
+						</div>
+						<div class='input_group'>
+							<input type='hidden' id='codId_cusa' />
+							<label for='noCuotasCompra'>No. Cuotas:</label>
+							<input id='noCuotasCompra' type='number' placeholder='*' list='cuotas' />
+						</div>
+						<div class='input_group'>
+							<label for='fInPagoCompra'>Inicio De Pago:</label>
+							<input id='fInPagoCompra' type='date' placeholder='*' />
+						</div>
+						<div class='input_group'>
+							<label for='estadoCompraCred'>Estatus:</label>
+							<input id='estadoCompraCred' type='text' placeholder='*' list='estatus' />
+						</div>
+					</div>
+					<datalist id='periodo_pago'>
+						<option value='Semanal'></option>
+						<option value='Quincenal'></option>
+						<option value='Mensual'></option>
+					</datalist>
+					<datalist id='cuotas'>
+						<option value='2'></option>
+						<option value='4'></option>
+						<option value='6'></option>
+						<option value='8'></option>
+						<option value='10'></option>
+						<option value='11'></option>
+						<option value='12'></option>
+						<option value='13'></option>
+						<option value='14'></option>
+						<option value='15'></option>
+						<option value='16'></option>
+						<option value='17'></option>
+						<option value='18'></option>
+						<option value='19'></option>
+						<option value='20'></option>
+					</datalist>
+					<datalist id='estatus'>
+						<option value='No Iniciado'></option>
+						<option value='Iniciado'></option>
+					</datalist>
+					<h4><span class='ti-write'></span> Detalles de la Compra:</h4>
+					<div>
+						<table>
+							<thead>
+								<tr>
+									<th>Nombre P.</th>
+									<th>Valor U.</th>
+									<th>Tipo P.</th>
+									<th>Cant. P.</th>
+									<th>Subtotal</th>
+									<th>-</th>
+								</tr>
+							</thead>
+							<tbody id='body_aadFC_es_principal'>
+								<tr id='file_aadFC_es_principal'>
+									<td>
+										<input type='hidden' id='cod_producto_compra' />
+										<span class='title_file_detalle_enc'>Nompre del producto:</span>
+										<input
+											class='Minicial'
+											id='nombreP_Pcompra'
+											type='text'
+											placeholder='*'
+											list='lista_productos'
+											onkeyup='ll_productos(this)'
+											ondblclick='lf(this)'
+										/>
+									</td>
+									<td><span class='title_file_detalle_enc'>Valor unitario:</span><input
+											id='valosU_Pcompra'
+											type='text'
+											placeholder='*'
+											onkeyup='sumatorias()'
+										/></td>
+									<td>
+										<span class='title_file_detalle_enc'>Tipo de producto:</span>
+										<input class='Minicial' id='tipo_Pcompra' type='text' placeholder='*' disabled='disabled' />
+										<input type='hidden' id='marca_Pcompra' />
+										<input type='hidden' id='existencia_Pcompra' />
+										<input type='hidden' id='noLotes_Pcompra' />
+									</td>
+									<td><span class='title_file_detalle_enc'>Cantidad:</span><input
+											id='cantidad_Pcompra'
+											type='number'
+											placeholder='*'
+											onkeyup='sumatorias()'
+										/></td>
+									<td><span class='title_file_detalle_enc'>Subtotal</span><input
+											id='subTotal_Pcompra'
+											type='text'
+											placeholder='*'
+											disabled='disabled'
+										/></td>
+									<td>
+										<a id='btn_eliminar_fila_Pcompra' class='btn_delete_add' onclick='deleteRowCompra(this)'>Quitar F.</a>
+									</td>
+								</tr>
+							</tbody>
+							<datalist id='lista_productos'>
+								<!-- Aqui se llena los datos desde javascript -->
+							</datalist>
+							<tbody>
+								<tr class='tcde_tr_fcBtnAdd_btnQuestions'>
+									<td colspan='2' class='td_oservaciones dm_oculto'>Observaciones:</td>
+									<td colspan='2'>
+										<button class='btn_update_listP' id='bnt_upd_dlProducto'>
+											Actualizar Productos
+											<span id='span_btn_aj' class='ti-arrow-up active_r'></span>
+										</button>
+									</td>
+									<td colspan='2' class='fc_btn_add'>
+										<button id='btnAddFile' class='btn_add_file'>Agregar Fila</button>
+									</td>
+								</tr>
+							</tbody>
+							<tbody>
+								<tr>
+									<td colspan='6'>
+										<textarea
+											class='textarea_observaciones_encsv'
+											id='observaciones_compra'
+											rows='5'
+											placeholder='Escribe las observaciones de la compra aqui:'
+										></textarea>
+									</td>
+								</tr>
+							</tbody>
+							<tbody>
+								<tr>
+									<td colspan='2'></td>
+									<td class='monto_subTotal'>
+										<span>Subtotal:</span>
+										<span class='ssdt'>$</span>
+										<span id='tsub_compraVeterinaria'>0.00</span>
+									</td>
+									<td class='monto_descuento'>
+										<span>Descuento:</span>
+										<span class='ssdt'>$</span>
+										<span id='tdes_compraVeterinaria'>0.00</span>
+									</td>
+									<td colspan='2' class='monto_totalC'>
+										<span>Total Compra:</span>
+										<span class='ssdt'>$</span>
+										<span id='total_compraVeterinaria'>0.00</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class='input_group'>
+						<input type='submit' id='btn_guardar_compra' value='Agregar Compra' />
+					</div>
+				</form>
 			</div>
 		</section>
 	</main>
 </div>
-
-
-

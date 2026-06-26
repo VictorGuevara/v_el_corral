@@ -16,11 +16,11 @@
         <!-- BUSCADOR + ACCIONES -->
         <div class='content_search_datos'>
           <div>
-            <button class='btn_reporte' id='btn_reporte_productos'>¿Crear Reporte?</button>
+            <button class='btn_reporte' id='bnt_gR_productos'>¿Crear Reporte?</button>
           </div>
 
           <div class='content_search_btn'>
-            <input class='input_filter_table' type='text' id='busqueda_productos' />
+            <input class='input_filter_table' type='text' id='i_sProductos' />
             <button class='filtar_table' id='btn_search_productos'>
               <i class='ti-search'></i>
               Buscar
@@ -30,15 +30,15 @@
 
         <!-- FILTROS (adaptados) -->
         <div class='content_search_datos'>
-          <div>
-            <input type='checkbox' id='chk_servicios' />
-            <label for='chk_servicios'>Servicios</label>
+          <div class='filtros_productos'>
+            <input type='checkbox' id='chk_proandser' />
+            <label for='chk_proandser'>Todos</label>
 
             <input type='checkbox' id='chk_productos' />
             <label for='chk_productos'>Productos</label>
 
-            <input type='checkbox' id='chk_marykay' />
-            <label for='chk_marykay'>Mary Kay</label>
+            <input type='checkbox' id='chk_servicios' />
+            <label for='chk_servicios'>Servicios</label>
           </div>
         </div>
 
@@ -93,10 +93,9 @@
           <h1>Crear Producto</h1>
           <br />
 
-          <input type='hidden' id='id_producto' />
-
           <div class='input_grup'>
             <label>Nombre:</label>
+            <input type='hidden' id='cod_producto' />
             <input type='text' id='name_producto' placeholder='Nombre del producto' />
           </div>
 
@@ -136,7 +135,6 @@
         <!-- DATALIST -->
         <datalist id='categorias'>
           <option value='Servicio'></option>
-          <option value='Mary Kay'></option>
           <option value='Otros Productos'></option>
         </datalist>
 

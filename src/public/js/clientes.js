@@ -126,6 +126,7 @@ const list_clientes = async () => {
 			for (let i = 0; i < t_rows; i++) {
 				// aumentamos el contador...
 				contador++;
+				let format_fecha = fecha_a(datos.rows[i].fnac_cliente);
 
 				tbody_clientes.innerHTML += `
                 <tr>
@@ -133,7 +134,7 @@ const list_clientes = async () => {
                     <td>${datos.rows[i].codigo_cliente}</td>
                     <td>${datos.rows[i].nombre_cliente}</td>
                     <td>${datos.rows[i].tel_cliente}</td>
-                    <td>${datos.rows[i].fnac_cliente}</td>
+                    <td>${format_fecha}</td>
                     <td class="center_text">
                         <a onclick="ll_dEditV('${datos.rows[i].codigo_cliente}', '${datos.rows[i].nombre_cliente}', '${datos.rows[i].tel_cliente}', '${datos.rows[i].fnac_cliente}')" class="btn_table_edit"><i class="fa-solid fa-pen-to-square"></i></a>
                     </td>
@@ -301,6 +302,12 @@ const reporte_clientes_pdf = async () => {
 /*                             EVENTOS LISTENER                               */
 /*                                                                            */
 /* -------------------------------------------------------------------------- */
+
+// Evento clic para el boton guardar de clientes...
+i_sClientes.addEventListener('input', (event) => {
+	event.preventDefault();
+	list_clientes();
+});
 
 // Evento clic para el boton guardar de clientes...
 btn_guardar.addEventListener('click', (event) => {

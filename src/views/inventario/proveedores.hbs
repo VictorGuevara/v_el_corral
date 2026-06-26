@@ -19,7 +19,7 @@
             <button class='btn_reporte' id='btn_reporte_proveedores'>¿Crear Reporte?</button>
           </div>
           <div class='content_search_btn'>
-            <input class='input_filter_table' type='text' id='busqueda_proveedores' />
+            <input class='input_filter_table' type='text' id='i_sProveedores' />
             <button class='filtar_table' id='btn_search_proveedores'>
               <i class='ti-search'></i>
               Buscar
@@ -72,14 +72,11 @@
       <!-- FORMULARIO -->
       <div class='formularios'>
         <form id='form_proveedores' class='form'>
-
           <h1>Crear Proveedor</h1>
           <br />
-
-          <input type='hidden' id='id_proveedor' />
-
           <div class='input_grup'>
             <label>Nombre del proveedor:</label>
+            <input type='hidden' id='cod_proveedor' />
             <input type='text' id='name_proveedor' placeholder='Nombre del proveedor' />
           </div>
 

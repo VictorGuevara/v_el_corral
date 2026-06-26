@@ -1427,3 +1427,37 @@ article.card .badge_noVerified {
   font-size: 18px;
   font-weight: bold;
 }
+
+.filtros_productos {
+  padding: 25px 0 15px 0;
+}
+
+.filtros_productos :is(input[type='checkbox']) {
+  width: 14px;
+  display: none;
+}
+
+.filtros_productos :is(span) {
+  position: relative;
+  top: 2px;
+}
+
+.filtros_productos :is(label) {
+  color: var(--main_color);
+  font-weight: bold;
+  margin-right: 20px;
+}
+
+.filtros_productos :is(label:hover) {
+  color: #57a0db;
+}
+
+.filtros_productos #chk_proandser:checked + label,
+.filtros_productos #chk_servicios:checked + label,
+.filtros_productos #chk_productos:checked + label {
+  background: var(--main_color);
+  color: var(--color_white);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 17px;
+}
