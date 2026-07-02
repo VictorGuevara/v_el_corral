@@ -1090,6 +1090,286 @@ router.post('/l_compras_noFacturaDetalle', isLoggedIn, authCiudad(['Administrado
 /* -------------------------------------------------------------------------- */
 
 /* -------------------------------------------------------------------------- */
+/*                                   VENTAS                                 */
+/* -------------------------------------------------------------------------- */
+
+// Consultamos cuantos regitros existen en la tabla de productos...
+router.post('/list_clientes_ventas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+	let nombreC = req.body.nombreC;
+
+	if (nombreC != '') {
+		nombreC = '%' + req.body.nombreC + '%';
+	} else {
+		nombreC = '%a%';
+	}
+
+	await pool.query('SELECT * FROM clientes WHERE nombre_cliente LIKE ? LIMIT 25', [nombreC], (error, rows, fields) => {
+		if (!error) {
+			// Si no existe error, devolvemos la cantidad del contador.
+			res.json({ rows });
+		} else {
+			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+			console.log(error);
+		}
+	});
+});
+
+// Consultamos cuantos regitros existen en la tabla de productos...
+router.post('/ll_clientes', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+	let nombreC = req.body.nombre_cliente;
+
+	if (nombreC != '') {
+		nombreC = '%' + nombreC + '%';
+	} else {
+		nombreC = '%a%';
+	}
+
+	await pool.query('SELECT * FROM clientes WHERE nombre_cliente LIKE ? LIMIT 25', [nombreC], (error, rows, fields) => {
+		if (!error) {
+			// Si no existe error, devolvemos la cantidad del contador.
+			res.json({ rows });
+		} else {
+			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+			console.log(error);
+		}
+	});
+});
+
+// Consultamos cuantos regitros existen en la tabla de productos...
+router.post('/list_f_productos_ventas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+	let nombreP = req.body.nombreP;
+
+	if (nombreP != '') {
+		nombreP = '%' + req.body.nombreP + '%';
+	} else {
+		nombreP = '%a%';
+	}
+
+	await pool.query(
+		'SELECT * FROM productos WHERE nombre_producto LIKE ? LIMIT 25',
+		[nombreP],
+		(error, rows, fields) => {
+			if (!error) {
+				// Si no existe error, devolvemos la cantidad del contador.
+				res.json({ rows });
+			} else {
+				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+				console.log(error);
+			}
+		}
+	);
+});
+
+// Consultamos el registro en la tabla de productos...
+router.post('/ll_f_productos_ventas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+	let n__p = req.body.nombre_p;
+
+	await pool.query('SELECT * FROM productos WHERE nombre_producto = ? LIMIT 25', [n__p], (error, rows, fields) => {
+		if (!error) {
+			// Si no existe error, devolvemos la cantidad del contador.
+			res.json({ rows });
+		} else {
+			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+			console.log(error);
+		}
+	});
+});
+
+// Consultamos cuantos regitros existen en la tabla de ventas...
+router.post('/count_ventas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+	await pool.query('SELECT COUNT(*) AS total_ventas FROM ventas', (error, rows, fields) => {
+		if (!error) {
+			// Si no existe error, devolvemos la cantidad del contador.
+			res.json({ cant_ventas: rows[0]['total_ventas'] });
+		} else if (error == null) {
+			res.json({ cant_ventas: 0 });
+		} else {
+			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+			console.log(error);
+		}
+	});
+});
+
+// Guardamos la venta...
+router.post('/g_venta', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+	// Guardamos en una variable todo el req.body que es el array de datos
+	let filas_ventas = req.body;
+
+	let cod_venta = req.body[0][0];
+	let no_factura = req.body[0][1];
+
+	// Hacemos una validación del número de paquete para que no se repita...
+	await pool.query(
+		`SELECT codigo_ventas FROM compras WHERE (codigo_ventas = ?)`,
+		[cod_venta],
+		async (error, rows, fields) => {
+			// Validamos:
+			if (!error && rows.length > 0) {
+				res.json({ mensaje: 'Ya existe el codigo o numero de factura para la venta...' });
+			} else {
+				// Ejecutamos la consulta para guardar la encomienda...
+				await pool.query(
+					`
+					INSERT INTO ventas (
+						codigo_ventas,
+						nofactura_ventas,
+						codcliente_ventas,
+						nombrecliente_ventas,
+						telcliente_ventas,
+						codigo_producto_ventas,
+						nombre_producto_ventas,
+						vUnit_producto_ventas,
+						tipo_producto_ventas,
+						marca_producto_ventas,
+						cant_producto_ventas,
+						subt_producto_ventas,
+						subtotal_ventas,
+						descuento_ventas,
+						total_ventas,
+						fecha_registro,
+						user_registro
+					) VALUES ?
+				`,
+					[filas_ventas[0]],
+					async (error, rows, fields) => {
+						if (filas_ventas[1].length > 0) {
+							if (!error) {
+								await pool.query(
+									`
+								INSERT INTO kardex (
+									codigo_kardex,
+									codigo_producto,
+									nombre_producto,
+									exitencia_minima,
+									fecha_movimiento,
+									fechahora_movimiento,
+									detalle_kardex,
+									entrada_cantidad,
+									entrada_valor_unitario,
+									entrada_valor_total,
+									salida_cantidad,
+									salida_valor_unitario,
+									salida_valor_total,
+									existencia_cantidad,
+									existencia_valor_unitario,
+									existencia_valor_total
+								) VALUES ?
+							`,
+									[filas_ventas[1]],
+									(error, rows, fields) => {
+										if (!error) {
+											// Si no existe error, devolvemos la cantidad del contador.
+											res.json({ mensaje: 'Venta guardada con exito.' });
+										} else {
+											// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+											console.log(error);
+										}
+									}
+								);
+							} else {
+								// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+								console.log(error);
+							}
+						} else {
+							res.json({ mensaje: 'Venta guardada con exito.' });
+						}
+					}
+				);
+			}
+		}
+	);
+});
+
+// Consultamos los registros de las ventas...
+router.post('/list_ventas_vec', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+	let _text_i = '%' + req.body.iS_text + '%';
+
+	await pool.query(
+		`
+			SELECT 
+				codigo_ventas, 
+				nofactura_ventas, 
+				codcliente_ventas, 
+				nombrecliente_ventas, 
+				telcliente_ventas, 
+				codigo_producto_ventas, 
+				nombre_producto_ventas, 
+				vUnit_producto_ventas, 
+				tipo_producto_ventas, 
+				marca_producto_ventas, 
+				cant_producto_ventas, 
+				subt_producto_ventas, 
+				total_sc_ventas, 
+				total_mk_ventas, 
+				total_om_ventas, 
+				subtotal_ventas, 
+				descuento_ventas, 
+				total_ventas, 
+				observaciones_ventas, 
+				fecha_registro, 
+				user_registro
+			FROM 
+				ventas
+			WHERE 
+				(nombre_producto_ventas LIKE ? OR nombrecliente_ventas LIKE ?)
+			GROUP BY 
+				nofactura_ventas
+			ORDER BY 
+				fecha_registro DESC 
+			LIMIT 10 
+		`,
+		[_text_i, _text_i],
+		(error, rows, fields) => {
+			if (!error) {
+				// Si no existe error, devolvemos la cantidad del contador.
+				res.json({ filas_ventas: rows, count_filas_ventas: rows.length });
+			} else {
+				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+				console.log(error);
+			}
+		}
+	);
+});
+
+// Consultamos los registros de la división de las ventas..
+router.post('/l_ventas_noFactura', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+	let _n_rastreo = req.body.noFactura_venta_vec;
+
+	await pool.query(
+		'SELECT DISTINCT nofactura_ventas FROM ventas WHERE nofactura_ventas = ?',
+		[_n_rastreo],
+		(error, rows, fields) => {
+			if (!error) {
+				// Si no existe error, devolvemos la cantidad del contador.
+				res.json({ npq: rows, npq_count: rows.length });
+			} else {
+				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+				console.log(error);
+			}
+		}
+	);
+});
+
+// Consultamos los registros de los productos de las vetnas..
+router.post('/l_ventas_noFacturaDetalle', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+	let _n_factura = req.body.noFactura_venta_vec;
+
+	await pool.query(
+		'SELECT cant_producto_ventas, nombre_producto_ventas, vUnit_producto_ventas, tipo_producto_ventas, marca_producto_ventas, subt_producto_ventas FROM ventas WHERE nofactura_ventas = ?',
+		[_n_factura],
+		(error, rows, fields) => {
+			if (!error) {
+				// Si no existe error, devolvemos la cantidad del contador.
+				res.json({ pq_d: rows, npq_d_count: rows.length });
+			} else {
+				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+				console.log(error);
+			}
+		}
+	);
+});
+
+/* -------------------------------------------------------------------------- */
 /*                                   PROFILES                                 */
 /* -------------------------------------------------------------------------- */
 
@@ -1365,290 +1645,6 @@ router.post('/count_productos_min', isLoggedIn, authCiudad(['Administrador', 'Co
 				res.json({ cant_productos_min: rows.length });
 			} else if (error == null) {
 				res.json({ cant_productos_min: 0 });
-			} else {
-				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-				console.log(error);
-			}
-		}
-	);
-});
-
-/* -------------------------------------------------------------------------- */
-/*                                   VENTAS                                 */
-/* -------------------------------------------------------------------------- */
-
-// Consultamos cuantos regitros existen en la tabla de productos...
-router.post('/list_clientes_ventas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	let nombreC = req.body.nombreC;
-
-	if (nombreC != '') {
-		nombreC = '%' + req.body.nombreC + '%';
-	} else {
-		nombreC = '%a%';
-	}
-
-	await pool.query('SELECT * FROM clientes WHERE nombre_cliente LIKE ? LIMIT 25', [nombreC], (error, rows, fields) => {
-		if (!error) {
-			// Si no existe error, devolvemos la cantidad del contador.
-			res.json({ rows });
-		} else {
-			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-			console.log(error);
-		}
-	});
-});
-
-// Consultamos cuantos regitros existen en la tabla de productos...
-router.post('/ll_clientes', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	let nombreC = req.body.nombre_cliente;
-
-	if (nombreC != '') {
-		nombreC = '%' + nombreC + '%';
-	} else {
-		nombreC = '%a%';
-	}
-
-	await pool.query('SELECT * FROM clientes WHERE nombre_cliente LIKE ? LIMIT 25', [nombreC], (error, rows, fields) => {
-		if (!error) {
-			// Si no existe error, devolvemos la cantidad del contador.
-			res.json({ rows });
-		} else {
-			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-			console.log(error);
-		}
-	});
-});
-
-// Consultamos cuantos regitros existen en la tabla de productos...
-router.post('/list_f_productos_ventas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	let nombreP = req.body.nombreP;
-
-	if (nombreP != '') {
-		nombreP = '%' + req.body.nombreP + '%';
-	} else {
-		nombreP = '%a%';
-	}
-
-	await pool.query(
-		'SELECT * FROM productos WHERE nombre_producto LIKE ? LIMIT 25',
-		[nombreP],
-		(error, rows, fields) => {
-			if (!error) {
-				// Si no existe error, devolvemos la cantidad del contador.
-				res.json({ rows });
-			} else {
-				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-				console.log(error);
-			}
-		}
-	);
-});
-
-// Consultamos el registro en la tabla de productos...
-router.post('/ll_f_productos_ventas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	let n__p = req.body.nombre_p;
-
-	await pool.query('SELECT * FROM productos WHERE nombre_producto = ? LIMIT 25', [n__p], (error, rows, fields) => {
-		if (!error) {
-			// Si no existe error, devolvemos la cantidad del contador.
-			res.json({ rows });
-		} else {
-			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-			console.log(error);
-		}
-	});
-});
-
-// Consultamos cuantos regitros existen en la tabla de ventas...
-router.post('/count_ventas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	await pool.query('SELECT COUNT(*) AS total_ventas FROM ventas', (error, rows, fields) => {
-		if (!error) {
-			// Si no existe error, devolvemos la cantidad del contador.
-			res.json({ cant_ventas: rows[0]['total_ventas'] });
-		} else if (error == null) {
-			res.json({ cant_ventas: 0 });
-		} else {
-			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-			console.log(error);
-		}
-	});
-});
-
-// Guardamos la venta...
-router.post('/g_venta', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	// Guardamos en una variable todo el req.body que es el array de datos
-	let filas_ventas = req.body;
-
-	let cod_venta = req.body[0][0];
-	let no_factura = req.body[0][1];
-
-	// Hacemos una validación del número de paquete para que no se repita...
-	await pool.query(
-		`SELECT codigo_ventas FROM compras WHERE (codigo_ventas = ?)`,
-		[cod_venta],
-		async (error, rows, fields) => {
-			// Validamos:
-			if (!error && rows.length > 0) {
-				res.json({ mensaje: 'Ya existe el codigo o numero de factura para la venta...' });
-			} else {
-				// Ejecutamos la consulta para guardar la encomienda...
-				await pool.query(
-					`
-					INSERT INTO ventas (
-						codigo_ventas,
-						nofactura_ventas,
-						codcliente_ventas,
-						nombrecliente_ventas,
-						telcliente_ventas,
-						codigo_producto_ventas,
-						nombre_producto_ventas,
-						vUnit_producto_ventas,
-						tipo_producto_ventas,
-						marca_producto_ventas,
-						cant_producto_ventas,
-						subt_producto_ventas,
-						total_sc_ventas,
-						total_mk_ventas,
-						total_om_ventas,
-						subtotal_ventas,
-						descuento_ventas,
-						total_ventas,
-						observaciones_ventas,
-						fecha_registro,
-						user_registro
-					) VALUES ?
-				`,
-					[filas_ventas[0]],
-					async (error, rows, fields) => {
-						if (filas_ventas[1].length > 0) {
-							if (!error) {
-								await pool.query(
-									`
-								INSERT INTO kardex (
-									codigo_kardex,
-									codigo_producto,
-									nombre_producto,
-									exitencia_minima,
-									fecha_movimiento,
-									fechahora_movimiento,
-									detalle_kardex,
-									entrada_cantidad,
-									entrada_valor_unitario,
-									entrada_valor_total,
-									salida_cantidad,
-									salida_valor_unitario,
-									salida_valor_total,
-									existencia_cantidad,
-									existencia_valor_unitario,
-									existencia_valor_total
-								) VALUES ?
-							`,
-									[filas_ventas[1]],
-									(error, rows, fields) => {
-										if (!error) {
-											// Si no existe error, devolvemos la cantidad del contador.
-											res.json({ mensaje: 'Venta guardada con exito.' });
-										} else {
-											// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-											console.log(error);
-										}
-									}
-								);
-							} else {
-								// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-								console.log(error);
-							}
-						} else {
-							res.json({ mensaje: 'Venta guardada con exito.' });
-						}
-					}
-				);
-			}
-		}
-	);
-});
-
-// Consultamos los registros de las ventas...
-router.post('/list_ventas_vec', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	let _text_i = '%' + req.body.iS_text + '%';
-
-	await pool.query(
-		`
-			SELECT 
-				codigo_ventas, 
-				nofactura_ventas, 
-				codcliente_ventas, 
-				nombrecliente_ventas, 
-				telcliente_ventas, 
-				codigo_producto_ventas, 
-				nombre_producto_ventas, 
-				vUnit_producto_ventas, 
-				tipo_producto_ventas, 
-				marca_producto_ventas, 
-				cant_producto_ventas, 
-				subt_producto_ventas, 
-				total_sc_ventas, 
-				total_mk_ventas, 
-				total_om_ventas, 
-				subtotal_ventas, 
-				descuento_ventas, 
-				total_ventas, 
-				observaciones_ventas, 
-				fecha_registro, 
-				user_registro
-			FROM 
-				ventas
-			WHERE 
-				(nombre_producto_ventas LIKE ? OR nombrecliente_ventas LIKE ?)
-			GROUP BY 
-				nofactura_ventas
-			ORDER BY 
-				fecha_registro DESC 
-			LIMIT 10 
-		`,
-		[_text_i, _text_i],
-		(error, rows, fields) => {
-			if (!error) {
-				// Si no existe error, devolvemos la cantidad del contador.
-				res.json({ filas_ventas: rows, count_filas_ventas: rows.length });
-			} else {
-				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-				console.log(error);
-			}
-		}
-	);
-});
-
-// Consultamos los registros de la división de las ventas..
-router.post('/l_ventas_noFactura', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	let _n_rastreo = req.body.noFactura_venta_vec;
-
-	await pool.query(
-		'SELECT DISTINCT nofactura_ventas FROM ventas WHERE nofactura_ventas = ?',
-		[_n_rastreo],
-		(error, rows, fields) => {
-			if (!error) {
-				// Si no existe error, devolvemos la cantidad del contador.
-				res.json({ npq: rows, npq_count: rows.length });
-			} else {
-				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-				console.log(error);
-			}
-		}
-	);
-});
-
-// Consultamos los registros de los productos de las vetnas..
-router.post('/l_ventas_noFacturaDetalle', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	let _n_factura = req.body.noFactura_venta_vec;
-
-	await pool.query(
-		'SELECT cant_producto_ventas, nombre_producto_ventas, vUnit_producto_ventas, tipo_producto_ventas, marca_producto_ventas, subt_producto_ventas FROM ventas WHERE nofactura_ventas = ?',
-		[_n_factura],
-		(error, rows, fields) => {
-			if (!error) {
-				// Si no existe error, devolvemos la cantidad del contador.
-				res.json({ pq_d: rows, npq_d_count: rows.length });
 			} else {
 				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
 				console.log(error);

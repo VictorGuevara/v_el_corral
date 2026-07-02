@@ -1461,3 +1461,7 @@ article.card .badge_noVerified {
   padding: 10px;
   font-size: 17px;
 }
+
+.hidden_div {
+  display: none;
+}
