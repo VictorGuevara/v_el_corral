@@ -5,11 +5,13 @@
 /* -------------------------------------------------------------------------- */
 
 // Variables de utilidad.
-// const btn_reporte_kardex = document.getElementById('bnt_gR_kardex');
+const btn_reporte_kardex = document.getElementById('bnt_gR_kardex');
 const tbody_kardex = document.getElementById('tbody_table_kardex');
 const i_sNProdKardex = document.getElementById('nombreProductoKardex');
 let fecha_actual = fecha_a();
 let nombre_user_esv = document.querySelector('#name_user_loger').innerHTML;
+let dl_nombres_productos = document.getElementById('lista_productos');
+let cod_producto = document.getElementById('codigoProducto');
 
 /* -------------------------------------------------------------------------- */
 /*                                                                            */
@@ -65,10 +67,56 @@ const list_kardex = async () => {
 // Retrazamos esta ejecución 15 milisegundos...
 setTimeout(() => {
 	list_kardex(); // Ejecutamos al inicio...
+	d_kardexProducto();
 }, 150);
 
+// Funcion que genera los productos en la etiqueta datalist...
+const d_kardexProducto = (nombreP) => {
+	let np_list = 0;
+
+	// Validamos.
+	if (nombreP == '' || nombreP == undefined) {
+		np_list = 'a';
+	} else {
+		np_list = nombreP;
+	}
+
+	let np = {
+		nombreP: np_list,
+	};
+
+	// Enviamos los datos por caja iteración; para guardar los productos.
+	fetch('/acciones_inventario/list_productos_kardex', {
+		method: 'POST',
+		body: JSON.stringify(np),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	})
+		.then((response) => response.json())
+		.then((datos) => {
+			let t_rows = datos.rows.length;
+			dl_nombres_productos.innerHTML = '';
+
+			for (let i = 0; i < t_rows; i++) {
+				dl_nombres_productos.innerHTML += `<option value="${datos.rows[i].nombre_producto}"></option>`;
+			}
+
+			// Dato del campo del nombre del producto...
+			let lista_productos = document.querySelectorAll('#lista_productos')[0];
+
+			if (lista_productos.querySelector("option[value='" + nombreP + "']")) {
+				cod_producto.value = '';
+				cod_producto.value = datos.rows[0].codigo_producto;
+			}
+		})
+		.catch((error) => {
+			console.error('Ocurrio un error: ', error);
+		});
+};
+
 // Función para generar reporte de inventario...
-/* const reporte_kardex_pdf = async () => {
+const reporte_kardex_pdf = async () => {
 	// Consultamos la fecha actual...
 	let fecha = fecha_a();
 
@@ -103,6 +151,7 @@ setTimeout(() => {
 
 			// Creamos un objeto para enviarlo.
 			let dato_gmh = {
+				c_pro: cod_producto.value,
 				fecha: fecha,
 				fecha_i: input_1,
 				fecha_f: input_2,
@@ -144,7 +193,7 @@ setTimeout(() => {
 				});
 		},
 	});
-}; */
+};
 
 /* -------------------------------------------------------------------------- */
 /*                                                                            */
@@ -155,10 +204,10 @@ setTimeout(() => {
 // Evento clic para el boton listar los clientes...
 i_sNProdKardex.addEventListener('input', (event) => {
 	event.preventDefault();
-	list_kardex();
+	//list_kardex();
 });
 
 // Boton de genear reporte de kardex...
-/*btn_reporte_kardex.addEventListener('click', (event) => {
+btn_reporte_kardex.addEventListener('click', (event) => {
 	reporte_kardex_pdf();
-});*/
+});

@@ -1465,3 +1465,139 @@ article.card .badge_noVerified {
 .hidden_div {
   display: none;
 }
+
+.div_container_grid_dash {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 18%);
+  grid-gap: 10px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.box_item {
+  min-width: 100px;
+  min-height: 100px;
+  box-shadow: 0 0 10px var(--text_grey);
+  padding: 20px;
+  transition: 0.5s;
+  border-radius: 10px;
+}
+
+.box_item h1 {
+  font-size: 80px;
+  color: var(--main_color);
+}
+
+.box_item div.dato_item {
+  font-size: 22px;
+  color: var(--main_color);
+  border-top: 1px solid;
+  padding-top: 10px;
+}
+
+.box_item:hover {
+  background: var(--main_color);
+  color: var(--color_white);
+  transition: 0.5s;
+}
+
+.box_item h2 {
+  font-size: 20px;
+}
+
+.box_item:hover h1,
+.box_item:hover h2,
+.box_item:hover div.dato_item {
+  color: var(--color_white);
+}
+
+/*
+.box_item:hover h2,
+.box_item:hover div.dato_item  {
+  color: var(--color_amarillo);
+}
+
+.box_item_doc:hover {
+  background: var(--color_danger);
+  color: var(--color_amarillo);
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.box_item_doc:hover h2,
+.box_item_doc:hover div.dato_item  {
+  color: var(--color_amarillo);
+}
+
+.box_item_doc_gs:hover {
+  background: var(--color_amarillo);
+  color: var(--main_color);
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.box_item_doc_gs:hover h2,
+.box_item_doc_gs:hover div.dato_item  {
+  color: var(--main_color);
+}
+
+
+
+
+
+.box_item div.dato_item,
+.box_item_doc div.dato_item,
+.box_item_doc_gs div.dato_item {
+  font-size: 22px;
+  color: var(--color_rosado_cocoa);
+  border-top: 1px solid;
+  padding-top: 10px;
+}
+
+
+
+.box_item:hover h2,
+.box_item:hover div.dato_item  {
+  color: var(--color_white);
+}
+
+.box_item_doc:hover {
+  background: var(--color_danger);
+  color: var(--color_white);
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.box_item_doc:hover h2,
+.box_item_doc:hover div.dato_item  {
+  color: var(--color_white);
+}
+
+.box_item_doc_gs:hover {
+  background: var(--color_white);
+  color: var(--color_white);
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.box_item_doc_gs:hover h2,
+.box_item_doc_gs:hover div.dato_item  {
+  color: var(--main_color);
+}
+
+.box_item h2,
+.box_item_doc h2,
+.box_item_doc_gs h2 {
+  font-size: 80px;
+  color: var(--main_color);
+}
+
+.box_item h1,
+.box_item_doc h1,
+.box_item_doc_gs h1 {
+  font-size: 18px;
+}
+
+*/

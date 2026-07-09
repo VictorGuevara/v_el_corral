@@ -8,6 +8,14 @@
 		<!-- SOLO TABLA -->
 		<section class='vista_tabla'>
 			<div class='tabla_datos'>
+				<!-- BUSQUEDA Y ACCIONES -->
+				<div class='content_search_datos'>
+					<div>
+						<button class='btn_reporte' id='bnt_gR_kardex'>¿Crear Reporte?</button>
+					</div>
+
+				</div>
+
 				<!-- <form class="formne" action="/link/add" method="POST" autocomplete="off"> -->
 				<form class='formne' autocomplete='off' id=''>
 					<button type='submit' disabled class='none' aria-hidden='true'></button>
@@ -20,12 +28,12 @@
 								class='Minicial'
 								id='nombreProductoKardex'
 								type='text'
-								onkeyup='d_clientes(this)'
+								onkeyup='d_kardexProducto(this.value)'
 								placeholder='*'
-								list='productos'
+								list='lista_productos'
 							/>
 						</div>
-						<datalist id='productos'></datalist>
+						<datalist id='lista_productos'></datalist>
 						<div class='input_group'>
 							<label for='f_search_inicial_kardex'>Fecha Inicial:</label>
 							<input id='f_search_inicial_kardex' type='date' placeholder='*' />
@@ -50,9 +58,6 @@
 								{{! Aqui se cargan desde JavaScript }}
 							</tbody>
 						</table>
-					</div>
-					<div class='input_group'>
-						<input type='submit' value='Crear Reporte' />
 					</div>
 				</form>
 			</div>

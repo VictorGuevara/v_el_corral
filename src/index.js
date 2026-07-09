@@ -68,7 +68,19 @@ app.use('/expedientes', require('./routes/expedientes.routes'));
 app.use('/reg_citas', require('./routes/citas.routes'));
 app.use('/notificar_citas', require('./routes/notificar_citas.routes'));
 app.use('/acciones_inventario', require('./routes/ccikllppv.routes'));
+// Reportes
+app.use('/cvd', require('./routes/reportes/cvd.routes'));
+app.use('/ri_pdf', require('./routes/reportes/ri_pdf.routes'));
+app.use('/rk_pdf', require('./routes/reportes/rk_pdf.routes'));
+app.use('/rc_pdf', require('./routes/reportes/rc_pdf.routes'));
+app.use('/rp_pdf', require('./routes/reportes/rp_pdf.routes'));
+app.use('/rpv_pdf', require('./routes/reportes/rpv_pdf.routes'));
+/*
+ */
 
+/*
+app.use('/rcompras_pdf', require('./routes/reportes/rcompras_pdf.routes'));
+app.use('/rventas_pdf', require('./routes/reportes/rventas_pdf.routes'));*/
 // Public
 app.use(express.static(path.join(__dirname, 'public')));
 

@@ -287,13 +287,56 @@ const valid_form_e_cliente = () => {
 
 // Función para generar reporte de clientes...
 const reporte_clientes_pdf = async () => {
-	// Mostramos mensaje...
+	// Consultamos la fecha actual...
+	let fecha = fecha_a();
+
+	// Alerta...
 	Swal.fire({
-		position: 'center',
-		icon: 'warning',
-		title: 'No posees permisos para crear el reporte de Clientes.',
-		showConfirmButton: false,
-		timer: 3000,
+		title: '¿Crear reporte de clientes?',
+		showCancelButton: true,
+		confirmButtonText: 'Crear Reporte',
+		showLoaderOnConfirm: true,
+		preConfirm: () => {
+			// Creamos un objeto para enviarlo.
+			let dato_gmh = {
+				fecha: fecha,
+				user: nombre_user_esv,
+			};
+
+			return fetch('../../rc_pdf', {
+				method: 'POST',
+				body: JSON.stringify(dato_gmh),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error(response.statusText);
+					}
+					return response.json();
+				})
+				.then((datos) => {
+					if (datos.d == 'OKRCLICOCOA') {
+						// Ejecutamos la función de descarga de machote...
+						setTimeout(() => {
+							descargar_recibos(datos.e, datos.f);
+						}, 1500);
+
+						// Alerta...
+						return Swal.fire({
+							position: 'center',
+							icon: 'success',
+							title: 'Reporte De Clientes Creado.',
+							showConfirmButton: false,
+							timer: 3000,
+						});
+					}
+				})
+				.catch((error) => {
+					Swal.showValidationMessage(`Ocurrio un error: ${error}`);
+				});
+		},
 	});
 };
 

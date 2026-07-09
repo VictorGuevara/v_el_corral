@@ -778,6 +778,31 @@ router.post('/list_kardex', isLoggedIn, authCiudad(['Administrador', 'Contador']
 	);
 });
 
+// Consultamos cuantos regitros existen en la tabla de productos...
+router.post('/list_productos_kardex', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+	let nombreP = req.body.nombreP;
+
+	if (nombreP != '') {
+		nombreP = '%' + req.body.nombreP + '%';
+	} else {
+		nombreP = '%a%';
+	}
+
+	await pool.query(
+		'SELECT * FROM productos WHERE nombre_producto LIKE ? LIMIT 25',
+		[nombreP],
+		(error, rows, fields) => {
+			if (!error) {
+				// Si no existe error, devolvemos la cantidad del contador.
+				res.json({ rows });
+			} else {
+				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+				console.log(error);
+			}
+		}
+	);
+});
+
 /* -------------------------------------------------------------------------- */
 /*                                   COMPRAS                                  */
 /* -------------------------------------------------------------------------- */
@@ -1535,25 +1560,22 @@ router.post(
 
 // Consultamos cuantos regitros existen como usuarios administradores...
 router.post('/count_administradores', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	await pool.query(
-		'SELECT COUNT(*) AS total_admin FROM users WHERE privilegio_user = "admin"',
-		(error, rows, fields) => {
-			if (!error) {
-				// Si no existe error, devolvemos la cantidad del contador.
-				res.json({ cant_admin: rows[0]['total_admin'] });
-			} else if (error == null) {
-				res.json({ cant_admin: 0 });
-			} else {
-				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-				console.log(error);
-			}
+	await pool.query('SELECT COUNT(*) AS total_admin FROM users WHERE cargo = "Administrador"', (error, rows, fields) => {
+		if (!error) {
+			// Si no existe error, devolvemos la cantidad del contador.
+			res.json({ cant_admin: rows[0]['total_admin'] });
+		} else if (error == null) {
+			res.json({ cant_admin: 0 });
+		} else {
+			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+			console.log(error);
 		}
-	);
+	});
 });
 
 // Consultamos cuantos regitros existen como usuarios asistentes...
 router.post('/count_asitentes', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	await pool.query('SELECT COUNT(*) AS total_asis FROM users WHERE privilegio_user = "asis"', (error, rows, fields) => {
+	await pool.query('SELECT COUNT(*) AS total_asis FROM users WHERE cargo = "Contador"', (error, rows, fields) => {
 		if (!error) {
 			// Si no existe error, devolvemos la cantidad del contador.
 			res.json({ cant_asis: rows[0]['total_asis'] });
@@ -1584,22 +1606,19 @@ router.post('/count_servicios', isLoggedIn, authCiudad(['Administrador', 'Contad
 	);
 });
 
-// Consultamos cuantos regitros existen  de productos tipo mary kay...
-router.post('/count_productos_mk', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
-	await pool.query(
-		'SELECT COUNT(*) AS total_productos_mk FROM productos WHERE categoria_producto = "Mary Kay"',
-		(error, rows, fields) => {
-			if (!error) {
-				// Si no existe error, devolvemos la cantidad del contador.
-				res.json({ cant_productos_mk: rows[0]['total_productos_mk'] });
-			} else if (error == null) {
-				res.json({ cant_productos_mk: 0 });
-			} else {
-				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-				console.log(error);
-			}
+// Consultamos cuantos regitros existen  de citas...
+router.post('/count_citas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+	await pool.query('SELECT COUNT(*) AS total_citas FROM citas', (error, rows, fields) => {
+		if (!error) {
+			// Si no existe error, devolvemos la cantidad del contador.
+			res.json({ cant_citas: rows[0]['total_citas'] });
+		} else if (error == null) {
+			res.json({ cant_citas: 0 });
+		} else {
+			// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
+			console.log(error);
 		}
-	);
+	});
 });
 
 // Consultamos cuantos regitros existen de compras...

@@ -1,11 +1,135 @@
 <div class='main_content'>
-	<main>
-		<section class='titulo_sA'>
-			<div class='title_seccion'>
-				<h1 class='title_formne'>Veterinara El Corral</h1>
-				<h3 class='ruta_system'>Administración / Panel de datos generales</h3>
-			</div>
-		</section>
-	</main>
+  <main>
+    <section class='titulo_sA'>
+      <div class='title_seccion'>
+        <h1 class='title_formne'>Veterinara El Corral</h1>
+        <h3 class='ruta_system'>Administración / Panel de datos generales</h3>
+      </div>
+    </section>
+    <section class='recent'>
+      <div class='activity_grid_oneC'>
+        <div class='contenedor_graficos'>
+          <h4 class='title_info_panel_datos'>Ventas Cocoa Salon por meses</h4>
+          <div class='g_100' style='max-width: 1980px'>
+            <canvas id='myChart'></canvas>
+          </div>
+          <br />
+        </div>
+        {{! <h4 class="title_info_panel_datos">Datos de Carga:</h4> }}
+        <div class='div_container_grid_dash'>
+          <div class='box_item'>
+            <h1><i class='fas fa-user'></i></h1>
+            <h2>Administradores</h2>
+            <br />
+            <div class='dato_item'>
+              <h3>
+                <span id='cant_admin'>0</span>
+              </h3>
+            </div>
+          </div>
+
+          <div class='box_item'>
+            <h1><i class='fas fa-id-badge'></i></h1>
+            <h2>Asistentes</h2>
+            <br />
+            <div class='dato_item'>
+              <h3>
+                <span id='cant_asis'>0</span>
+              </h3>
+            </div>
+          </div>
+
+          <div class='box_item'>
+            <h1><i class='fa-solid fa-calendar-check'></i></h1>
+            <h2>Citas</h2>
+            <br />
+            <div class='dato_item'>
+              <h3>
+                <span id='cant_citas'>0</span>
+              </h3>
+            </div>
+          </div>
+
+          <div class='box_item'>
+            <h1><i class='fas fa-truck'></i></h1>
+            <h2>Proveedores</h2>
+            <br />
+            <div class='dato_item'>
+              <h3>
+                <span id='cant_proveedores'>0</span>
+              </h3>
+            </div>
+          </div>
+
+          <div class='box_item'>
+            <h1><i class='fa-solid fa-bath'></i></h1>
+            <h2>Servicios</h2>
+            <br />
+            <div class='dato_item'>
+              <h3>
+                <span id='cant_servicios'>0</span>
+              </h3>
+            </div>
+          </div>
+
+          <div class='box_item'>
+            <h1><i class='fas fa-tags'></i></h1>
+            <h2>Productos</h2>
+            <br />
+            <div class='dato_item'>
+              <h3>
+                <span id='cant_productos'>0</span>
+              </h3>
+            </div>
+          </div>
+
+          <div class='box_item'>
+            <h1><i class='fas fa-archive'></i></h1>
+            <h2>Compras</h2>
+            <br />
+            <div class='dato_item'>
+              <h3>
+                <span id='cant_compras'>0</span>
+              </h3>
+            </div>
+          </div>
+
+          <div class='box_item'>
+            <h1><i class='fas fa-book'></i></h1>
+            <h2>Inventario</h2>
+            <br />
+            <div class='dato_item'>
+              <h3>
+                <span id='cant_inventario'>0</span>
+              </h3>
+            </div>
+          </div>
+
+          <div class='box_item'>
+            <h1><i class='fas fa-receipt'></i></h1>
+            <h2>Ventas</h2>
+            <br />
+            <div class='dato_item'>
+              <h3>
+                <span id='cant_ventas'>0</span>
+              </h3>
+            </div>
+          </div>
+
+          <div class='box_item'>
+            <h1><i class='fas fa-exclamation-triangle'></i></h1>
+            <h2>Productos Cant. Min.</h2>
+            <br />
+            <div class='dato_item'>
+              <h3>
+                <span id='cant_productos_min'>0</span>
+              </h3>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
 </div>
 <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
