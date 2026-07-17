@@ -317,7 +317,7 @@ const reporte_clientes_pdf = async () => {
 					return response.json();
 				})
 				.then((datos) => {
-					if (datos.d == 'OKRCLICOCOA') {
+					if (datos.d == 'OKRCLIVEC') {
 						// Ejecutamos la función de descarga de machote...
 						setTimeout(() => {
 							descargar_recibos(datos.e, datos.f);

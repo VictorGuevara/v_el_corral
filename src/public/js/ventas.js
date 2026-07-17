@@ -878,7 +878,7 @@ const cierre_ventas = async () => {
 					return response.json();
 				})
 				.then((datos) => {
-					if (datos.d == 'OKLCVDCOCOA') {
+					if (datos.d == 'OKLCVDVEC') {
 						// Ejecutamos la función de descarga de machote...
 						setTimeout(() => {
 							descargar_recibos(datos.e, datos.f);

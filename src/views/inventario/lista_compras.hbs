@@ -1,43 +1,47 @@
-<div class="main_content">
+<div class='main_content'>
 	<main>
-		<section class="titulo_sA">
-			<div class="title_seccion">
-				<h2 class="title_formne">Listado De Comrpas</h2>
-				<div class="mapa_secciones">
-					<span class="ms_principal">Administrador</span>
-					<span> / </span>
-					<span class="ms_activa">Listado de compras Cocoa Salon</span>
-				</div>
-			</div>
-			<div class="seccion_lista">
-                <div></div>
-				<div></div>
-				<a href="/admin/compras/" class="btn_sa_lista" type="button" name="button">Agregar Compra</a>
-			</div>
+		<!-- TITULO -->
+		<section>
+			<h1>Listado de Compras</h1>
+			<h3 class='ruta_system'>Administración / Lista De Compras</h3>
 		</section>
-		<section class="recent">
-			<div class="activity_grid_oneC">
-				<div class="bday_card">
-                    <!-- Herramientas -->
-                    <div class="herramientas_tres">
-                        <div class="h_botones">
-							<button class="btn_documents" id="bnt_gR_compras">Reporte</button>
-						</div>
-                        <div class="h_adicionales"></div>
-                        <div class="h_buscador">
-                            <input id="i_search_compras_cocoa" type="text" class="search_enc" placeholder="Buscar:" autocomplete="off">
-                        </div>
-                    </div>
-                    <br><hr><br>
+		<br />
 
-                    <!-- Tabla de encomiendas -->
-                    <div class="table_enc">
-                        <div class="detalle_enc_sv" id="list_compras">
-                            <!-- Aqui se cargan las encomiendas desde js... -->
-                            <!-- desv_box_compras -->
-                        </div>
-                    </div>
-                </div>
+		<!-- SOLO TABLA -->
+		<section class='vista_tabla'>
+			<div class='tabla_datos'>
+
+				<!-- BUSQUEDA Y ACCIONES -->
+				<div class='content_search_datos'>
+					<div>
+						<button class='btn_reporte' id='bnt_gR_compras'>¿Crear Reporte?</button>
+						<input
+							id='i_search_compras_vec'
+							type='text'
+							class='input_filter_table'
+							placeholder='Buscar:'
+							autocomplete='off'
+						/>
+						<button class='btn_reporte' id='bnt_search'><i class='fa-solid fa-magnifying-glass'></i></button>
+					</div>
+
+					<div class='content_search_btn'>
+						<a href='/acciones_inventario/compras/' class='btn_sa_lista' type='button'>Agregar Compra
+							<i class='fa-solid fa-arrow-right'></i></a>
+					</div>
+				</div>
+
+				<!-- Tabla de encomiendas -->
+				<div class='table_enc'>
+					<br />
+					<hr />
+					<br />
+					<div class='detalle_enc_sv' id='list_compras'>
+						<!-- Aqui se cargan las encomiendas desde js... -->
+						<!-- desv_box_compras -->
+					</div>
+				</div>
+
 			</div>
 		</section>
 	</main>

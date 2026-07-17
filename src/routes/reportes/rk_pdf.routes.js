@@ -180,7 +180,7 @@ router.post('/', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (r
 
 			// Datos para que se descargue el archivo de recibos.
 			let datos_post = {
-				d: 'OKRKCOCOA',
+				d: 'OKRKVEC',
 				e: '/reportes/Reporte-Kardex-VETERINARIA-EL-CORRAL-Fecha-' + fecha + '.pdf',
 				f: 'Reporte-Kardex-VETERINARIA-EL-CORRAL-Fecha-' + fecha + '.pdf',
 			};

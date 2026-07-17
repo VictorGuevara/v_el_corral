@@ -172,7 +172,7 @@ const reporte_kardex_pdf = async () => {
 					return response.json();
 				})
 				.then((datos) => {
-					if (datos.d == 'OKRKCOCOA') {
+					if (datos.d == 'OKRKVEC') {
 						// Ejecutamos la función de descarga de machote...
 						setTimeout(() => {
 							descargar_recibos(datos.e, datos.f);

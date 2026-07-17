@@ -265,7 +265,7 @@ form.formne input[type='submit']:hover {
 }
 
 .menu ul li > a:hover,
-.menu ul li.active > a {
+.menu ul li > a.active {
   color: var(--color_celeste);
   background-color: var(--border_gris_ultraclaro);
   font-weight: bold;
@@ -1513,91 +1513,159 @@ article.card .badge_noVerified {
   color: var(--color_white);
 }
 
-/*
-.box_item:hover h2,
-.box_item:hover div.dato_item  {
-  color: var(--color_amarillo);
-}
-
-.box_item_doc:hover {
-  background: var(--color_danger);
-  color: var(--color_amarillo);
+.btn_sa_lista {
+  display: inline-block;
+  padding: 10px;
+  font-size: 16px;
+  outline: none;
   cursor: pointer;
+  background: var(--thead_color);
+  color: var(--color_white);
+  font-size: 15px;
+  font-weight: 600;
   transition: 0.5s;
 }
 
-.box_item_doc:hover h2,
-.box_item_doc:hover div.dato_item  {
-  color: var(--color_amarillo);
-}
-
-.box_item_doc_gs:hover {
-  background: var(--color_amarillo);
-  color: var(--main_color);
-  cursor: pointer;
+.btn_sa_lista:hover {
+  background: var(--thead_color);
+  color: var(--color_yellow);
   transition: 0.5s;
 }
 
-.box_item_doc_gs:hover h2,
-.box_item_doc_gs:hover div.dato_item  {
+/*------------------------------------------------------------------------------------*/
+/* Bloque principal de compras */
+.desv_box_compras_vec {
+  text-transform: capitalize;
+  background: var(--verde_pastel_claro);
+  border-radius: 0px;
+  padding: 20px;
+  display: grid;
+  grid-template-rows: repeat(0.5, 1fr);
+  grid-row-gap: 10px;
+  margin: 0 0 10px 0;
+  align-items: center;
+}
+
+.desv_box_compras_vec.ventas {
+  text-transform: capitalize;
+  background: var(--verde_pastel_claro);
+  margin-bottom: 50px;
+  border: 1px solid var(--border_gris_ultraclaro);
+}
+
+/* Sección superior con datos */
+.box_secctions_npq_acctions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  align-items: center;
+}
+
+.box_npq {
+  margin: 5px;
+}
+
+/* Detalle de productos */
+.box_section_detalle {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.detalle {
+  background: var(--verde_pastel_claro);
+  border-radius: 0px;
+  padding: 10px;
+}
+
+.d_title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dt_title_npq h5 {
   color: var(--main_color);
 }
 
-
-
-
-
-.box_item div.dato_item,
-.box_item_doc div.dato_item,
-.box_item_doc_gs div.dato_item {
-  font-size: 22px;
-  color: var(--color_rosado_cocoa);
-  border-top: 1px solid;
-  padding-top: 10px;
+/* Tablas */
+.table_list_pqEnc_sv {
+  width: 100%;
 }
 
+.td_list_pq {
+  background: var(--verde_pastel_claro);
+  padding: 8px;
+  font-size: 14px;
+  color: var(--color_negro);
+}
 
+tr > th.th_list_pq {
+  background: var(--verde_pastel);
+  color: var(--color_negro);
+  font-weight: bold;
+  padding: 8px;
+}
 
-.box_item:hover h2,
-.box_item:hover div.dato_item  {
+/* Totales */
+table.table_totales_venta {
+  max-width: 48%;
+  float: right;
+  margin-right: 10px;
+}
+
+.text_info {
+  font-size: 16px;
+  color: var(--color_negro);
+  font-weight: 600;
+}
+
+.tr_d_pq_n_t {
+  background: var(--verde_pastel_claro);
+}
+
+.th_list_enc_t_usa {
+  font-size: 14px;
   color: var(--color_white);
+  font-weight: bold;
 }
 
-.box_item_doc:hover {
-  background: var(--color_danger);
-  color: var(--color_white);
-  cursor: pointer;
-  transition: 0.5s;
+.td_list_enc_t {
+  background: var(--verde_pastel_claro);
+  font-size: 20px;
+  text-align: right;
 }
 
-.box_item_doc:hover h2,
-.box_item_doc:hover div.dato_item  {
-  color: var(--color_white);
+.td_list_enc_r {
+  background: var(--verde_pastel_claro);
+  font-size: 20px;
+  text-align: right;
+  color: var(--color_danger);
 }
 
-.box_item_doc_gs:hover {
-  background: var(--color_white);
-  color: var(--color_white);
-  cursor: pointer;
-  transition: 0.5s;
+/* Observaciones */
+.observaciones {
+  margin: 20px 0 0 0;
+  padding: 10px;
+  height: 100px;
+  text-align: left;
+  border: 1px solid var(--text_grey);
+  border-radius: 20px;
 }
 
-.box_item_doc_gs:hover h2,
-.box_item_doc_gs:hover div.dato_item  {
-  color: var(--main_color);
+.observaciones h5 {
+  color: var(--color_dark);
 }
 
-.box_item h2,
-.box_item_doc h2,
-.box_item_doc_gs h2 {
-  font-size: 80px;
-  color: var(--main_color);
-}
-
-.box_item h1,
-.box_item_doc h1,
-.box_item_doc_gs h1 {
+.observaciones p {
   font-size: 18px;
+  color: var(--color_danger);
+  font-weight: bold;
 }
 
-*/
+/* Span resaltado */
+.npq {
+  font-weight: bold;
+  color: var(--main_color);
+}

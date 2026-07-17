@@ -26,7 +26,7 @@ let Chart_1;
 /* -------------------------------------------------------------------------- */
 
 /* Graficos */
-const ventas_cocoa_meses = async () => {
+const ventas_vec_meses = async () => {
 	let current_anio = anio_actual;
 	let nombre_meses = [
 		'',
@@ -50,7 +50,7 @@ const ventas_cocoa_meses = async () => {
 	};
 
 	// Consultamos la cantidad de encomiendas por meses.
-	await fetch('/acciones_inventario/count_ventas_cocoa_meses', {
+	await fetch('/acciones_inventario/count_ventas_vec_meses', {
 		method: 'POST',
 		body: JSON.stringify(ob_carga),
 		headers: {
@@ -119,7 +119,7 @@ const ventas_cocoa_meses = async () => {
 		});
 };
 
-const ventas_cocoa_todos_meses = async () => {
+const ventas_vec_todos_meses = async () => {
 	let current_anio = anio_actual;
 
 	// Obejeto del número de carga...
@@ -382,7 +382,7 @@ const dash = async () => {
 
 // Ejecutamos al inicio..
 dash();
-ventas_cocoa_todos_meses();
+ventas_vec_todos_meses();
 
 /* -------------------------------------------------------------------------- */
 /*                                                                            */

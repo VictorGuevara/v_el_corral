@@ -51,7 +51,7 @@
       }
 
       .logo img {
-        width: 35%;
+        width: 25%;
       }
 
       table {
@@ -132,7 +132,7 @@
 
       table thead tr.tcdv_tr_grid_compras_one span,
       table thead tr.tcdv_tr_grid_compras_four span {
-        color: rgba(170, 0, 90, 1);
+        color: rgba(10, 117, 80, 1);
         font-weight: bold;
       }
 
@@ -231,23 +231,17 @@
         </tbody>
         <thead>
           {{#each detalle}}
-            <tr class='tcdv_tr_grid_compras_totales'>
-              <th>Total Servicios: <p>$ {{this.total_sc_ventas}}</p></th>
-              <th class='borde_left'>Total Mary Kay: <p>$ {{this.total_mk_ventas}}</p></th>
-              <th class='borde_left'>Total Otras Marcas: <p>$ {{this.total_om_ventas}}</p></th>
-              <th class='borde_left'>Subtotal: <p>$ {{this.subtotal_ventas}}</p></th>
-              <th class='borde_left color_compra'>Descuento: <p>$ {{this.descuento_ventas}}</p></th>
-              <th class='borde_left color_venta'>Total: <p>$ {{this.total_ventas}}</p></th>
-            </tr>
+            {{#if @first}}
+              <tr class='tcdv_tr_grid_compras_totales'>
+                <th></th>
+                <th class='borde_left'></th>
+                <th class='borde_left'></th>
+                <th class='borde_left'>Subtotal: <p>$ {{this.subtotal_ventas}}</p></th>
+                <th class='borde_left color_compra'>Descuento: <p>$ {{this.descuento_ventas}}</p></th>
+                <th class='borde_left color_venta'>Total: <p>$ {{this.total_ventas}}</p></th>
+              </tr>
+            {{/if}}
           {{/each}}
-        </thead>
-        <thead>
-          <tr class='tcdv_tr_grid_compras_one'>
-            <th>
-              Observaciones:
-              <p>{{this.obsr_ventas}}</p>
-            </th>
-          </tr>
         </thead>
       </table>
       <br /><br />

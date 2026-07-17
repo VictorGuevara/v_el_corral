@@ -324,7 +324,7 @@ const reporte_proveedores_pdf = async () => {
 					return response.json();
 				})
 				.then((datos) => {
-					if (datos.d == 'OKRPVCOCOA') {
+					if (datos.d == 'OKRPVVEC') {
 						// Ejecutamos la función de descarga de machote...
 						setTimeout(() => {
 							descargar_recibos(datos.e, datos.f);

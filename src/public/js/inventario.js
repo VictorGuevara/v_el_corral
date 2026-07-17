@@ -118,7 +118,7 @@ const reporte_inventario_pdf = async () => {
 					return response.json();
 				})
 				.then((datos) => {
-					if (datos.d == 'OKRICOCOA') {
+					if (datos.d == 'OKRIVEC') {
 						// Ejecutamos la función de descarga de machote...
 						setTimeout(() => {
 							descargar_recibos(datos.e, datos.f);

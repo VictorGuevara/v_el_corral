@@ -51,7 +51,7 @@
       }
 
       .logo img {
-        width: 35%;
+        width: 25%;
       }
 
       table {
@@ -221,7 +221,7 @@
         <tbody>
           {{#each detalle}}
             <tr class='tcdv_tr_grid'>
-              <td>{{this.fecha_registro}}</td>
+              <td>{{dateFormat this.fecha_registro 'DD-MM-YYYY'}}</td>
               <td class='borde_left'>{{this.cant_producto_compras}}</td>
               <td class='borde_left m_inicial'>{{this.nombre_producto_compras}}</td>
               <td class=''>$ {{this.vUnit_producto_compras}}</td>
@@ -232,13 +232,15 @@
         </tbody>
         <thead>
           {{#each detalle}}
-            <tr class='tcdv_tr_grid_compras_totales'>
-              <th>Total Mary Kay: <p>$ {{this.total_mk_compras}}</p> </th>
-              <th class='borde_left'>Total Otras Marcas: <p>$ {{this.total_om_compras}}</p> </th>
-              <th class='borde_left'>Subtotal: <p>$ {{this.subtotal_compras}}</p> </th>
-              <th class='borde_left color_compra'>Descuento: <p>$ {{this.descuento_compras}}</p> </th>
-              <th class='borde_left color_venta'>Total: <p>$ {{this.total_compras}}</p> </th>
-            </tr>
+            {{#if @first}}
+              <tr class='tcdv_tr_grid_compras_totales'>
+                <th></th>
+                <th class='borde_left'></th>
+                <th class='borde_left'>Subtotal: <p>$ {{this.subtotal_compras}}</p> </th>
+                <th class='borde_left color_compra'>Descuento: <p>$ {{this.descuento_compras}}</p> </th>
+                <th class='borde_left color_venta'>Total: <p>$ {{this.total_compras}}</p> </th>
+              </tr>
+            {{/if}}
           {{/each}}
         </thead>
         <thead>

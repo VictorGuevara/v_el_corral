@@ -274,7 +274,7 @@ router.post('/', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (r
 
 			// Datos para que se descargue el archivo de recibos.
 			let datos_post = {
-				d: 'OKLCVDCOCOA',
+				d: 'OKLCVDVEC',
 				e: '/reportes/Cierre-De-Ventas-Diaria-Fecha-' + fecha + '.pdf',
 				f: 'Cierre-De-Ventas-Diaria-Fecha-' + fecha + '.pdf',
 			};

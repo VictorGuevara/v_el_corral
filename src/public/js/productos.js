@@ -479,7 +479,7 @@ const reporte_productos_pdf = async () => {
 					return response.json();
 				})
 				.then((datos) => {
-					if (datos.d == 'OKRPCOCOA') {
+					if (datos.d == 'OKRPVEC') {
 						// Ejecutamos la función de descarga de machote...
 						setTimeout(() => {
 							descargar_recibos(datos.e, datos.f);

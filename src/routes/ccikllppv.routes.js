@@ -1323,14 +1323,10 @@ router.post('/list_ventas_vec', isLoggedIn, authCiudad(['Administrador', 'Contad
 				tipo_producto_ventas, 
 				marca_producto_ventas, 
 				cant_producto_ventas, 
-				subt_producto_ventas, 
-				total_sc_ventas, 
-				total_mk_ventas, 
-				total_om_ventas, 
+				subt_producto_ventas,  
 				subtotal_ventas, 
 				descuento_ventas, 
 				total_ventas, 
-				observaciones_ventas, 
 				fecha_registro, 
 				user_registro
 			FROM 

@@ -164,7 +164,7 @@ router.post('/', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (r
 
 			// Datos para que se descargue el archivo de recibos.
 			let datos_post = {
-				d: 'OKRICOCOA',
+				d: 'OKRIVEC',
 				e: '/reportes/Reporte-Inventario-VETERINARIA-EL-CORRAL-Fecha-' + fecha + '.pdf',
 				f: 'Reporte-Inventario-VETERINARIA-EL-CORRAL-Fecha-' + fecha + '.pdf',
 			};
