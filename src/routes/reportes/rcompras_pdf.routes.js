@@ -16,7 +16,7 @@ const { isLoggedIn, authCiudad } = require('../../lib/auth');
 /*                                   RUTAS                                    */
 /* -------------------------------------------------------------------------- */
 
-router.post('/', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+router.post('/', isLoggedIn, authCiudad(['Administrador', 'Asistente']), async (req, res) => {
 	const fecha_hora_a = (fecha_dada) => {
 		let date = new Date(fecha_dada);
 		let dia_actual = date.getDate();

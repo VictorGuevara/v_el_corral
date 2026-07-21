@@ -14,7 +14,7 @@ const { isLoggedIn, authCiudad } = require('../lib/auth');
 /* -------------------------------------------------------------------------- */
 
 // Ruta de renderizar la vista de compras.
-router.get('/', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+router.get('/', isLoggedIn, authCiudad(['Administrador', 'Asistente']), async (req, res) => {
   // Renderizamos la vista de compras...
   await res.render('admin/expedientes');
 });
@@ -161,15 +161,25 @@ router.post('/crear', async (req, res) => {
 });
 
 // Ruta para listar los cliente con sus expedientes.
-router.get('/listar', async (req, res) => {
+router.post('/listar', async (req, res) => {
   try {
-    const expedientes = await pool.query(`
+    const { search } = req.body;
+    let sql = `
       SELECT e.id_expediente, e.dui, p.nombre AS propietario, m.nombre AS mascota
       FROM expediente e
       INNER JOIN propietarios p ON e.id_propietario = p.id
       INNER JOIN mascotas m ON e.id_mascota = m.id
-    `);
+    `;
 
+    // Variable para los parametros.
+    let params = [];
+
+    if (search && search.trim() !== '') {
+      sql += ` WHERE p.nombre LIKE ? OR m.nombre LIKE ?`;
+      params.push(`%${search}%`, `%${search}%`);
+    }
+
+    const expedientes = await pool.query(sql, params);
     res.json(expedientes);
   } catch (error) {
     console.error(error);

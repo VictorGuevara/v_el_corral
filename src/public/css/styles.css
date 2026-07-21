@@ -76,7 +76,7 @@
 form.formne .img_login img {
   display: block;
   margin: auto;
-  width: 50%;
+  width: 100%;
 }
 
 form.formne .input_group {
@@ -194,6 +194,9 @@ form.formne input[type='submit']:hover {
 /*****************************************************************************
 *                                  SIDEBARS                                  *
 *****************************************************************************/
+#sidebar_toggle {
+  display: none;
+}
 
 .sidebar {
   position: fixed;
@@ -208,7 +211,7 @@ form.formne input[type='submit']:hover {
   transition: all 0.3s;
 }
 
-.sidebar .head {
+.sidebar .sidebar_header {
   display: flex;
   gap: 20px;
   padding-bottom: 20px;
@@ -311,10 +314,10 @@ form.formne input[type='submit']:hover {
 
 .menu-btn {
   position: absolute;
-  right: -14px;
-  top: 3.5%;
-  width: 28px;
-  height: 28px;
+  right: -18px;
+  top: 31px;
+  width: 36px;
+  height: 40px;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -323,10 +326,6 @@ form.formne input[type='submit']:hover {
   color: #757575;
   border: 2px solid var(--border_gris_ultraclaro);
   background-color: var(--color_white);
-}
-
-.menu-btn:hover i {
-  color: var(--color_celeste);
 }
 
 .menu-btn i {
@@ -403,6 +402,54 @@ form.formne input[type='submit']:hover {
   border: 1px solid var(--border_gris_ultraclaro);
   background-color: var(--color_white);
   box-shadow: 0px 10px 8px rgba(0, 0, 0, 0.1);
+}
+
+.icon_menu {
+  cursor: pointer;
+  font-size: 23px;
+  transition: 0.5s;
+}
+
+.menu-btn:hover {
+  background: var(--main_color);
+  color: var(--color_white);
+  transition: 0.5s;
+}
+
+#sidebar_toggle:checked ~ .sidebar {
+  width: 100px;
+}
+
+#sidebar_toggle:checked ~ .sidebar .user-details p,
+#sidebar_toggle:checked ~ .sidebar .sidebar_header h3 span,
+#sidebar_toggle:checked ~ .sidebar li span:last-child {
+  display: none;
+}
+
+#sidebar_toggle:checked ~ .sidebar .sidebar_header {
+  gap: 0px;
+}
+
+#sidebar_toggle:checked ~ .sidebar ul {
+  padding-left: 0px;
+}
+
+#sidebar_toggle:checked ~ .sidebar li {
+  display: flex;
+  justify-content: center;
+}
+
+#sidebar_toggle:checked ~ .sidebar li a {
+  font-size: 20px;
+}
+
+#sidebar_toggle:checked ~ .main_content {
+  margin-left: 130px;
+}
+
+#sidebar_toggle:checked ~ .main_content header {
+  left: 130px;
+  width: calc(100% - 130px);
 }
 
 /*****************************************************************************

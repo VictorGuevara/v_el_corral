@@ -25,9 +25,9 @@ const cargarNotificaciones = async () => {
         <td>${notif.nombre_cliente}</td>
         <td>${notif.telefono_cliente}</td>
         <td>${notif.mensaje}</td>
-        <td>${notif.fecha_programada}</td>
+        <td>${formatearFecha(notif.fecha_programada)}</td>
         <td>${notif.estado}</td>
-        <td>${notif.fecha_envio || ''}</td>
+        <td>${formatearFecha(notif.fecha_envio) || ''}</td>
         <td class='center_text'>
           <button class='btn_table_reverse' onclick="notificar(${notif.id_notificacion})">
             <i class="fa-solid fa-envelope"></i>

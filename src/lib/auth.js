@@ -19,7 +19,6 @@ module.exports = {
     return (req, res, next) => {
       // Si ciudadesPermitidas es string, lo convertimos en array
       const permitidos = Array.isArray(ciudadesPermitidas) ? ciudadesPermitidas : [ciudadesPermitidas];
-
       if (!permitidos.includes(req.user.cargo)) {
         return res.redirect('/logout');
       }

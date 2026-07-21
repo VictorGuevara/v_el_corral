@@ -219,7 +219,7 @@ const reporte_compras_pdf = async () => {
 		title: '¿Crear reporte de compras?',
 		html:
 			'<input id="input1" type="date" class="swal2-input" placeholder="Inicio" value="">' +
-			'<input id="input2" class="swal2-input" placeholder="Fecha Final" value="' +
+			'<input id="input2" type="date" class="swal2-input" placeholder="Fecha Final" value="' +
 			fecha +
 			'">',
 		showCancelButton: true,

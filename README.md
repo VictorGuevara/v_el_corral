@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/img/logo.svg" alt="Logo El Corral" width="120"/>
+  <img src="src/public/img/logo_completo.jpeg" alt="Logo El Corral" width="120"/>
 </p>
 
 # 🐾 El Corral - Sistema de Gestión Veterinaria
@@ -84,3 +84,23 @@ Diseño enfocado en usabilidad:
 - **Fetch API** – Comunicación asíncrona con el servidor
 - **Font Awesome** – Iconografía
 - **SVG / ICO** – Recursos gráficos
+
+---
+
+## 📦 Módulo de Inventario
+
+El sistema cuenta con un completo módulo de **Inventario**, que integra las siguientes secciones:
+
+- **Clientes:** Registro y gestión de clientes con historial de compras y expedientes.
+- **Proveedores:** Control de proveedores y sus productos asociados.
+- **Productos:** Administración de productos, precios, existencias y categorías.
+- **Inventario:** Visualización general del stock disponible y movimientos de entrada/salida.
+- **Ventas:** Registro de ventas con generación de reportes y **cierre diario** automático.
+- **Compras:** Control de compras y actualización de existencias en tiempo real.
+- **Kardex:** Seguimiento detallado de movimientos de inventario por producto.
+
+Cada sección incluye su propio **reporte PDF**, permitiendo obtener información precisa y exportable para auditorías o análisis contables.
+
+---
+
+📊 Los reportes se generan desde las rutas en `src/routes/reportes/`, y cada módulo tiene su plantilla Handlebars personalizada en `src/views/inventario/`.

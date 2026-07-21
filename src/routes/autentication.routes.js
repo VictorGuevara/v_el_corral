@@ -38,15 +38,15 @@ router.post('/signin', isNotLoggedIn, (req, res, next) => {
 
 // Ruta para redireccionar si es administrador o otro tipo de usuario.
 router.get('/directorie_used', isLoggedIn, (req, res) => {
-	if (req.user.cargo == 'Administrador' && req.user.sucursal_user == 'Santa Isabel') {
+	if (req.user.cargo == 'Administrador' && req.user.sucursal_user == 'Casa Matriz') {
 		res.redirect('/admin/');
-	} else if (req.user.cargo == 'Contador' && req.user.sucursal_user == 'Santa Isabel') {
-		res.redirect('/reg_facturas/');
+	} else if (req.user.cargo == 'Asistente' && req.user.sucursal_user == 'Casa Matriz') {
+		res.redirect('/reg_citas/');
 	}
 });
 
 // Ruta para renderizar la vista despues del registro...
-router.get('/profile', isLoggedIn, authCiudad('Santa Isabel'), (req, res) => {
+router.get('/profile', isLoggedIn, authCiudad('Casa Matriz'), (req, res) => {
 	res.render('profile');
 });
 

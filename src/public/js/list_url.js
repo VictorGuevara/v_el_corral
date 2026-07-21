@@ -69,7 +69,7 @@ const listItems_menu_general = async () => {
 			// Creamos el HTML.
 			const li = `
                 <li>
-                    <a href="${item.url_menu}">
+                    <a href="${item.url_menu}" title="${item.name_menu}">
 						<i class="${item.icon_menu}"></i>
                         <span class="text" style="text-transform: capitalize">${item.name_menu}</span>
                     </a>
@@ -79,13 +79,13 @@ const listItems_menu_general = async () => {
 			// Sección principal (id_menu < 80)
 			if (item.id_menu < 80) {
 				if (rol === 'Administrador' && item.fsp_admin > 0) menuMain.innerHTML += li;
-				else if (rol === 'Contador' && item.fsp_contabilidad > 0) menuMain.innerHTML += li;
+				else if (rol === 'Asistente' && item.fsp_contabilidad > 0) menuMain.innerHTML += li;
 			}
 
 			// Sección de configuración (80 < id_menu < 90)
 			else if (item.id_menu > 80 && item.id_menu < 90) {
 				if (rol === 'Administrador' && item.fsp_admin > 0) menuSettings.innerHTML += li;
-				else if (rol === 'Contador' && item.fsp_contabilidad > 0) menuMain.innerHTML += li;
+				else if (rol === 'Asistente' && item.fsp_contabilidad > 0) menuSettings.innerHTML += li;
 			}
 
 			// Sección cuenta (id_menu >= 90)
@@ -107,29 +107,6 @@ const list_menu = async () => {
 	if (url_active == '/' || url_active == '/signin') {
 		e_css.href = '../css/var_colores.css';
 		e_script_tow.src = '';
-	} else if (nu.value == 'Atenc. Esex Global') {
-		await fetch('/menu/menu', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		})
-			.then((response) => response.json())
-			.then((datos) => {
-				for (var i = 0; i < datos.menu_items.length; i++) {
-					if (url_active == datos.menu_items[i].url_menu) {
-						e_script_tow.src = '/js/FDR.js';
-						setTimeout(() => {
-							e_script.src = datos.menu_items[i].js_menu;
-							e_css.href = '/css/var_colores_pink.css';
-						}, tiempo_eCarga);
-						break;
-					}
-				}
-			})
-			.catch((error) => {
-				console.error('Ocurrio un error: ', error);
-			});
 	} else {
 		await fetch('/menu/menu', {
 			method: 'POST',
@@ -172,7 +149,7 @@ const list_menu = async () => {
 
 // Clases a items menu...
 const active_item_menu = () => {
-	let li_a = document.querySelectorAll('#list_items_menu_settings li a');
+	let li_a = document.querySelectorAll('.sidebar li a');
 
 	for (let index = 0; index < li_a.length; index++) {
 		// Quitamos la base de la url...
@@ -203,8 +180,30 @@ setTimeout(() => {
 	active_item_menu();
 }, 250);
 
+// Controlar estado del sidebar
+const sidebarToggle = document.getElementById('sidebar_toggle');
+
+// Guardar estado cuando el usuario cambia el toggle
+sidebarToggle.addEventListener('change', () => {
+	if (sidebarToggle.checked) {
+		localStorage.setItem('sidebarState', 'collapsed');
+	} else {
+		localStorage.setItem('sidebarState', 'expanded');
+	}
+});
+
 // Ejecutamos la función al inicio..
+// Restaurar estado al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
+	const state = localStorage.getItem('sidebarState');
+	if (state === 'collapsed') {
+		sidebarToggle.checked = true; // sidebar oculta
+	} else {
+		sidebarToggle.checked = false; // sidebar expandida
+	}
+
+	// Ejecutar funciones de menú
 	list_menu();
 	listItems_menu_general();
+	active_item_menu();
 });

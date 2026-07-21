@@ -10,6 +10,8 @@ const btn_guardar = document.getElementById('btn_guardar_expediente');
 const btn_editar = document.getElementById('btn_editar_expediente');
 const btn_cancel = document.getElementById('btn_cancelar_edicion');
 const btn_guardar_add = document.getElementById('btn_guardar_agregar');
+const i_sExpediente = document.getElementById('i_search_expedientes');
+const btn_sExpediente = document.getElementById('btn_search_expedientes');
 
 /* -------------------------------------------------------------------------- */
 /*                                 FUNCIONES                                  */
@@ -150,8 +152,13 @@ async function editarExpediente(id) {
 
 // Función que lista los expedientes guardados...
 async function cargarExpedientes() {
+  let dato_busqueda = i_sExpediente.value.trim();
   try {
-    const response = await fetch('/expedientes/listar');
+    const response = await fetch('/expedientes/listar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ search: dato_busqueda }), // si no mandás filtro, enviás un body vacío
+    });
     const expedientes = await response.json();
     renderTablaExpedientes(expedientes);
   } catch (error) {
@@ -175,8 +182,6 @@ const editar_expediente = async () => {
 
   // Importante: incluir el id_expediente que estás editando
   data.id_expediente = formExpediente.dataset.idExpediente;
-
-  console.log(data);
 
   try {
     const response = await fetch('/expedientes/editar', {
@@ -523,6 +528,18 @@ btn_editar.addEventListener('click', async (event) => {
 btn_guardar_add.addEventListener('click', async (event) => {
   event.preventDefault();
   await guardar_examenes_recetas();
+});
+
+// Evento para el campo de busqueda...
+i_sExpediente.addEventListener('input', async (event) => {
+  event.preventDefault();
+  await cargarExpedientes();
+});
+
+// Evebto para el boton de busqueda...
+btn_sExpediente.addEventListener('click', async (event) => {
+  event.preventDefault();
+  await cargarExpedientes();
 });
 
 /* -------------------------------------------------------------------------- */

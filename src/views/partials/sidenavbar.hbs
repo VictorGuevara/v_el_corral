@@ -1,44 +1,45 @@
-
-<aside class="sidebar">
-        <div class="menu-btn">
-          <i class="ti-arrows-horizontal"></i>
-        </div>
-        <div class="head">
-          <div class="user-img">
-            <img src="../../img/logo_temporal.png" alt="" />
-          </div>
-          <div class="user-details">
-            <p class="title">{{user.cargo}}</p>
-            <p class="name" id="name_user_loger">{{user.nombre_c}}</p>
-            <input id="n_user_cargo" type="hidden" value="{{user.cargo}}">
-			<input id="c_user_code" type="hidden" value="{{user.cod_users}}">
-			<input id="c_user_validate" type="hidden" value="{{user.ciudad_user}}">
-          </div>
-        </div>
-        <div class="nav">
-          <div class="menu">
-            <p class="title">Principal</p>
-            <ul id="list_items_menu">
-              {{!-- Aqui se cargan los items desde JS --}}
-            </ul>
-          </div>
-          <div class="menu">
-            <p class="title">Ajustes</p>
-            <ul id="list_items_menu_settings">
-              <li>
-                <a href="#">
-                  <i class="ti-settings"></i>
-                  <span class="text">Configuracion</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="menu">
-          <p class="title">Cuenta</p>
-          <ul id="list_items_menu_cuenta">
-          	{{!-- Aqui se cargan los items desde JS --}}
-          </ul>
-        </div>
-      </div>
-    </aside>
+<input type='checkbox' id='sidebar_toggle' />
+<aside class='sidebar'>
+  <label for='sidebar_toggle' class='icon_menu'>
+    <div class='menu-btn'>
+      <i class='ti-arrows-horizontal'></i>
+    </div>
+  </label>
+  <div class='sidebar_header'>
+    <div class='user-img'>
+      <img src='../../img/logo_temporal.png' alt='' />
+    </div>
+    <div class='user-details'>
+      <p class='title'>{{user.cargo}}</p>
+      <p class='name' id='name_user_loger'>{{user.nombre_c}}</p>
+      <input id='n_user_cargo' type='hidden' value='{{user.cargo}}' />
+      <input id='c_user_code' type='hidden' value='{{user.cod_users}}' />
+      <input id='c_user_validate' type='hidden' value='{{user.ciudad_user}}' />
+    </div>
+  </div>
+  <div class='nav'>
+    <div class='menu'>
+      <p class='title'>Principal</p>
+      <ul id='list_items_menu'>
+        {{! Aqui se cargan los items desde JS }}
+      </ul>
+    </div>
+    <div class='menu'>
+      <p class='title'>Ajustes</p>
+      <ul id='list_items_menu_settings'>
+        <li>
+          <a href='#'>
+            <i class='ti-settings'></i>
+            <span class='text'>Configuracion</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class='menu'>
+    <p class='title'>Cuenta</p>
+    <ul id='list_items_menu_cuenta'>
+      {{! Aqui se cargan los items desde JS }}
+    </ul>
+  </div>
+</aside>

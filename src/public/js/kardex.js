@@ -8,6 +8,8 @@
 const btn_reporte_kardex = document.getElementById('bnt_gR_kardex');
 const tbody_kardex = document.getElementById('tbody_table_kardex');
 const i_sNProdKardex = document.getElementById('nombreProductoKardex');
+const i_fInicial = document.getElementById('f_search_inicial_kardex');
+const i_fFinal = document.getElementById('f_search_final_kardex');
 let fecha_actual = fecha_a();
 let nombre_user_esv = document.querySelector('#name_user_loger').innerHTML;
 let dl_nombres_productos = document.getElementById('lista_productos');
@@ -24,6 +26,8 @@ const list_kardex = async () => {
 	// Creamos el objeto para la busqueda
 	let d_search = {
 		d_text: i_sNProdKardex.value,
+		f_inicial: i_fInicial.value,
+		f_final: i_fFinal.value,
 	};
 
 	// Consultamos...
@@ -40,7 +44,7 @@ const list_kardex = async () => {
 			tbody_kardex.innerHTML = '';
 
 			for (let i = 0; i < t_rows; i++) {
-				let format_fecha = fecha_a(datos.rows[i].fecha_movimiento);
+				let format_fecha = formatearFecha(datos.rows[i].fecha_movimiento);
 
 				tbody_kardex.innerHTML += `
                 <tr>
@@ -125,7 +129,7 @@ const reporte_kardex_pdf = async () => {
 		title: '¿Crear reporte de kardex?',
 		html:
 			'<input id="input1" type="date" class="swal2-input" placeholder="Inicio" value="">' +
-			'<input id="input2" class="swal2-input" placeholder="Fecha Final" value="' +
+			'<input id="input2" type="date" class="swal2-input" placeholder="Fecha Final" value="' +
 			fecha +
 			'">',
 		showCancelButton: true,
@@ -204,10 +208,20 @@ const reporte_kardex_pdf = async () => {
 // Evento clic para el boton listar los clientes...
 i_sNProdKardex.addEventListener('input', (event) => {
 	event.preventDefault();
-	//list_kardex();
+	list_kardex();
 });
 
 // Boton de genear reporte de kardex...
 btn_reporte_kardex.addEventListener('click', (event) => {
 	reporte_kardex_pdf();
+});
+
+// Al cambiar la fecha inicial, ejecutamos la función
+i_fInicial.addEventListener('change', () => {
+	list_kardex();
+});
+
+// Al cambiar la fecha final, ejecutamos la función
+i_fFinal.addEventListener('change', () => {
+	list_kardex();
 });

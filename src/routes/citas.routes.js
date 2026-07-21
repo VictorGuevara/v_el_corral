@@ -37,7 +37,7 @@ router.get('/', isLoggedIn, async (req, res) => {
 /* -------------------------------------------------------------------------- */
 
 // Consultamos cuantos regitros existen en la tabla de citas...
-router.post('/count_citas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+router.post('/count_citas', isLoggedIn, authCiudad(['Administrador', 'Asistente']), async (req, res) => {
 	await pool.query('SELECT COUNT(*) AS total_citas FROM citas', (error, rows, fields) => {
 		if (!error) {
 			// Si no existe error, devolvemos la cantidad del contador.
@@ -163,7 +163,7 @@ router.post('/g_citas', (req, res) => {
 });
 
 // Consultamos cuantos regitros existen en la tabla de productos...
-router.post('/citas', isLoggedIn, authCiudad(['Administrador', 'Contador']), async (req, res) => {
+router.post('/citas', isLoggedIn, authCiudad(['Administrador', 'Asistente']), async (req, res) => {
 	let dia_cita = req.body.dia_cita;
 	let mes_cita = req.body.mes_cita;
 	let anio_cita = req.body.anio_cita;
