@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="src/public/img/logo_completo.jpeg" alt="Logo El Corral" width="120"/>
+  <img src="src/public/img/logo_completo.jpeg" alt="Logo El Corral" width="500"/>
 </p>
 
 # 🐾 El Corral - Sistema de Gestión Veterinaria
