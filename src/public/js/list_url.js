@@ -178,32 +178,34 @@ const active_item_menu = () => {
 // Ejecutamos al inicio...
 setTimeout(() => {
 	active_item_menu();
+	list_menu();
 }, 250);
 
 // Controlar estado del sidebar
 const sidebarToggle = document.getElementById('sidebar_toggle');
 
-// Guardar estado cuando el usuario cambia el toggle
-sidebarToggle.addEventListener('change', () => {
-	if (sidebarToggle.checked) {
-		localStorage.setItem('sidebarState', 'collapsed');
-	} else {
-		localStorage.setItem('sidebarState', 'expanded');
-	}
-});
+if (sidebarToggle) {
+	// Guardar estado cuando el usuario cambia el toggle
+	sidebarToggle.addEventListener('change', () => {
+		if (sidebarToggle.checked) {
+			localStorage.setItem('sidebarState', 'collapsed');
+		} else {
+			localStorage.setItem('sidebarState', 'expanded');
+		}
+	});
 
-// Ejecutamos la función al inicio..
-// Restaurar estado al cargar la página
-document.addEventListener('DOMContentLoaded', () => {
-	const state = localStorage.getItem('sidebarState');
-	if (state === 'collapsed') {
-		sidebarToggle.checked = true; // sidebar oculta
-	} else {
-		sidebarToggle.checked = false; // sidebar expandida
-	}
+	// Restaurar estado al cargar la página
+	document.addEventListener('DOMContentLoaded', () => {
+		const state = localStorage.getItem('sidebarState');
+		if (state === 'collapsed') {
+			sidebarToggle.checked = true; // sidebar oculta
+		} else {
+			sidebarToggle.checked = false; // sidebar expandida
+		}
 
-	// Ejecutar funciones de menú
-	list_menu();
-	listItems_menu_general();
-	active_item_menu();
-});
+		// Ejecutar funciones de menú
+		list_menu();
+		listItems_menu_general();
+		active_item_menu();
+	});
+}
