@@ -1579,7 +1579,6 @@ article.card .badge_noVerified {
   transition: 0.5s;
 }
 
-/*------------------------------------------------------------------------------------*/
 /* Bloque principal de compras */
 .desv_box_compras_vec {
   text-transform: capitalize;
@@ -1715,4 +1714,185 @@ table.table_totales_venta {
 .npq {
   font-weight: bold;
   color: var(--main_color);
+}
+
+/*****************************************************************************
+*                                RESPONSIVE                                  *
+*****************************************************************************/
+@media (max-width: 768px) {
+  /* LOGIN */
+  form.form_login {
+    width: 100%;
+  }
+
+  .input_container_divitions_login {
+    grid-template-columns: 1fr;
+  }
+
+  /* PROFILE */
+  .div_container_grid_dash {
+    grid-template-columns: repeat(auto-fill, 45%);
+  }
+
+  .recent {
+    widows: 98%;
+  }
+
+  .g_100 {
+    max-width: 1880px;
+  }
+
+  /* EXPEDIENTE */
+  .vista_tabla_form_4750,
+  .vista_tabla_form,
+  .input_grup_2,
+  .input_grup_3,
+  .input_grup_4 {
+    grid-template-columns: 98%;
+  }
+
+  .content_search_datos,
+  .botones_lista {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 10px;
+    text-align: center;
+  }
+
+  /* NOTIFICACIONES */
+  table,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 15px;
+  }
+
+  td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+
+  td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 50%;
+    padding-left: 10px;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  /* Color suave en filas pares */
+  tbody tr:nth-child(odd) {
+    background-color: var(--verde_pastel_claro); /* gris muy claro */
+  }
+
+  .content_search_btn {
+    text-align: center;
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 425px) {
+  #sidebar_toggle:checked ~ .main_content {
+    margin-left: 120px;
+  }
+
+  .div_container_grid_dash {
+    grid-template-columns: repeat(auto-fill, 40%);
+  }
+
+  .box_item h1 {
+    font-size: 40px;
+  }
+  .contenedor_graficos,
+  .paginacion {
+    display: none;
+  }
+
+  h1 {
+    font-size: 16px;
+  }
+
+  main,
+  section,
+  div,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  h3.ruta_system,
+  .observaciones h5,
+  .observaciones p,
+  .input_filter_table,
+  .btn_sa_lista {
+    font-size: 12px;
+  }
+
+  .box_item h2,
+  td::before {
+    font-size: 8px;
+  }
+
+  button.btn_reporte,
+  td.td_list_pq,
+  td.td_list_enc_t,
+  td.td_list_enc_r,
+  table th,
+  table td {
+    font-size: 10px;
+  }
+
+  td.center_text {
+    text-align: right;
+  }
+
+  .box_secctions_npq_acctions {
+    grid-template-columns: 1fr;
+  }
+
+  .user-details .title,
+  .menu .title {
+    font-size: 8px;
+  }
+
+  #sidebar_toggle:checked ~ .sidebar li a {
+    font-size: 12px;
+  }
+
+  .form .input_grup {
+    margin-bottom: 8px;
+  }
+  .form .input_grup label {
+    font-size: 8px;
+  }
+
+  .form .input_grup input,
+  .form .input_grup textarea {
+    font-size: 12px;
+    padding: 5px;
+  }
+
+  .content_search_btn {
+    margin-top: 0px;
+  }
+
+  .tittle_button {
+    display: none;
+  }
+
+  button.filtar_table {
+    font-size: 12px;
+  }
 }

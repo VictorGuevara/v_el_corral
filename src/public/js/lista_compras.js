@@ -112,12 +112,12 @@ const list_compras = async () => {
 			for (let e_npq_d = 0; e_npq_d < detalle_compra_vec.npq_d_count; e_npq_d++) {
 				paquete_n_d += `
                         <tr class="tr_d_pq_n_usa">
-                            <td class="td_list_pq">${detalle_compra_vec.pq_d[e_npq_d].cant_producto_compras}</td>
-                            <td class="td_list_pq">${detalle_compra_vec.pq_d[e_npq_d].nombre_producto_compras}</td>
-                            <td class="td_list_pq">$ ${detalle_compra_vec.pq_d[e_npq_d].vUnit_producto_compras}</td>
-                            <td class="td_list_pq">${detalle_compra_vec.pq_d[e_npq_d].tipo_producto_compras}</td>
-                            <td class="td_list_pq">${detalle_compra_vec.pq_d[e_npq_d].marca_producto_compras}</td>
-                            <td class="td_list_pq">$ ${detalle_compra_vec.pq_d[e_npq_d].subtotal_compras}</td>
+                            <td data-label="Cantidad:" class="td_list_pq">${detalle_compra_vec.pq_d[e_npq_d].cant_producto_compras}</td>
+                            <td data-label="Producto:" class="td_list_pq">${detalle_compra_vec.pq_d[e_npq_d].nombre_producto_compras}</td>
+                            <td data-label="Valor Unitario:" class="td_list_pq">$ ${detalle_compra_vec.pq_d[e_npq_d].vUnit_producto_compras}</td>
+                            <td data-label="Tipo:" class="td_list_pq">${detalle_compra_vec.pq_d[e_npq_d].tipo_producto_compras}</td>
+                            <td data-label="Marca:" class="td_list_pq">${detalle_compra_vec.pq_d[e_npq_d].marca_producto_compras}</td>
+                            <td data-label="Subtotal:" class="td_list_pq">$ ${detalle_compra_vec.pq_d[e_npq_d].subtotal_compras}</td>
                         </tr>
                     `;
 			}
@@ -191,9 +191,9 @@ const list_compras = async () => {
                             </thead>
                             <tbody id="">
                                 <tr class="tr_d_pq_n_t">
-                                    <td class="td_list_enc_t"><span>$ </span>${cod_n_compra_vec.filas_compras[e].subtotal_compras}</td>
-                                    <td class="td_list_enc_r"><span>- $ </span>${cod_n_compra_vec.filas_compras[e].descuento_compras}</td>
-                                    <td class="td_list_enc_t"><span>$ </span>${cod_n_compra_vec.filas_compras[e].total_compras}</td>
+                                    <td data-label="Subtotal:" class="td_list_enc_t"><span>$ </span>${cod_n_compra_vec.filas_compras[e].subtotal_compras}</td>
+                                    <td data-label="Descuento:" class="td_list_enc_r"><span>- $ </span>${cod_n_compra_vec.filas_compras[e].descuento_compras}</td>
+                                    <td data-label="TOTAL:" class="td_list_enc_t"><span>$ </span>${cod_n_compra_vec.filas_compras[e].total_compras}</td>
                                 </tr>
                             </tbody>
                         </table>

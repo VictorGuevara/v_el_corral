@@ -129,15 +129,15 @@ const list_proveedores = async () => {
 				contador++;
 				tbody_proveedores.innerHTML += `
                 <tr>
-                    <td>${contador}</td>
-                    <td>${datos.rows[i].nombre_proveedor}</td>
-                    <td>${datos.rows[i].tel_proveedor}</td>
-                    <td>${datos.rows[i].dui_proveedor}</td>
-                    <td>${datos.rows[i].marca_proveedor}</td>
-                    <td class="center_text">
+                    <td data-label="No.">${contador}</td>
+                    <td data-label="Proveedor:">${datos.rows[i].nombre_proveedor}</td>
+                    <td data-label="Tel. Proveedor:">${datos.rows[i].tel_proveedor}</td>
+                    <td data-label="DUI Proveedor:">${datos.rows[i].dui_proveedor}</td>
+                    <td data-label="Marca:">${datos.rows[i].marca_proveedor}</td>
+                    <td data-label="Editar" class="center_text">
                         <a onclick="ll_dEditV('${datos.rows[i].codigo_proveedor}', '${datos.rows[i].nombre_proveedor}', '${datos.rows[i].tel_proveedor}', '${datos.rows[i].dui_proveedor}', '${datos.rows[i].marca_proveedor}')" class="btn_table_edit"><i class="fa-solid fa-pen-to-square"></i></a>
                     </td>
-                    <td class="center_text">
+                    <td data-label="Eliminar" class="center_text">
                         <a onclick="deleteProveedor('${datos.rows[i].codigo_proveedor}')" class="btn_table_delete"><i class="fa-solid fa-trash"></i></a>
                     </td>
                 </tr>

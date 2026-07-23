@@ -167,17 +167,17 @@ const list_productos_g = async () => {
 
 				tbody_productos.innerHTML += `
                 <tr>
-                    <td>${contador}</td>
-                    <td>${datos.rows[i].nombre_producto}</td>
-                    <td>${datos.rows[i].descripcion_producto}</td>
-                    <td>${datos.rows[i].existencia_total_lotes}</td>
-                    <td>$ ${datos.rows[i].precio_producto}</td>
-                    <td>${datos.rows[i].margen_ganancia} %</td>
-                    <td>${datos.rows[i].marca_proveedor}</td>
-                    <td class="center_text">
+                    <td data-label="No.">${contador}</td>
+                    <td data-label="Producto:">${datos.rows[i].nombre_producto}</td>
+                    <td data-label="Descripcion:">${datos.rows[i].descripcion_producto}</td>
+                    <td data-label="Existencias:">${datos.rows[i].existencia_total_lotes}</td>
+                    <td data-label="Precio:">$ ${datos.rows[i].precio_producto}</td>
+                    <td data-label="Margen:">${datos.rows[i].margen_ganancia} %</td>
+                    <td data-label="Marca:">${datos.rows[i].marca_proveedor}</td>
+                    <td data-label="Editar" class="center_text">
                         <a onclick="ll_dEditV('${datos.rows[i].codigo_producto}', '${datos.rows[i].nombre_producto}', '${datos.rows[i].descripcion_producto}', '${datos.rows[i].existencia_total_lotes}', '${datos.rows[i].existencia_minima}', '${datos.rows[i].categoria_producto}', '${datos.rows[i].precio_producto}', '${datos.rows[i].margen_ganancia}', '${datos.rows[i].marca_proveedor}')" class="btn_table_edit"><i class="fa-solid fa-pen-to-square"></i></a>
                     </td>
-                    <td class="center_text">
+                    <td data-label="Eliminar" class="center_text">
                         <a onclick="deleteProductos('${datos.rows[i].codigo_producto}')" class="btn_table_delete"><i class="fa-solid fa-trash"></i></a>
                     </td>
                 </tr>
@@ -216,17 +216,17 @@ const list_servicios = async () => {
 
 				tbody_productos.innerHTML += `
                 <tr>
-                    <td>${contador}</td>
-                    <td>${datos.rows[i].nombre_producto}</td>
-                    <td>${datos.rows[i].descripcion_producto}</td>
-                    <td>${datos.rows[i].existencia_total_lotes}</td>
-                    <td>$ ${datos.rows[i].precio_producto}</td>
-                    <td>${datos.rows[i].margen_ganancia} %</td>
-                    <td>${datos.rows[i].marca_proveedor}</td>
-                    <td class="center_text">
+                    <td data-label="No.">${contador}</td>
+                    <td data-label="Producto:">${datos.rows[i].nombre_producto}</td>
+                    <td data-label="Descripcion:">${datos.rows[i].descripcion_producto}</td>
+                    <td data-label="Existencias:">${datos.rows[i].existencia_total_lotes}</td>
+                    <td data-label="Precio:">$ ${datos.rows[i].precio_producto}</td>
+                    <td data-label="Margen:">${datos.rows[i].margen_ganancia} %</td>
+                    <td data-label="Marca:">${datos.rows[i].marca_proveedor}</td>
+                    <td data-label="Editar" class="center_text">
                         <a onclick="ll_dEditV('${datos.rows[i].codigo_producto}', '${datos.rows[i].nombre_producto}', '${datos.rows[i].descripcion_producto}', '${datos.rows[i].existencia_total_lotes}', '${datos.rows[i].existencia_minima}', '${datos.rows[i].categoria_producto}', '${datos.rows[i].precio_producto}', '${datos.rows[i].margen_ganancia}', '${datos.rows[i].marca_proveedor}')" class="btn_table_edit"><i class="fa-solid fa-pen-to-square"></i></a>
                     </td>
-                    <td class="center_text">
+                    <td data-label="Eliminar" class="center_text">
                         <a onclick="deleteProductos('${datos.rows[i].codigo_producto}')" class="btn_table_delete"><i class="fa-solid fa-trash"></i></a>
                     </td>
                 </tr>
@@ -246,7 +246,7 @@ const list_productos = async () => {
 	};
 
 	// Consultamos...
-	await fetch('/acciones_inventario/productos_d_mk_srv', {
+	await fetch('/acciones_inventario/otros_productos_d_srv', {
 		method: 'POST',
 		body: JSON.stringify(d_search),
 		headers: {

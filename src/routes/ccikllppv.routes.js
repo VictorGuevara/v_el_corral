@@ -411,31 +411,12 @@ router.post('/productos_servicio', isLoggedIn, authCiudad(['Administrador', 'Asi
 });
 
 // Ruta para listar los productos diferentes a Mary Kay y Servicios.
-router.post('/productos_d_mk_srv', isLoggedIn, authCiudad(['Administrador', 'Asistente']), async (req, res) => {
+router.post('/otros_productos_d_srv', isLoggedIn, authCiudad(['Administrador', 'Asistente']), async (req, res) => {
 	let text = '%' + req.body.d_text + '%';
 
 	await pool.query(
 		'SELECT * FROM productos WHERE nombre_producto LIKE ? AND categoria_producto = ?',
 		[text, 'otros productos'],
-		(error, rows, fields) => {
-			if (!error) {
-				// Si no existe error, devolvemos la cantidad del contador.
-				res.json({ rows });
-			} else {
-				// SI EXISTE UN ERROR, MOSTRAMOS EL ERROR POR CONSOLA.
-				console.log(error);
-			}
-		}
-	);
-});
-
-// Ruta para listar los Mary Kay.
-router.post('/productos_mk', isLoggedIn, authCiudad(['Administrador', 'Asistente']), async (req, res) => {
-	let text = '%' + req.body.d_text + '%';
-
-	await pool.query(
-		'SELECT * FROM productos WHERE nombre_producto LIKE ? AND categoria_producto = ?',
-		[text, 'mary kay'],
 		(error, rows, fields) => {
 			if (!error) {
 				// Si no existe error, devolvemos la cantidad del contador.

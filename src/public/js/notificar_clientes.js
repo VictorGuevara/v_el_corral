@@ -21,14 +21,14 @@ const cargarNotificaciones = async () => {
 		const notif = notificaciones[i];
 		tbody.innerHTML += `
       <tr>
-        <td>${i + 1}</td>
-        <td>${notif.nombre_cliente}</td>
-        <td>${notif.telefono_cliente}</td>
-        <td>${notif.mensaje}</td>
-        <td>${formatearFecha(notif.fecha_programada)}</td>
-        <td>${notif.estado}</td>
-        <td>${formatearFecha(notif.fecha_envio) || ''}</td>
-        <td class='center_text'>
+        <td data-label="No.">${i + 1}</td>
+        <td data-label="Cliente:">${notif.nombre_cliente}</td>
+        <td data-label="Tel:">${notif.telefono_cliente}</td>
+        <td data-label="MSM:">${notif.mensaje}</td>
+        <td data-label="Fecha:">${formatearFecha(notif.fecha_programada)}</td>
+        <td data-label="Estado:">${notif.estado}</td>
+        <td data-label="F. Envío:">${formatearFecha(notif.fecha_envio) || ''}</td>
+        <td data-label="¿Notificar?" class='center_text'>
           <button class='btn_table_reverse' onclick="notificar(${notif.id_notificacion})">
             <i class="fa-solid fa-envelope"></i>
           </button>

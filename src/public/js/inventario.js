@@ -42,12 +42,12 @@ const list_clientes = async () => {
 				contador++;
 				tbody_inventario.innerHTML += `
                 <tr>
-                    <td>${contador}</td>
-                    <td>${datos.rows[i].codproducto_inventario}</td>
-                    <td>${datos.rows[i].nombreproducto_inventario}</td>
-                    <td>${datos.rows[i].tipoproducto_inventario}</td>
-                    <td>${datos.rows[i].existenciaslote_inventario}</td>
-                    <td>${datos.rows[i].numlote_inventario}</td>
+                    <td data-label="No.">${contador}</td>
+                    <td data-label="Cod. Producto:">${datos.rows[i].codproducto_inventario}</td>
+                    <td data-label="Producto:">${datos.rows[i].nombreproducto_inventario}</td>
+                    <td data-label="Tipo Producto:">${datos.rows[i].tipoproducto_inventario}</td>
+                    <td data-label="Existencias:">${datos.rows[i].existenciaslote_inventario}</td>
+                    <td data-label="No. Lote:">${datos.rows[i].numlote_inventario}</td>
                 </tr>
             `;
 			}

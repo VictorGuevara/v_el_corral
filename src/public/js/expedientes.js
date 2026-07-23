@@ -31,16 +31,16 @@ function renderTablaExpedientes(expedientes) {
     const row = document.createElement('tr');
 
     row.innerHTML = `
-      <td>${exp.propietario}</td>
-      <td>${exp.dui}</td>
-      <td>${exp.mascota}</td>
-      <td class='center_text'>
+      <td data-label="Propietario:">${exp.propietario}</td>
+      <td data-label="DUI:">${exp.dui}</td>
+      <td data-label="Mascota:">${exp.mascota}</td>
+      <td data-label="Editar" class='center_text'>
         <button class='btn_table_reverse' onclick="editarExpediente(${exp.id_expediente})"><i class="fa-solid fa-file-pen"></i></button>
       </td>
-      <td class='center_text'>
+      <td data-label="Ver Expediente" class='center_text'>
         <button class='btn_table_reverse' onclick="verExpediente(${exp.id_expediente})"><i class="fa-solid fa-eye"></i></button>
       </td>
-      <td class='center_text'>
+      <td data-label="Agregar" class='center_text'>
         <button class='btn_table_reverse' onclick="agregarReceta(${exp.id_expediente})"><i class="fa-solid fa-file-circle-plus"></i></button>
       </td>
     `;

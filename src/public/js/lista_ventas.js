@@ -115,12 +115,12 @@ const list_ventas = async () => {
 			for (let e_npq_d = 0; e_npq_d < detalle_venta_vec.npq_d_count; e_npq_d++) {
 				paquete_n_d += `
                         <tr>
-                            <td class="td_list_pq">${detalle_venta_vec.pq_d[e_npq_d].cant_producto_ventas}</td>
-                            <td class="td_list_pq">${detalle_venta_vec.pq_d[e_npq_d].nombre_producto_ventas}</td>
-                            <td class="td_list_pq">$ ${detalle_venta_vec.pq_d[e_npq_d].vUnit_producto_ventas}</td>
-                            <td class="td_list_pq">${detalle_venta_vec.pq_d[e_npq_d].tipo_producto_ventas}</td>
-                            <td class="td_list_pq">${detalle_venta_vec.pq_d[e_npq_d].marca_producto_ventas}</td>
-                            <td class="td_list_pq">$ ${detalle_venta_vec.pq_d[e_npq_d].subt_producto_ventas}</td>
+                            <td data-label="Cantidad:" class="td_list_pq">${detalle_venta_vec.pq_d[e_npq_d].cant_producto_ventas}</td>
+                            <td data-label="Producto:" class="td_list_pq">${detalle_venta_vec.pq_d[e_npq_d].nombre_producto_ventas}</td>
+                            <td data-label="Valor Unitario:" class="td_list_pq">$ ${detalle_venta_vec.pq_d[e_npq_d].vUnit_producto_ventas}</td>
+                            <td data-label="Tipo:" class="td_list_pq">${detalle_venta_vec.pq_d[e_npq_d].tipo_producto_ventas}</td>
+                            <td data-label="Marca:" class="td_list_pq">${detalle_venta_vec.pq_d[e_npq_d].marca_producto_ventas}</td>
+                            <td data-label="Subtotal:" class="td_list_pq">$ ${detalle_venta_vec.pq_d[e_npq_d].subt_producto_ventas}</td>
                         </tr>
                     `;
 			}
@@ -193,9 +193,9 @@ const list_ventas = async () => {
                             </thead>
                             <tbody id="">
                                 <tr class="tr_d_pq_n_t">
-                                    <td class="td_list_enc_t"><span>$ </span>${cod_n_venta_vec.filas_ventas[e].subtotal_ventas}</td>
-                                    <td class="td_list_enc_r"><span>- $ </span>${cod_n_venta_vec.filas_ventas[e].descuento_ventas}</td>
-                                    <td class="td_list_enc_t"><span>$ </span>${cod_n_venta_vec.filas_ventas[e].total_ventas}</td>
+                                    <td data-label="Subtotal:" class="td_list_enc_t"><span>$ </span>${cod_n_venta_vec.filas_ventas[e].subtotal_ventas}</td>
+                                    <td data-label="Descuento:" class="td_list_enc_r"><span>- $ </span>${cod_n_venta_vec.filas_ventas[e].descuento_ventas}</td>
+                                    <td data-label="TOTAL:" class="td_list_enc_t"><span>$ </span>${cod_n_venta_vec.filas_ventas[e].total_ventas}</td>
                                 </tr>
                             </tbody>
                         </table>

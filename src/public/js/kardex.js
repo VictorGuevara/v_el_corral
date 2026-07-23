@@ -48,17 +48,17 @@ const list_kardex = async () => {
 
 				tbody_kardex.innerHTML += `
                 <tr>
-                    <td>${format_fecha}</td>
-                    <td>${datos.rows[i].nombre_producto}</td>
-                    <td>${datos.rows[i].entrada_cantidad}</td>
-                    <td>${datos.rows[i].entrada_valor_unitario}</td>
-                    <td>${datos.rows[i].entrada_valor_total}</td>
-                    <td>${datos.rows[i].salida_cantidad}</td>
-                    <td>${datos.rows[i].salida_valor_unitario}</td>
-                    <td>${datos.rows[i].salida_valor_total}</td>
-                    <td>${datos.rows[i].existencia_cantidad}</td>
-                    <td>${datos.rows[i].existencia_valor_unitario}</td>
-                    <td>${datos.rows[i].existencia_valor_total}</td>
+                    <td data-label="Fecha:">${format_fecha}</td>
+                    <td data-label="Producto:">${datos.rows[i].nombre_producto}</td>
+                    <td data-label="Cant. Entrada:">${datos.rows[i].entrada_cantidad}</td>
+                    <td data-label="Valor Entrada:">${datos.rows[i].entrada_valor_unitario}</td>
+                    <td data-label="Total Entrada:">${datos.rows[i].entrada_valor_total}</td>
+                    <td data-label="Cant. Salida:">${datos.rows[i].salida_cantidad}</td>
+                    <td data-label="Valor Salida:">${datos.rows[i].salida_valor_unitario}</td>
+                    <td data-label="Total Salida:">${datos.rows[i].salida_valor_total}</td>
+                    <td data-label="Cant. Existencia:">${datos.rows[i].existencia_cantidad}</td>
+                    <td data-label="Valor Existencia:">${datos.rows[i].existencia_valor_unitario}</td>
+                    <td data-label="Total Existencia:">${datos.rows[i].existencia_valor_total}</td>
                 </tr>
             `;
 			}

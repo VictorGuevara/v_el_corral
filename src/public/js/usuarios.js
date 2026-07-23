@@ -141,18 +141,18 @@ const list_usuarios = async () => {
 			contador++;
 			tbody_usuarios.innerHTML += `
                 <tr>
-                    <td class="center_number">${contador}</td>
-                    <td>${datos[i].cod_users}</td>
-                    <td>${datos[i].nombre_c}</td>
-                    <td>${datos[i].no_dui}</td>
-                    <td>${datos[i].username}</td>
-                    <td>${datos[i].cargo}</td>
-                    <td>${datos[i].estado_cuenta}</td>
-                    <td>${datos[i].sucursal_user}</td>
-                    <td class="center_text">
+                    <td data-label="No." class="center_number">${contador}</td>
+                    <td data-label="Código:">${datos[i].cod_users}</td>
+                    <td data-label="Nombre:">${datos[i].nombre_c}</td>
+                    <td data-label="DUI:">${datos[i].no_dui}</td>
+                    <td data-label="Usuario:">${datos[i].username}</td>
+                    <td data-label="Cargo">${datos[i].cargo}</td>
+                    <td data-label="Estado:">${datos[i].estado_cuenta}</td>
+                    <td data-label="Sucursal:">${datos[i].sucursal_user}</td>
+                    <td data-label="Editar" class="center_text">
                         <button class="btn_table_edit" onclick="cargar_dUser_edit('${datos[i].cod_users}')"><i class="ti-pencil-alt"></i></button>
                     </td>
-                    <td class="center_text">
+                    <td data-label="Eliminar" class="center_text">
                         <button class="btn_table_delete" onclick="eliminar_usuario('${datos[i].cod_users}')"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>

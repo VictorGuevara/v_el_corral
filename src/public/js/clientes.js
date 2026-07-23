@@ -126,19 +126,19 @@ const list_clientes = async () => {
 			for (let i = 0; i < t_rows; i++) {
 				// aumentamos el contador...
 				contador++;
-				let format_fecha = fecha_a(datos.rows[i].fnac_cliente);
+				let format_fecha = formatearFecha(datos.rows[i].fnac_cliente);
 
 				tbody_clientes.innerHTML += `
                 <tr>
-                    <td>${contador}</td>
-                    <td>${datos.rows[i].codigo_cliente}</td>
-                    <td>${datos.rows[i].nombre_cliente}</td>
-                    <td>${datos.rows[i].tel_cliente}</td>
-                    <td>${format_fecha}</td>
-                    <td class="center_text">
+                    <td data-label="No.">${contador}</td>
+                    <td data-label="Código:">${datos.rows[i].codigo_cliente}</td>
+                    <td data-label="Cliente:">${datos.rows[i].nombre_cliente}</td>
+                    <td data-label="Teléfono:">${datos.rows[i].tel_cliente}</td>
+                    <td data-label="Fecha:">${format_fecha}</td>
+                    <td data-label="Editar" class="center_text">
                         <a onclick="ll_dEditV('${datos.rows[i].codigo_cliente}', '${datos.rows[i].nombre_cliente}', '${datos.rows[i].tel_cliente}', '${datos.rows[i].fnac_cliente}')" class="btn_table_edit"><i class="fa-solid fa-pen-to-square"></i></a>
                     </td>
-                    <td class="center_text">
+                    <td data-label="Eliminar" class="center_text">
                         <a onclick="deleteCliente('${datos.rows[i].codigo_cliente}')" class="btn_table_delete"><i class="fa-solid fa-trash"></i></a>
                     </td>
                 </tr>
